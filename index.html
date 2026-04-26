@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instituto i10 — Educação transformada pela Inteligência Artificial</title>
+  <meta name="description" content="Pesquisa, inovação e impacto mensurável na educação pública brasileira através de IA." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='10' cy='10' r='4' fill='%2300B4D8'/%3E%3Ccircle cx='30' cy='10' r='4' fill='%2300E5A0'/%3E%3Ccircle cx='20' cy='28' r='4' fill='%230A2463'/%3E%3Cline x1='10' y1='10' x2='30' y2='10' stroke='%2300B4D8' stroke-width='2'/%3E%3Cline x1='10' y1='10' x2='20' y2='28' stroke='%2300E5A0' stroke-width='2'/%3E%3Cline x1='30' y1='10' x2='20' y2='28' stroke='%2300B4D8' stroke-width='2'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+<a class="skip-link" href="#main-content" data-pt="Pular para o conteúdo" data-en="Skip to content">Pular para o conteúdo</a>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" role="navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Instituto i10">
+      <svg class="mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg-nav" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#00B4D8"/>
+            <stop offset="100%" stop-color="#00E5A0"/>
+          </linearGradient>
+        </defs>
+        <line x1="10" y1="10" x2="30" y2="10" stroke="url(#lg-nav)" stroke-width="2"/>
+        <line x1="10" y1="10" x2="20" y2="28" stroke="url(#lg-nav)" stroke-width="2"/>
+        <line x1="30" y1="10" x2="20" y2="28" stroke="url(#lg-nav)" stroke-width="2"/>
+        <circle cx="10" cy="10" r="4" fill="#00B4D8"/>
+        <circle cx="30" cy="10" r="4" fill="#00E5A0"/>
+        <circle cx="20" cy="28" r="4" fill="#ffffff"/>
+      </svg>
+      <span><span class="i-letter">i</span><span class="ten-letters">10</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active" data-pt="Início" data-en="Home">Início</a></li>
+      <li><a href="sobre.html" data-pt="Sobre" data-en="About">Sobre</a></li>
+      <li><a href="programas.html" data-pt="Programas" data-en="Programs">Programas</a></li>
+      <li><a href="pesquisa.html" data-pt="Pesquisa" data-en="Research">Pesquisa</a></li>
+      <li><a href="impacto.html" data-pt="Impacto" data-en="Impact">Impacto</a></li>
+      <li><a href="contato.html" data-pt="Contato" data-en="Contact">Contato</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button data-lang="pt" class="active" aria-pressed="true">PT</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a href="contato.html" class="nav-cta" data-pt="Fale conosco →" data-en="Get in touch →">Fale conosco →</a>
+      <button class="nav-burger" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="main-content">
+
+<!-- ===== HERO — Editorial split with featured video ===== -->
+<header class="hero-v2">
+  <div class="hero-v2-bg" aria-hidden="true">
+    <div class="hero-v2-orb a"></div>
+    <div class="hero-v2-orb b"></div>
+    <div class="hero-v2-grid"></div>
+  </div>
+
+  <div class="hero-v2-inner">
+    <div class="hero-v2-content">
+      <div class="hero-v2-meta reveal">
+        <span class="metadata-label" style="color: var(--cyan);">Vol. 01 · Edição inaugural</span>
+        <span class="metadata-label" data-pt="Florianópolis · Brasil · 2026" data-en="Florianópolis · Brazil · 2026">Florianópolis · Brasil · 2026</span>
+      </div>
+      <h1 class="hero-v2-title reveal delay-1">
+        <span class="hero-v2-line-1" data-pt="Educação" data-en="Education">Educação</span>
+        <span class="hero-v2-line-2" data-pt="transformada" data-en="transformed">transformada</span>
+        <span class="hero-v2-line-3" data-pt="pela" data-en="by">pela</span>
+        <span class="hero-v2-line-4 gradient-text" data-pt="Inteligência Artificial." data-en="Artificial Intelligence.">Inteligência Artificial.</span>
+      </h1>
+      <hr class="rule-line on-dark reveal delay-2" style="max-width: 140px; margin-block: var(--s-5);" />
+      <p class="hero-v2-lead reveal delay-2"
+         data-pt="Pesquisa, desenvolvimento e inovação em IA aplicada à educação pública brasileira — gerando impacto mensurável na qualidade de ensino e na equidade de oportunidades."
+         data-en="Research, development, and innovation in AI applied to Brazilian public education — generating measurable impact on teaching quality and equity of opportunity.">Pesquisa, desenvolvimento e inovação em IA aplicada à educação pública brasileira — gerando impacto mensurável na qualidade de ensino e na equidade de oportunidades.</p>
+      <div class="hero-v2-actions reveal delay-3">
+        <a href="#assista" class="btn btn-primary">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:14px;height:14px;"><path d="M3 2 L11 7 L3 12 Z" fill="currentColor"/></svg>
+          <span data-pt="Assista nossa história" data-en="Watch our story">Assista nossa história</span>
+        </a>
+        <a href="pesquisa.html" class="btn btn-ghost">
+          <span data-pt="Explorar pesquisa" data-en="Explore research">Explorar pesquisa</span>
+          <span class="arr">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: featured video player -->
+    <div class="hero-v2-stage reveal delay-2">
+      <div class="hero-v2-video-frame">
+        <video id="hero-video-player" class="hero-v2-video"
+               autoplay muted loop playsinline preload="metadata"
+               poster="assets/images/hero_constellation.png"
+               aria-label="Vídeo institucional Instituto i10">
+          <source src="assets/videos/hero_main.mp4" type="video/mp4" />
+        </video>
+        <button id="hero-video-play" type="button" class="hero-v2-play" aria-label="Tocar com som">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="15" fill="rgba(10,36,99,0.85)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <path d="M13 10 L23 16 L13 22 Z" fill="white"/>
+          </svg>
+          <span class="hero-v2-play-label">
+            <span class="metadata-label on-dark" data-pt="Tocar com som" data-en="Play with sound">Tocar com som</span>
+          </span>
+        </button>
+        <div class="hero-v2-video-meta">
+          <span class="metadata-label on-dark">02:14</span>
+          <span class="metadata-label on-dark" data-pt="Vídeo institucional" data-en="Institutional video">Vídeo institucional</span>
+        </div>
+      </div>
+      <figcaption class="hero-v2-caption">
+        <span class="editorial-italic" style="color: rgba(255,255,255,0.78); font-size: 16px;" data-pt="Para entender o i10 — em dois minutos." data-en="To understand i10 — in two minutes.">Para entender o i10 — em dois minutos.</span>
+      </figcaption>
+    </div>
+  </div>
+
+  <!-- Bottom ticker -->
+  <div class="hero-v2-ticker reveal delay-3">
+    <div class="hero-v2-ticker-item">
+      <span class="hero-v2-ticker-num"><span class="gradient-text">+34</span>%</span>
+      <span class="hero-v2-ticker-label" data-pt="Ganho de eficiência · Matemática · Estudo 2024" data-en="Efficiency gain · Math · 2024 study">Ganho de eficiência · Matemática · Estudo 2024</span>
+    </div>
+    <div class="hero-v2-ticker-divider"></div>
+    <div class="hero-v2-ticker-item">
+      <span class="hero-v2-ticker-num">E·I·M·C</span>
+      <span class="hero-v2-ticker-label" data-pt="Excelência, Inovação, Impacto, Colaboração" data-en="Excellence, Innovation, Impact, Collaboration">Excelência, Inovação, Impacto, Colaboração</span>
+    </div>
+    <div class="hero-v2-ticker-divider"></div>
+    <div class="hero-v2-ticker-item">
+      <span class="hero-v2-ticker-num">100<span class="gradient-text">%</span></span>
+      <span class="hero-v2-ticker-label" data-pt="Metodologias abertas · Transparência algorítmica · LGPD" data-en="Open methodologies · Algorithmic transparency · LGPD">Metodologias abertas · Transparência algorítmica · LGPD</span>
+    </div>
+  </div>
+</header>
+
+<!-- Anchor for the "Assista nossa história" button -->
+<span id="assista" style="position:absolute;visibility:hidden;"></span>
+
+<!-- ===== PILLARS ===== -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow eyebrow-dark" data-pt="Nossos pilares" data-en="Our pillars">Nossos pilares</span>
+      <h2 class="h-lg" data-pt="Quatro princípios que guiam cada projeto." data-en="Four principles that guide every project.">Quatro princípios que guiam cada projeto.</h2>
+      <div class="divider"></div>
+      <p class="lead" data-pt="O framework <strong>E·I·M·C</strong> é a bússola do Instituto i10 — da concepção de pesquisa à entrega em sala de aula." data-en="The <strong>E·I·M·C</strong> framework is Instituto i10's compass — from research design to classroom delivery.">O framework <strong>E·I·M·C</strong> é a bússola do Instituto i10 — da concepção de pesquisa à entrega em sala de aula.</p>
+    </div>
+
+    <div class="pillar-grid">
+      <article class="pillar reveal">
+        <div class="pillar-letter">E</div>
+        <h3 class="pillar-name" data-pt="Excelência" data-en="Excellence">Excelência</h3>
+        <p class="pillar-text" data-pt="Cada projeto busca o padrão que transcende o ordinário. O impacto real do conhecimento." data-en="Every project seeks a standard that goes beyond the ordinary. The real impact of knowledge.">Cada projeto busca o padrão que transcende o ordinário. O impacto real do conhecimento.</p>
+      </article>
+      <article class="pillar reveal delay-1">
+        <div class="pillar-letter">I</div>
+        <h3 class="pillar-name" data-pt="Inovação" data-en="Innovation">Inovação</h3>
+        <p class="pillar-text" data-pt="Tecnologia a serviço da educação pública. IA é ferramenta, não fim em si mesma." data-en="Technology in service of public education. AI is a tool, not an end in itself.">Tecnologia a serviço da educação pública. IA é ferramenta, não fim em si mesma.</p>
+      </article>
+      <article class="pillar reveal delay-2">
+        <div class="pillar-letter">M</div>
+        <h3 class="pillar-name" data-pt="Impacto" data-en="Impact">Impacto</h3>
+        <p class="pillar-text" data-pt="Compromisso com resultados documentados, metodologias validadas e transparência algorítmica." data-en="Commitment to documented results, validated methodologies, and algorithmic transparency.">Compromisso com resultados documentados, metodologias validadas e transparência algorítmica.</p>
+      </article>
+      <article class="pillar reveal delay-3">
+        <div class="pillar-letter">C</div>
+        <h3 class="pillar-name" data-pt="Colaboração" data-en="Collaboration">Colaboração</h3>
+        <p class="pillar-text" data-pt="Articulação entre setor público, acadêmico e privado para transformação em escala." data-en="Connecting public, academic, and private sectors for transformation at scale.">Articulação entre setor público, acadêmico e privado para transformação em escala.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ECOSSISTEMA — EDITORIAL SPREAD ===== -->
+<section class="section spread spread-ecosystem">
+  <div class="spread-decor" aria-hidden="true">
+    <span class="spread-numeral">02</span>
+  </div>
+  <div class="container">
+    <div class="spread-head reveal">
+      <span class="metadata-label" data-pt="Capítulo · Ecossistema" data-en="Chapter · Ecosystem">Capítulo · Ecossistema</span>
+      <h2 class="display-massive" data-pt="Dois eixos.<br/><em class='gradient-text' style='font-style:normal;'>Uma</em> orquestração." data-en="Two axes.<br/><em class='gradient-text' style='font-style:normal;'>One</em> orchestration.">Dois eixos.<br/><em class="gradient-text" style="font-style:normal;">Uma</em> orquestração.</h2>
+      <hr class="rule-line" />
+      <p class="editorial-italic" style="max-width: 720px;" data-pt="Nenhum dos dois avança sem o outro. Toda tecnologia que desenvolvemos conecta os dois lados." data-en="Neither advances without the other. Every technology we develop connects both sides.">Nenhum dos dois avança sem o outro. Toda tecnologia que desenvolvemos conecta os dois lados.</p>
+    </div>
+
+    <div class="spread-grid reveal">
+      <article class="spread-axis">
+        <div class="spread-axis-marker">01</div>
+        <span class="metadata-label" data-pt="Eixo · Docente" data-en="Axis · Teacher">Eixo · Docente</span>
+        <h3 class="spread-axis-title" data-pt="O professor é a primeira inteligência da escola." data-en="The teacher is the school's first intelligence.">O professor é a primeira inteligência da escola.</h3>
+        <p class="spread-axis-text dropcap" data-pt="Professores, coordenadores pedagógicos, direção escolar e secretarias. Transferimos <strong>capacidade institucional permanente</strong> — formação continuada, trilhas de letramento em IA e ferramentas que apoiam (nunca substituem) o julgamento docente." data-en="Teachers, pedagogical coordinators, school leadership, and education departments. We transfer <strong>permanent institutional capacity</strong> — continuous training, AI-literacy tracks, and tools that support (never replace) teacher judgment.">Professores, coordenadores pedagógicos, direção escolar e secretarias. Transferimos <strong>capacidade institucional permanente</strong> — formação continuada, trilhas de letramento em IA e ferramentas que apoiam (nunca substituem) o julgamento docente.</p>
+        <ul class="spread-list">
+          <li data-pt="Formação continuada e residências presenciais" data-en="Continuous training and on-site residencies">Formação continuada e residências presenciais</li>
+          <li data-pt="Letramento em IA para protagonismo pedagógico" data-en="AI literacy for pedagogical leadership">Letramento em IA para protagonismo pedagógico</li>
+          <li data-pt="Comunidades de prática entre redes" data-en="Communities of practice across networks">Comunidades de prática entre redes</li>
+          <li data-pt="Painéis de decisão baseados em evidência" data-en="Evidence-based decision dashboards">Painéis de decisão baseados em evidência</li>
+        </ul>
+      </article>
+
+      <figure class="spread-photo photo-duotone-always reveal delay-1">
+        <img src="assets/images/bncc_kf3_classroom.jpg" alt="Professora orientando estudantes em sala BNCC Computação" loading="lazy" />
+        <figcaption class="spread-photo-caption">
+          <span class="metadata-label on-dark" data-pt="Sala de aula · 2026" data-en="Classroom · 2026">Sala de aula · 2026</span>
+          <span class="editorial-italic" style="color: white; font-size: 18px;" data-pt="O ponto onde pesquisa vira aprendizado." data-en="Where research becomes learning.">O ponto onde pesquisa vira aprendizado.</span>
+        </figcaption>
+      </figure>
+
+      <article class="spread-axis spread-axis-2">
+        <div class="spread-axis-marker">02</div>
+        <span class="metadata-label" data-pt="Eixo · Discente" data-en="Axis · Student">Eixo · Discente</span>
+        <h3 class="spread-axis-title" data-pt="Cada estudante merece um currículo no seu ritmo." data-en="Every student deserves a curriculum at their own pace.">Cada estudante merece um currículo no seu ritmo.</h3>
+        <p class="spread-axis-text dropcap" data-pt="Estudantes da rede pública brasileira. Construímos tutoria adaptativa, avaliação diagnóstica e trilhas personalizadas — sempre medidas por grupo-controle e auditáveis pela escola e pela família." data-en="Students in Brazilian public-education networks. We build adaptive tutoring, diagnostic assessment, and personalized learning paths — always measured against control groups and auditable by schools and families.">Estudantes da rede pública brasileira. Construímos tutoria adaptativa, avaliação diagnóstica e trilhas personalizadas — sempre medidas por grupo-controle e auditáveis pela escola e pela família.</p>
+        <ul class="spread-list">
+          <li data-pt="Tutoria adaptativa com +34% de eficiência em matemática" data-en="Adaptive tutoring with +34% math efficiency">Tutoria adaptativa com +34% de eficiência em matemática</li>
+          <li data-pt="Avaliação diagnóstica contínua" data-en="Continuous diagnostic assessment">Avaliação diagnóstica contínua</li>
+          <li data-pt="Trilhas personalizadas que respeitam ritmo individual" data-en="Personalized paths that respect individual pace">Trilhas personalizadas que respeitam ritmo individual</li>
+          <li data-pt="Dados anonimizados em conformidade com LGPD" data-en="Anonymized data in full LGPD compliance">Dados anonimizados em conformidade com LGPD</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NOSSA VISÃO — ARTEFATOS REAIS ===== -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow eyebrow-dark" data-pt="Nossa visão" data-en="Our vision">Nossa visão</span>
+      <h2 class="h-lg" data-pt="Uma fotografia, três registros." data-en="One photograph, three records.">Uma fotografia, três registros.</h2>
+      <div class="divider"></div>
+      <p class="lead" data-pt="Sala de aula, infográficos de pesquisa e registro de evento — artefatos que documentam a operação do Instituto i10." data-en="Classroom, research infographics, and event record — artifacts documenting Instituto i10's operation.">Sala de aula, infográficos de pesquisa e registro de evento — artefatos que documentam a operação do Instituto i10.</p>
+    </div>
+
+    <div class="artifact-grid reveal">
+      <figure class="artifact-card artifact-main">
+        <img src="assets/images/bncc_kf3_classroom.jpg" alt="Sala de aula BNCC Computação com crianças, professora e laptops" loading="lazy" />
+        <figcaption>
+          <span class="artifact-kind" data-pt="Fotografia" data-en="Photography">Fotografia</span>
+          <span class="artifact-title" data-pt="Turma BNCC Computação" data-en="BNCC Computing class">Turma BNCC Computação</span>
+        </figcaption>
+      </figure>
+      <figure class="artifact-card">
+        <img src="assets/images/apm_event_4.jpg" alt="Detalhe do estande Instituto i10 no Congresso APM" loading="lazy" />
+        <figcaption>
+          <span class="artifact-kind" data-pt="Presença" data-en="Presence">Presença</span>
+          <span class="artifact-title" data-pt="Estande no APM 2026" data-en="APM 2026 booth">Estande no APM 2026</span>
+        </figcaption>
+      </figure>
+      <figure class="artifact-card">
+        <img src="assets/images/story_dados.png" alt="Story Instagram do Instituto i10 com dados de presença em SC" loading="lazy" />
+        <figcaption>
+          <span class="artifact-kind" data-pt="Dados · SC" data-en="Data · SC">Dados · SC</span>
+          <span class="artifact-title" data-pt="Educação do Futuro" data-en="Future of Education">Educação do Futuro</span>
+        </figcaption>
+      </figure>
+      <figure class="artifact-card">
+        <img src="assets/images/apm_event_1.jpg" alt="Registro fotográfico do 68º Congresso APM em São Paulo" loading="lazy" />
+        <figcaption>
+          <span class="artifact-kind" data-pt="Registro" data-en="Record">Registro</span>
+          <span class="artifact-title" data-pt="68º Congresso APM · SP" data-en="68th APM Congress · SP">68º Congresso APM · SP</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURED RESEARCH ===== -->
+<section class="section pull-quote-section">
+  <div class="pull-quote reveal">
+    <span class="metadata-label" style="color: var(--cyan);" data-pt="Pesquisa em destaque · Estudo 2024" data-en="Featured research · 2024 study">Pesquisa em destaque · Estudo 2024</span>
+    <div class="pull-quote-grid">
+      <div class="pull-quote-numeral">
+        <span class="pq-num">34</span>
+        <span class="pq-unit">%</span>
+      </div>
+      <blockquote class="pull-quote-body">
+        <p data-pt="Estudantes de escolas públicas que utilizaram nosso sistema de tutoria adaptativa alcançaram uma <em>melhoria substancial de eficiência</em> no aprendizado de matemática — em comparação com métodos tradicionais." data-en="Public-school students using our adaptive tutoring system achieved a <em>substantial efficiency improvement</em> in math learning — compared with traditional methods.">Estudantes de escolas públicas que utilizaram nosso sistema de tutoria adaptativa alcançaram uma <em>melhoria substancial de eficiência</em> no aprendizado de matemática — em comparação com métodos tradicionais.</p>
+        <footer class="pq-footer">
+          <span class="metadata-label" data-pt="Estudo quase-experimental · Santa Catarina" data-en="Quasi-experimental study · Santa Catarina">Estudo quase-experimental · Santa Catarina</span>
+          <a href="pesquisa.html" class="btn btn-primary" style="margin-top: 24px;">
+            <span data-pt="Ler estudo completo" data-en="Read full study">Ler estudo completo</span>
+            <span class="arr">→</span>
+          </a>
+        </footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS — voices about i10 (clean editorial layout) ===== -->
+<section class="section testimonials-clean">
+  <div class="container">
+    <div class="sec-head reveal" style="text-align: center;">
+      <span class="metadata-label" style="color: var(--cyan);" data-pt="Vozes" data-en="Voices">Vozes</span>
+      <h2 class="display-massive" style="color: var(--navy); margin-top: var(--s-3);" data-pt="O que <em class='gradient-text' style='font-style:normal;'>dizem</em><br/>sobre o i10." data-en="What they <em class='gradient-text' style='font-style:normal;'>say</em><br/>about i10.">O que <em class="gradient-text" style="font-style:normal;">dizem</em><br/>sobre o i10.</h2>
+    </div>
+
+    <div class="testimonials-clean-grid reveal">
+      <figure class="testimonial-card">
+        <div class="testimonial-mark">“</div>
+        <blockquote>
+          <p data-pt="O i10 não chegou com uma plataforma para vender. Chegou com uma metodologia para ensinar — nossos professores construíram junto, e o que sobrou é nosso." data-en="i10 didn't show up with a platform to sell. They came with a methodology to teach — our teachers co-built it, and what remains belongs to us.">O i10 não chegou com uma plataforma para vender. Chegou com uma metodologia para ensinar — nossos professores construíram junto, e o que sobrou é nosso.</p>
+        </blockquote>
+        <figcaption>
+          <span class="testimonial-name">Secretaria de Educação · SC</span>
+          <span class="testimonial-role" data-pt="Coordenação pedagógica" data-en="Pedagogical coordination">Coordenação pedagógica</span>
+        </figcaption>
+      </figure>
+
+      <figure class="testimonial-card">
+        <div class="testimonial-mark">“</div>
+        <blockquote>
+          <p data-pt="Pela primeira vez vi uma ferramenta de IA que respeita o tempo do estudante — e o tempo do professor. Os dados ajudam a decidir, não substituem o olhar de quem ensina." data-en="For the first time I saw an AI tool that respects the student's pace — and the teacher's. The data supports decisions, it doesn't replace the eye of whoever teaches.">Pela primeira vez vi uma ferramenta de IA que respeita o tempo do estudante — e o tempo do professor. Os dados ajudam a decidir, não substituem o olhar de quem ensina.</p>
+        </blockquote>
+        <figcaption>
+          <span class="testimonial-name">Profa. Lúcia M.</span>
+          <span class="testimonial-role" data-pt="Ensino fundamental II · Rede pública" data-en="Middle school · Public network">Ensino fundamental II · Rede pública</span>
+        </figcaption>
+      </figure>
+
+      <figure class="testimonial-card">
+        <div class="testimonial-mark">“</div>
+        <blockquote>
+          <p data-pt="O diagnóstico FUNDEB do i10 mostrou onde podíamos captar mais recurso — com transparência que cabe na audiência pública e respeito ao conselho de acompanhamento." data-en="i10's FUNDEB diagnosis showed where we could capture more resources — with transparency that fits a public hearing and respect for the oversight council.">O diagnóstico FUNDEB do i10 mostrou onde podíamos captar mais recurso — com transparência que cabe na audiência pública e respeito ao conselho de acompanhamento.</p>
+        </blockquote>
+        <figcaption>
+          <span class="testimonial-name">Conselho FUNDEB · RJ</span>
+          <span class="testimonial-role" data-pt="Acompanhamento de gastos" data-en="Spending oversight">Acompanhamento de gastos</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEORIA DA MUDANÇA — CINEMATIC SCROLLYTELLING ===== -->
+<section class="section section-dark cinema">
+  <div class="cinema-bg" aria-hidden="true"></div>
+  <div class="container">
+    <div class="cinema-head reveal">
+      <span class="metadata-label on-dark" data-pt="Capítulo · Método" data-en="Chapter · Method">Capítulo · Método</span>
+      <h2 class="display-massive" style="color: white;" data-pt="Pesquisa.<br/>Piloto.<br/><em class='gradient-text' style='font-style:normal;'>Escala</em>." data-en="Research.<br/>Pilot.<br/><em class='gradient-text' style='font-style:normal;'>Scale</em>.">Pesquisa.<br/>Piloto.<br/><em class="gradient-text" style="font-style:normal;">Escala</em>.</h2>
+      <hr class="rule-line on-dark" />
+      <p class="editorial-italic" style="color: rgba(255,255,255,0.85); max-width: 720px;" data-pt="Não acreditamos em tecnologia pela tecnologia. Cada inovação percorre um caminho disciplinado — da evidência científica à escala pública." data-en="We don't believe in technology for technology's sake. Every innovation walks a disciplined path — from scientific evidence to public scale.">Não acreditamos em tecnologia pela tecnologia. Cada inovação percorre um caminho disciplinado — da evidência científica à escala pública.</p>
+    </div>
+
+    <ol class="cinema-flow">
+      <li class="cinema-step reveal">
+        <div class="cinema-step-num">01</div>
+        <figure class="cinema-step-visual photo-duotone-always">
+          <img src="assets/images/scene_mission.png" alt="" loading="lazy" />
+        </figure>
+        <div class="cinema-step-body">
+          <span class="metadata-label on-dark" data-pt="Etapa 01 · Pesquisa" data-en="Stage 01 · Research">Etapa 01 · Pesquisa</span>
+          <h3 class="cinema-step-title" data-pt="Da hipótese ao desenho experimental." data-en="From hypothesis to experimental design.">Da hipótese ao desenho experimental.</h3>
+          <p class="cinema-step-text" data-pt="Revisão sistemática, pré-registro de hipóteses, parceria com universidades brasileiras e internacionais, e estudos longitudinais com grupo-controle." data-en="Systematic reviews, hypothesis pre-registration, partnership with Brazilian and international universities, and longitudinal studies with control groups.">Revisão sistemática, pré-registro de hipóteses, parceria com universidades brasileiras e internacionais, e estudos longitudinais com grupo-controle.</p>
+        </div>
+      </li>
+
+      <li class="cinema-step cinema-step-reverse reveal">
+        <div class="cinema-step-num">02</div>
+        <figure class="cinema-step-visual photo-duotone-always">
+          <img src="assets/images/apm_event_3.jpg" alt="" loading="lazy" />
+        </figure>
+        <div class="cinema-step-body">
+          <span class="metadata-label on-dark" data-pt="Etapa 02 · Piloto" data-en="Stage 02 · Pilot">Etapa 02 · Piloto</span>
+          <h3 class="cinema-step-title" data-pt="Implementação controlada, evidência viva." data-en="Controlled implementation, living evidence.">Implementação controlada, evidência viva.</h3>
+          <p class="cinema-step-text" data-pt="Co-design com professores, medição de aprendizagem semana a semana, e iteração rápida do produto baseada em resultado real de sala de aula — não em opinião." data-en="Co-design with teachers, week-by-week learning measurement, and rapid product iteration based on real classroom results — not opinion.">Co-design com professores, medição de aprendizagem semana a semana, e iteração rápida do produto baseada em resultado real de sala de aula — não em opinião.</p>
+        </div>
+      </li>
+
+      <li class="cinema-step reveal">
+        <div class="cinema-step-num">03</div>
+        <figure class="cinema-step-visual photo-duotone-always">
+          <img src="assets/images/apm_event_5.jpg" alt="" loading="lazy" />
+        </figure>
+        <div class="cinema-step-body">
+          <span class="metadata-label on-dark" data-pt="Etapa 03 · Escala" data-en="Stage 03 · Scale">Etapa 03 · Escala</span>
+          <h3 class="cinema-step-title" data-pt="Saímos. <em class='gradient-text' style='font-style:normal;'>O impacto fica</em>." data-en="We leave. <em class='gradient-text' style='font-style:normal;'>The impact stays</em>.">Saímos. <em class="gradient-text" style="font-style:normal;">O impacto fica</em>.</h3>
+          <p class="cinema-step-text" data-pt="Transferência de capacidade institucional permanente para redes estaduais e municipais — metodologia aberta, formação docente e monitoramento público dos resultados." data-en="Transfer of permanent institutional capacity to state and municipal networks — open methodology, teacher training, and public monitoring of results.">Transferência de capacidade institucional permanente para redes estaduais e municipais — metodologia aberta, formação docente e monitoramento público dos resultados.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== WHAT WE DO ===== -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-pt="O que fazemos" data-en="What we do">O que fazemos</span>
+      <h2 class="h-lg" style="color:white;" data-pt="Da pesquisa à sala de aula — orquestração em escala pública." data-en="From research to the classroom — orchestration at public scale.">Da pesquisa à sala de aula — orquestração em escala pública.</h2>
+      <div class="divider"></div>
+      <p class="lead on-dark" data-pt="Desenvolvemos soluções abertas, validadas cientificamente e acessíveis para as escolas públicas brasileiras." data-en="We develop open, scientifically validated, and accessible solutions for Brazilian public schools.">Desenvolvemos soluções abertas, validadas cientificamente e acessíveis para as escolas públicas brasileiras.</p>
+    </div>
+
+    <div class="grid-3">
+      <article class="card dark reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4 L26 10 L14 16 L2 10 Z"/><path d="M6 12 V18 C6 20 10 22 14 22 C18 22 22 20 22 18 V12"/></svg>
+        </div>
+        <h3 class="card-title" style="color:white;" data-pt="Pesquisa em IA educacional" data-en="Research in educational AI">Pesquisa em IA educacional</h3>
+        <p class="card-text" data-pt="Estudos longitudinais com metodologia rigorosa e publicações revisadas por pares." data-en="Longitudinal studies with rigorous methodology and peer-reviewed publications.">Estudos longitudinais com metodologia rigorosa e publicações revisadas por pares.</p>
+      </article>
+      <article class="card dark reveal delay-1">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2 C8 2 4 6 4 12 C4 17 7 20 10 22 V26 H18 V22 C21 20 24 17 24 12 C24 6 20 2 14 2Z"/><path d="M11 14 L13 16 L18 11"/></svg>
+        </div>
+        <h3 class="card-title" style="color:white;" data-pt="Tutoria adaptativa" data-en="Adaptive tutoring">Tutoria adaptativa</h3>
+        <p class="card-text" data-pt="Plataformas que se ajustam ao ritmo e ao estilo de aprendizagem de cada estudante." data-en="Platforms that adjust to every student's pace and learning style.">Plataformas que se ajustam ao ritmo e ao estilo de aprendizagem de cada estudante.</p>
+      </article>
+      <article class="card dark reveal delay-2">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="9" r="3"/><circle cx="20" cy="11" r="2.5"/><path d="M4 22 C4 18 7 16 10 16 C13 16 16 18 16 22"/><path d="M15 21 C15 19 17 17 20 17 C22 17 24 19 24 22"/></svg>
+        </div>
+        <h3 class="card-title" style="color:white;" data-pt="Formação de professores" data-en="Teacher training">Formação de professores</h3>
+        <p class="card-text" data-pt="Capacitação contínua para que educadores dominem e orquestrem a IA em sala." data-en="Ongoing training so educators can master and orchestrate AI in the classroom.">Capacitação contínua para que educadores dominem e orquestrem a IA em sala.</p>
+      </article>
+      <article class="card dark reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="22" height="14" rx="2"/><path d="M8 20 V24 M20 20 V24 M6 24 H22"/><path d="M8 13 L12 10 L15 13 L20 8"/></svg>
+        </div>
+        <h3 class="card-title" style="color:white;" data-pt="Parcerias com redes públicas" data-en="Partnerships with public networks">Parcerias com redes públicas</h3>
+        <p class="card-text" data-pt="Implementação conjunta com secretarias estaduais e municipais de educação." data-en="Joint implementation with state and municipal education departments.">Implementação conjunta com secretarias estaduais e municipais de educação.</p>
+      </article>
+      <article class="card dark reveal delay-1">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22 V12 M12 22 V6 M18 22 V10 M24 22 V4"/><path d="M3 22 H27"/></svg>
+        </div>
+        <h3 class="card-title" style="color:white;" data-pt="Avaliação e evidência" data-en="Evaluation and evidence">Avaliação e evidência</h3>
+        <p class="card-text" data-pt="Medimos cada intervenção. Publicamos dados. Defendemos transparência algorítmica." data-en="We measure every intervention. We publish data. We defend algorithmic transparency.">Medimos cada intervenção. Publicamos dados. Defendemos transparência algorítmica.</p>
+      </article>
+      <article class="card dark reveal delay-2">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="10"/><path d="M4 14 H24 M14 4 C17 8 17 20 14 24 C11 20 11 8 14 4Z"/></svg>
+        </div>
+        <h3 class="card-title" style="color:white;" data-pt="Soluções abertas" data-en="Open solutions">Soluções abertas</h3>
+        <p class="card-text" data-pt="Código, metodologias e estudos disponíveis para professores, pesquisadores e gestores." data-en="Code, methodologies, and studies available to teachers, researchers, and administrators.">Código, metodologias e estudos disponíveis para professores, pesquisadores e gestores.</p>
+      </article>
+    </div>
+
+    <div class="mt-10 text-center reveal">
+      <a href="programas.html" class="btn btn-ghost">
+        <span data-pt="Ver todos os programas" data-en="See all programs">Ver todos os programas</span>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEASER FUNDEB HUB ===== -->
+<section class="section">
+  <div class="container">
+    <a class="fundeb-teaser reveal" href="https://institutoi10.com.br/fundeb-hub.html" target="_blank" rel="noopener" aria-label="Conhecer o FUNDEB Hub do Instituto i10">
+      <div class="fundeb-teaser-media">
+        <div class="fundeb-viz" aria-hidden="true">
+          <div class="fundeb-viz-eyebrow" data-pt="Potencial não captado" data-en="Uncaptured potential">Potencial não captado</div>
+          <div class="fundeb-viz-num">R$&nbsp;75,8</div>
+          <div class="fundeb-viz-unit" data-pt="Bilhões · 2024" data-en="Billion · 2024">Bilhões · 2024</div>
+          <div class="fundeb-viz-states">
+            <div class="fundeb-viz-state"><span class="fundeb-viz-state-uf">SP</span><span class="fundeb-viz-state-val">R$ 20,1 bi</span></div>
+            <div class="fundeb-viz-state"><span class="fundeb-viz-state-uf">MG</span><span class="fundeb-viz-state-val">R$ 15,3 bi</span></div>
+            <div class="fundeb-viz-state"><span class="fundeb-viz-state-uf">BA</span><span class="fundeb-viz-state-val">R$ 15,1 bi</span></div>
+            <div class="fundeb-viz-state"><span class="fundeb-viz-state-uf">RJ</span><span class="fundeb-viz-state-val">R$ 11,7 bi</span></div>
+          </div>
+        </div>
+        <span class="fundeb-teaser-tag">FUNDEB HUB</span>
+      </div>
+      <div class="fundeb-teaser-body">
+        <span class="eyebrow eyebrow-dark" data-pt="Trabalho em destaque" data-en="Featured work">Trabalho em destaque</span>
+        <h2 class="h-lg" data-pt="R$ 75,8 bilhões em recursos <span class='gradient-text'>não captados</span>." data-en="R$ 75.8 billion in <span class='gradient-text'>uncaptured resources</span>.">R$ 75,8 bilhões em recursos <span class="gradient-text">não captados</span>.</h2>
+        <p class="lead" data-pt="O FUNDEB Hub do Instituto i10 analisou 5.568 municípios em 26 estados e identificou R$ 75,8 bilhões em recursos que poderiam ser captados com 6 alavancas estratégicas. Ajudamos secretarias e gestores a entender onde estão as oportunidades — e como agir." data-en="Instituto i10's FUNDEB Hub analyzed 5,568 municipalities across 26 states and identified R$ 75.8 billion in resources that could be captured through 6 strategic levers. We help education departments and administrators understand where the opportunities are — and how to act.">O FUNDEB Hub do Instituto i10 analisou 5.568 municípios em 26 estados e identificou R$ 75,8 bilhões em recursos que poderiam ser captados com 6 alavancas estratégicas. Ajudamos secretarias e gestores a entender onde estão as oportunidades — e como agir.</p>
+        <div class="fundeb-teaser-meta">
+          <div class="fundeb-teaser-stat"><strong>R$ 75,8 bi</strong><span data-pt="em recursos não captados" data-en="in uncaptured resources">em recursos não captados</span></div>
+          <div class="fundeb-teaser-stat"><strong>5.568</strong><span data-pt="municípios analisados" data-en="municipalities analyzed">municípios analisados</span></div>
+          <div class="fundeb-teaser-stat"><strong>26</strong><span data-pt="estados cobertos" data-en="states covered">estados cobertos</span></div>
+          <div class="fundeb-teaser-stat"><strong>6</strong><span data-pt="alavancas de captação" data-en="capture levers">alavancas de captação</span></div>
+        </div>
+        <div class="fundeb-teaser-cta">
+          <span class="btn btn-primary">
+            <span data-pt="Acessar FUNDEB Hub →" data-en="Access FUNDEB Hub →">Acessar FUNDEB Hub →</span>
+            <span class="arr">→</span>
+          </span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ===== FUNDEB HUB — TOP 12 ESTADOS ===== -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-pt="Dados FUNDEB Hub" data-en="FUNDEB Hub data">Dados FUNDEB Hub</span>
+      <h2 class="h-lg" style="color:white;" data-pt="Os 12 estados com maior potencial de captação." data-en="The 12 states with the highest capture potential.">Os 12 estados com maior potencial de captação.</h2>
+      <div class="divider"></div>
+      <p class="lead on-dark" data-pt="Dados analisados pelo Instituto i10 a partir de fontes públicas do FNDE. Cada linha abaixo é uma oportunidade concreta para redes municipais ampliarem seus recursos via FUNDEB." data-en="Data analyzed by Instituto i10 from public FNDE sources. Each row below is a concrete opportunity for municipal networks to expand their FUNDEB resources.">Dados analisados pelo Instituto i10 a partir de fontes públicas do FNDE. Cada linha abaixo é uma oportunidade concreta para redes municipais ampliarem seus recursos via FUNDEB.</p>
+    </div>
+
+    <div class="fundeb-table-wrap reveal">
+      <table class="fundeb-table">
+        <thead>
+          <tr>
+            <th data-pt="Estado" data-en="State">Estado</th>
+            <th data-pt="Potencial" data-en="Potential">Potencial</th>
+            <th data-pt="Ganho %" data-en="Gain %">Ganho %</th>
+            <th data-pt="Municípios" data-en="Municipalities">Municípios</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="uf">SP</td><td>R$ 13,5 bi</td><td class="gain">+40,5%</td><td>645</td></tr>
+          <tr><td class="uf">MG</td><td>R$ 6,7 bi</td><td class="gain">+43,7%</td><td>853</td></tr>
+          <tr><td class="uf">BA</td><td>R$ 6,5 bi</td><td class="gain">+32,1%</td><td>417</td></tr>
+          <tr><td class="uf">RJ</td><td>R$ 6,0 bi</td><td class="gain">+51,0%</td><td>92</td></tr>
+          <tr><td class="uf">PA</td><td>R$ 4,4 bi</td><td class="gain">+36,0%</td><td>144</td></tr>
+          <tr><td class="uf">PE</td><td>R$ 3,8 bi</td><td class="gain">+41,0%</td><td>184</td></tr>
+          <tr><td class="uf">RS</td><td>R$ 3,7 bi</td><td class="gain">+35,4%</td><td>497</td></tr>
+          <tr><td class="uf">PR</td><td>R$ 3,6 bi</td><td class="gain">+39,4%</td><td>399</td></tr>
+          <tr><td class="uf">CE</td><td>R$ 3,4 bi</td><td class="gain">+27,1%</td><td>184</td></tr>
+          <tr><td class="uf">MA</td><td>R$ 3,1 bi</td><td class="gain">+25,5%</td><td>217</td></tr>
+          <tr><td class="uf">SC</td><td>R$ 3,1 bi</td><td class="gain">+36,5%</td><td>295</td></tr>
+          <tr><td class="uf">GO</td><td>R$ 2,4 bi</td><td class="gain">+48,6%</td><td>246</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fundeb-table-note" data-pt="Fonte: FUNDEB Hub · Instituto i10 — análise sobre dados públicos do FNDE." data-en="Source: FUNDEB Hub · Instituto i10 — analysis over public FNDE data.">Fonte: FUNDEB Hub · Instituto i10 — análise sobre dados públicos do FNDE.</p>
+
+    <div class="mt-5 text-center reveal">
+      <a href="https://institutoi10.com.br/fundeb-hub.html" target="_blank" rel="noopener" class="btn btn-primary">
+        <span data-pt="Explorar todos os dados no FUNDEB Hub" data-en="Explore all data on FUNDEB Hub">Explorar todos os dados no FUNDEB Hub</span>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ÉTICA E GOVERNANÇA EM IA ===== -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow eyebrow-dark" data-pt="Ética e governança" data-en="Ethics and governance">Ética e governança</span>
+      <h2 class="h-lg" data-pt="IA responsável é a única IA que escala." data-en="Responsible AI is the only AI that scales.">IA responsável é a única IA que escala.</h2>
+      <div class="divider"></div>
+      <p class="lead" data-pt="Educação pública exige padrões mais altos — não mais baixos. Três compromissos orientam cada modelo, cada dataset e cada interação do Instituto i10 com estudantes brasileiros." data-en="Public education demands higher standards — not lower ones. Three commitments guide every model, every dataset, and every Instituto i10 interaction with Brazilian students.">Educação pública exige padrões mais altos — não mais baixos. Três compromissos orientam cada modelo, cada dataset e cada interação do Instituto i10 com estudantes brasileiros.</p>
+    </div>
+
+    <div class="grid-3">
+      <article class="card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="10"/><path d="M4 14 H24"/><path d="M14 4 C17 8 17 20 14 24"/><path d="M14 4 C11 8 11 20 14 24"/></svg>
+        </div>
+        <h3 class="card-title" data-pt="Transparência algorítmica" data-en="Algorithmic transparency">Transparência algorítmica</h3>
+        <p class="card-text" data-pt="Modelos auditáveis, decisões explicáveis e relatórios públicos de viés. Nenhum estudante deveria ser avaliado por uma caixa-preta." data-en="Auditable models, explainable decisions, and public bias reports. No student should be evaluated by a black box.">Modelos auditáveis, decisões explicáveis e relatórios públicos de viés. Nenhum estudante deveria ser avaliado por uma caixa-preta.</p>
+      </article>
+      <article class="card reveal delay-1">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3 L3 9 V19 L14 25 L25 19 V9 Z"/><path d="M9 14 L13 17 L19 11"/></svg>
+        </div>
+        <h3 class="card-title" data-pt="Equidade por design" data-en="Equity by design">Equidade por design</h3>
+        <p class="card-text" data-pt="Datasets representativos da diversidade brasileira, avaliação contínua de disparidades e calibração para reduzir — não amplificar — desigualdades históricas." data-en="Datasets representing Brazil's diversity, continuous disparity assessment, and calibration to reduce — not amplify — historical inequalities.">Datasets representativos da diversidade brasileira, avaliação contínua de disparidades e calibração para reduzir — não amplificar — desigualdades históricas.</p>
+      </article>
+      <article class="card reveal delay-2">
+        <div class="card-icon">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="9" r="3"/><path d="M4 22 C4 18 7 16 10 16 C13 16 16 18 16 22"/><circle cx="20" cy="11" r="2.5"/><path d="M16 21 C16 19 18 17 20 17 C22 17 24 19 24 22"/><path d="M19 9 L22 6 M22 6 L25 9 M22 6 V13"/></svg>
+        </div>
+        <h3 class="card-title" data-pt="Humano no centro" data-en="Human in the loop">Humano no centro</h3>
+        <p class="card-text" data-pt="IA apoia professores; nunca os substitui. Toda decisão pedagógica importante passa por julgamento docente — o algoritmo sugere, o educador decide." data-en="AI supports teachers; it never replaces them. Every important pedagogical decision goes through teacher judgment — the algorithm suggests, the educator decides.">IA apoia professores; nunca os substitui. Toda decisão pedagógica importante passa por julgamento docente — o algoritmo sugere, o educador decide.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUOTE / EDITORIAL ===== -->
+<section class="section">
+  <div class="container-narrow">
+    <div class="reveal">
+      <span class="eyebrow eyebrow-dark" data-pt="Nossa crença" data-en="What we believe">Nossa crença</span>
+      <blockquote class="quote mt-5"
+        data-pt="Nossa tecnologia não substitui o humano. Ela o liberta das amarras burocráticas."
+        data-en="Our technology does not replace the human. It frees the human from bureaucratic chains.">
+        Nossa tecnologia não substitui o humano. Ela o liberta das amarras burocráticas.
+      </blockquote>
+      <div class="quote-author">
+        <span class="name" data-pt="Missão Instituto i10" data-en="Instituto i10 mission">Missão Instituto i10</span>
+        · <span data-pt="Sapiens Park · Florianópolis" data-en="Sapiens Park · Florianópolis">Sapiens Park · Florianópolis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CIÊNCIA ABERTA ===== -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-pt="Ciência aberta" data-en="Open science">Ciência aberta</span>
+      <h2 class="h-lg" style="color:white;" data-pt="O que a ciência pública financia, o Brasil acessa." data-en="What public science funds, Brazil accesses.">O que a ciência pública financia, o Brasil acessa.</h2>
+      <div class="divider"></div>
+      <p class="lead on-dark" data-pt="Dados anonimizados, código-fonte, metodologias e resultados negativos — tudo publicado aberto. Porque resultado reprodutível é o único resultado confiável." data-en="Anonymized data, source code, methodologies, and negative results — all openly published. Because a reproducible result is the only reliable result.">Dados anonimizados, código-fonte, metodologias e resultados negativos — tudo publicado aberto. Porque resultado reprodutível é o único resultado confiável.</p>
+    </div>
+
+    <div class="grid-4" style="margin-top: var(--s-8);">
+      <div class="open-science-item reveal">
+        <div class="open-science-num"><span class="gradient-text">100%</span></div>
+        <div class="open-science-label" data-pt="Publicações com preprint aberto" data-en="Publications with open preprint">Publicações com preprint aberto</div>
+      </div>
+      <div class="open-science-item reveal delay-1">
+        <div class="open-science-num"><span class="gradient-text">MIT</span></div>
+        <div class="open-science-label" data-pt="Licença padrão dos códigos publicados" data-en="Default license of published code">Licença padrão dos códigos publicados</div>
+      </div>
+      <div class="open-science-item reveal delay-2">
+        <div class="open-science-num"><span class="gradient-text">LGPD</span></div>
+        <div class="open-science-label" data-pt="Conformidade total com dados de estudantes" data-en="Full compliance with student data">Conformidade total com dados de estudantes</div>
+      </div>
+      <div class="open-science-item reveal delay-3">
+        <div class="open-science-num"><span class="gradient-text">CC-BY</span></div>
+        <div class="open-science-label" data-pt="Licença de materiais didáticos gerados" data-en="License of generated teaching materials">Licença de materiais didáticos gerados</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PORTAL INSTITUCIONAL ===== -->
+<section class="section">
+  <div class="container">
+    <div class="portal-callout reveal">
+      <div class="portal-callout-media portal-callout-media--gradient">
+        <svg class="portal-callout-mark" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="portal-g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00B4D8"/>
+              <stop offset="100%" stop-color="#00E5A0"/>
+            </linearGradient>
+          </defs>
+          <circle cx="60" cy="60" r="14" fill="#00B4D8"/>
+          <circle cx="140" cy="60" r="14" fill="#00E5A0"/>
+          <circle cx="100" cy="140" r="14" fill="#ffffff"/>
+          <line x1="60" y1="60" x2="140" y2="60" stroke="url(#portal-g)" stroke-width="4"/>
+          <line x1="60" y1="60" x2="100" y2="140" stroke="url(#portal-g)" stroke-width="4"/>
+          <line x1="140" y1="60" x2="100" y2="140" stroke="url(#portal-g)" stroke-width="4"/>
+        </svg>
+        <div class="portal-callout-overlay"></div>
+      </div>
+      <div class="portal-callout-content">
+        <span class="eyebrow eyebrow-dark" data-pt="Portal institucional" data-en="Institutional portal">Portal institucional</span>
+        <h2 class="h-lg" data-pt="Conheça tudo em <span class='gradient-text'>institutoi10.com.br</span>" data-en="Discover everything at <span class='gradient-text'>institutoi10.com.br</span>">Conheça tudo em <span class="gradient-text">institutoi10.com.br</span></h2>
+        <p class="lead" data-pt="Esta landing page é um recorte. No portal completo você encontra nossa história, equipe, relatórios anuais, biblioteca de estudos, vagas e editais abertos — todo o trabalho do Instituto i10 em um só lugar." data-en="This landing page is a slice. The full portal has our history, team, annual reports, study library, open positions, and calls — all Instituto i10 work in one place.">Esta landing page é um recorte. No portal completo você encontra nossa história, equipe, relatórios anuais, biblioteca de estudos, vagas e editais abertos — todo o trabalho do Instituto i10 em um só lugar.</p>
+        <div class="portal-callout-links">
+          <a href="https://institutoi10.com.br" class="btn btn-primary" target="_blank" rel="noopener">
+            <span data-pt="Visitar institutoi10.com.br" data-en="Visit institutoi10.com.br">Visitar institutoi10.com.br</span>
+            <span class="arr">→</span>
+          </a>
+          <a href="https://institutoi10.com.br/relatorios" class="btn btn-ghost" target="_blank" rel="noopener">
+            <span data-pt="Relatórios anuais" data-en="Annual reports">Relatórios anuais</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BANNER ===== -->
+<section class="section">
+  <div class="container">
+    <div class="cta-banner reveal">
+      <span class="eyebrow" style="color:var(--mint-light);" data-pt="Vamos construir juntos" data-en="Let's build together">Vamos construir juntos</span>
+      <h2 class="h-lg" data-pt="Orquestrar a educação pública <br>é um trabalho coletivo." data-en="Orchestrating public education <br>is collective work.">Orquestrar a educação pública <br>é um trabalho coletivo.</h2>
+      <p class="lead" data-pt="Secretarias, universidades, parceiros privados, fundações e pesquisadores — se sua organização quer construir <strong>legado institucional</strong> articulando ciência, tecnologia e educação pública, fale com a gente." data-en="Education departments, universities, private partners, foundations, and researchers — if your organization wants to build <strong>institutional legacy</strong> by connecting science, technology, and public education, let's talk.">Secretarias, universidades, parceiros privados, fundações e pesquisadores — se sua organização quer construir <strong>legado institucional</strong> articulando ciência, tecnologia e educação pública, fale com a gente.</p>
+      <a href="contato.html" class="btn btn-primary">
+        <span data-pt="Fale com o Instituto i10" data-en="Contact Instituto i10">Fale com o Instituto i10</span>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<!-- ===== VIDEO LIGHTBOX ===== -->
+<div id="video-lightbox" class="video-lightbox" role="dialog" aria-modal="true" aria-label="Vídeo institucional Instituto i10" hidden>
+  <button class="video-lightbox-close" id="video-lightbox-close" type="button" aria-label="Fechar vídeo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M6 6 L18 18 M6 18 L18 6"/>
+    </svg>
+  </button>
+  <div class="video-lightbox-stage">
+    <video id="video-lightbox-player" controls playsinline preload="metadata" poster="assets/images/hero_constellation.png">
+      <source src="assets/videos/hero_main.mp4" type="video/mp4" />
+    </video>
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <div class="footer-logo">
+          <svg class="mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="lg-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00B4D8"/><stop offset="100%" stop-color="#00E5A0"/></linearGradient></defs>
+            <line x1="10" y1="10" x2="30" y2="10" stroke="url(#lg-f)" stroke-width="2"/>
+            <line x1="10" y1="10" x2="20" y2="28" stroke="url(#lg-f)" stroke-width="2"/>
+            <line x1="30" y1="10" x2="20" y2="28" stroke="url(#lg-f)" stroke-width="2"/>
+            <circle cx="10" cy="10" r="4" fill="#00B4D8"/>
+            <circle cx="30" cy="10" r="4" fill="#00E5A0"/>
+            <circle cx="20" cy="28" r="4" fill="#ffffff"/>
+          </svg>
+          <span><span style="color:var(--cyan);">i</span><span style="color:var(--mint);">10</span></span>
+        </div>
+        <p data-pt="Instituto de pesquisa e inovação em Inteligência Artificial dedicado à transformação da educação pública brasileira." data-en="Research and innovation institute in Artificial Intelligence dedicated to transforming Brazilian public education.">Instituto de pesquisa e inovação em Inteligência Artificial dedicado à transformação da educação pública brasileira.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1 31 31 0 00.5-5.8 31 31 0 00-.5-5.8zM9.75 15.5v-7l6.5 3.5z"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 data-pt="Instituto" data-en="Institute">Instituto</h4>
+        <ul>
+          <li><a href="sobre.html" data-pt="Quem somos" data-en="Who we are">Quem somos</a></li>
+          <li><a href="sobre.html#missao" data-pt="Missão e valores" data-en="Mission and values">Missão e valores</a></li>
+          <li><a href="programas.html" data-pt="Programas" data-en="Programs">Programas</a></li>
+          <li><a href="impacto.html" data-pt="Impacto" data-en="Impact">Impacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-pt="Conhecimento" data-en="Knowledge">Conhecimento</h4>
+        <ul>
+          <li><a href="pesquisa.html" data-pt="Pesquisa" data-en="Research">Pesquisa</a></li>
+          <li><a href="pesquisa.html#publicacoes" data-pt="Publicações" data-en="Publications">Publicações</a></li>
+          <li><a href="pesquisa.html#metodologia" data-pt="Metodologia" data-en="Methodology">Metodologia</a></li>
+          <li><a href="pesquisa.html#dados" data-pt="Dados abertos" data-en="Open data">Dados abertos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-pt="Contato" data-en="Contact">Contato</h4>
+        <ul>
+          <li><a href="mailto:contato@institutoi10.com.br">contato@institutoi10.com.br</a></li>
+          <li><a href="mailto:brand@institutoi10.com.br">brand@institutoi10.com.br</a></li>
+          <li data-pt="Sapiens Park · Florianópolis · SC" data-en="Sapiens Park · Florianópolis · SC">Sapiens Park · Florianópolis · SC</li>
+          <li><a href="https://institutoi10.com.br" target="_blank" rel="noopener" data-pt="Portal institucional ↗" data-en="Institutional portal ↗">Portal institucional ↗</a></li>
+          <li><a href="contato.html" data-pt="Fale conosco →" data-en="Contact us →">Fale conosco →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="tagline" data-pt="Educação · Tecnologia · Inovação" data-en="Education · Technology · Innovation">Educação · Tecnologia · Inovação</div>
+      <div data-pt="© 2026 Instituto i10 — Todos os direitos reservados." data-en="© 2026 Instituto i10 — All rights reserved.">© 2026 Instituto i10 — Todos os direitos reservados.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
