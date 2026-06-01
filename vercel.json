@@ -1,0 +1,28 @@
+{
+  "rewrites": [
+    {
+      "source": "/marketing",
+      "destination": "https://i10-marketing.vercel.app/marketing"
+    },
+    {
+      "source": "/marketing/",
+      "destination": "https://i10-marketing.vercel.app/marketing"
+    },
+    {
+      "source": "/marketing/:path*",
+      "destination": "https://i10-marketing.vercel.app/marketing/:path*"
+    },
+    {
+      "source": "/better-control",
+      "destination": "https://better-control.vercel.app/better-control"
+    },
+    {
+      "source": "/better-control/",
+      "destination": "https://better-control.vercel.app/better-control"
+    },
+    {
+      "source": "/better-control/:path*",
+      "destination": "https://better-control.vercel.app/better-control/:path*"
+    }
+  ]
+}
