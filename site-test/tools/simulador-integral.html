@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Ensino Integral — Simulador de Ensino Integral & Business Plan FUNDEB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --navy:#0A2463; --navy-dark:#061740; --navy-deeper:#030B1A; --navy-light:#1a3a7a;
+  --cyan:#00B4D8; --cyan-light:#48CAE4; --cyan-pale:#CAF0F8;
+  --green:#00E5A0; --green-dark:#00C48A;
+  --white:#FFF; --w90:rgba(255,255,255,.9); --w70:rgba(255,255,255,.7); --w50:rgba(255,255,255,.5);
+  --w20:rgba(255,255,255,.2); --w10:rgba(255,255,255,.1); --w05:rgba(255,255,255,.05);
+  --alert:#FF6B6B; --amber:#FFB347;
+  --grad:linear-gradient(90deg,#00B4D8,#00E5A0);
+  --grad-dark:linear-gradient(135deg,#061840 0%,#0A2463 100%);
+  --font:'Inter',system-ui,sans-serif; --serif:'Source Serif 4',Georgia,serif;
+  --glow-cyan:0 0 40px rgba(0,180,216,.4),0 0 80px rgba(0,180,216,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--navy-deeper);color:var(--w70);line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104'%3E%3Cpolygon fill='none' stroke='%2300B4D8' stroke-width='.8' points='60,2 110,28 110,76 60,102 10,76 10,28'/%3E%3C/svg%3E");background-size:120px 104px;opacity:.04;pointer-events:none;z-index:0}
+section{position:relative;z-index:1}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(6,23,64,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,180,216,.12);height:64px;display:flex;align-items:center;padding:0 40px;gap:28px}
+.nav-logo{font-weight:800;font-size:22px;color:#fff;letter-spacing:-.5px;display:flex;align-items:center;gap:10px}
+.nav-logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.nav-logo .tag{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,180,216,.35);border-radius:4px;padding:2px 8px}
+.nav-links{display:flex;gap:22px;margin-left:auto}
+.nav-links a{color:var(--w70);text-decoration:none;font-size:13px;font-weight:600;transition:.25s}
+.nav-links a:hover{color:var(--cyan)}
+@media(max-width:980px){.nav-links{display:none}}
+
+/* ---------- HERO ---------- */
+.hero{min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% -20%,rgba(0,180,216,.18),transparent 55%),var(--grad-dark);padding:120px 24px 80px}
+.hero-inner{max-width:1000px}
+.section-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:4px;color:var(--cyan);margin-bottom:18px}
+.hero h1{font-size:clamp(40px,6vw,76px);font-weight:900;color:#fff;letter-spacing:-2px;line-height:1.06}
+.hero h1 .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none}
+.hero p.sub{font-family:var(--serif);font-size:clamp(17px,2vw,22px);color:var(--w70);max-width:760px;margin:26px auto 0;font-style:italic}
+.hero-kpis{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:48px}
+.hkpi{background:var(--w05);border:1px solid rgba(0,180,216,.18);border-radius:14px;padding:18px 28px;backdrop-filter:blur(10px);min-width:170px}
+.hkpi .v{font-size:30px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hkpi .l{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--w50);margin-top:4px}
+.hero-cta{display:inline-block;margin-top:46px;background:var(--grad);color:var(--navy-dark);padding:16px 40px;border-radius:8px;font-weight:800;font-size:15px;text-decoration:none;box-shadow:var(--glow-cyan);transition:.3s}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,180,216,.5)}
+
+/* ---------- GENERIC ---------- */
+.wrap{max-width:1240px;margin:0 auto;padding:90px 32px}
+h2.sec{font-size:clamp(26px,3.4vw,42px);font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:10px}
+p.sec-sub{font-size:16px;color:var(--w50);max-width:780px;margin-bottom:42px}
+.grad-div{height:3px;width:54px;background:var(--grad);border-radius:2px;margin:14px 0 26px}
+.card{background:rgba(10,36,99,.45);border:1px solid rgba(0,180,216,.14);border-radius:16px;padding:28px;backdrop-filter:blur(12px);transition:.35s}
+.card:hover{border-color:rgba(0,180,216,.3);transform:translateY(-3px)}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:5px;padding:3px 9px;margin-bottom:12px}
+.badge.cyan{color:var(--cyan);background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3)}
+.badge.green{color:var(--green);background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.3)}
+.badge.amber{color:var(--amber);background:rgba(255,179,71,.1);border:1px solid rgba(255,179,71,.3)}
+.card h3{color:#fff;font-size:17px;font-weight:700;margin-bottom:8px}
+.card p{font-size:13.5px;color:var(--w50)}
+.card p b{color:var(--w90)}
+small.src{display:block;margin-top:10px;font-size:11px;color:rgba(255,255,255,.35)}
+
+/* ---------- TIMELINE ---------- */
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;margin-top:30px;position:relative}
+.tl-item{padding:26px 22px;border-left:1px solid rgba(0,180,216,.18);position:relative}
+.tl-item::before{content:'';position:absolute;top:34px;left:-7px;width:13px;height:13px;border-radius:50%;background:var(--navy-dark);border:3px solid var(--cyan)}
+.tl-item.done::before{background:var(--green);border-color:var(--green)}
+.tl-year{font-size:24px;font-weight:800;color:#fff}
+.tl-year span{font-size:12px;font-weight:600;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;display:block}
+.tl-item p{font-size:13px;color:var(--w50);margin-top:8px}
+.tl-item .money{font-size:13px;font-weight:700;margin-top:10px}
+.money.neg{color:var(--alert)}.money.pos{color:var(--green)}.money.neu{color:var(--amber)}
+
+/* ---------- SIMULADOR ---------- */
+.sim-shell{background:rgba(6,23,64,.55);border:1px solid rgba(0,180,216,.18);border-radius:20px;padding:34px;backdrop-filter:blur(14px)}
+.sim-top{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-bottom:26px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--w50)}
+.field select,.field input{background:rgba(3,11,26,.7);border:1px solid rgba(0,180,216,.25);color:#fff;border-radius:8px;padding:11px 14px;font-family:var(--font);font-size:14px;font-weight:600;min-width:130px;outline:none;transition:.25s}
+.field select:focus,.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,180,216,.15)}
+.field input[type=number]{width:140px}
+.muni-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.chip{background:var(--w05);border:1px solid var(--w10);color:var(--w70);border-radius:30px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:.25s}
+.chip:hover{border-color:var(--cyan)}
+.chip.active{background:var(--grad);color:var(--navy-dark);border-color:transparent;font-weight:800}
+.chip .uf{font-size:10px;opacity:.7;margin-left:4px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:8px 0 26px}
+.kpi{background:rgba(10,36,99,.6);border:1px solid rgba(0,180,216,.15);border-radius:14px;padding:18px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
+.kpi .v{font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.kpi .v.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.kpi .l{font-size:10.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--w50);margin-top:5px}
+.kpi .note{font-size:10.5px;color:rgba(255,255,255,.35);margin-top:4px}
+.kpi.alert::before{background:var(--alert)}
+.kpi.amberline::before{background:var(--amber)}
+.sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-bottom:26px}
+.slider-box{background:rgba(3,11,26,.45);border:1px solid var(--w10);border-radius:12px;padding:18px}
+.slider-box .lab{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--w70);margin-bottom:10px}
+.slider-box .lab b{color:var(--cyan);font-size:14px}
+input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:rgba(0,180,216,.2);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--grad);cursor:pointer;box-shadow:0 0 12px rgba(0,229,160,.6)}
+.charts2{display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
+@media(max-width:900px){.charts2{grid-template-columns:1fr}}
+.chart-box{background:rgba(3,11,26,.45);border:1px solid var(--w10);border-radius:14px;padding:20px}
+.chart-box h4{color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.muni-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.meta-pill{font-size:11.5px;font-weight:600;color:var(--w70);background:var(--w05);border:1px solid var(--w10);border-radius:7px;padding:6px 12px}
+.meta-pill b{color:var(--cyan)}
+.meta-pill.green b{color:var(--green)}
+
+/* ---------- GRADE ---------- */
+.week{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:8px}
+.day{background:rgba(10,36,99,.5);border:1px solid rgba(0,180,216,.15);border-radius:14px;overflow:hidden;transition:.3s}
+.day:hover{transform:translateY(-4px);border-color:rgba(0,180,216,.4)}
+.day-h{padding:13px 16px;font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--navy-dark);background:var(--grad)}
+.slot{padding:13px 16px;border-top:1px solid var(--w05)}
+.slot .t{font-size:10.5px;font-weight:700;color:var(--cyan);letter-spacing:1px}
+.slot .n{font-size:14.5px;font-weight:700;color:#fff;margin-top:2px}
+.slot .p{font-size:11px;color:var(--w50);margin-top:2px}
+.slot.meal{background:rgba(255,179,71,.06)}
+.slot.meal .t{color:var(--amber)}
+.slot .ic{font-size:19px;float:right;margin-top:4px}
+
+/* ---------- CUSTO ---------- */
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:900px){.cost-grid{grid-template-columns:1fr}}
+.cost-inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cost-bar{height:34px;border-radius:8px;overflow:hidden;display:flex;margin:18px 0 8px;border:1px solid var(--w10)}
+.cost-bar div{height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--navy-dark);white-space:nowrap;overflow:hidden}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.legend span{font-size:11px;color:var(--w50);display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* ---------- 3D ---------- */
+.sim3d-shell{background:rgba(6,23,64,.55);border:1px solid rgba(0,180,216,.18);border-radius:20px;overflow:hidden}
+.sim3d-controls{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;padding:26px 30px;border-bottom:1px solid rgba(0,180,216,.12)}
+#canvas3d{width:100%;height:520px;display:block;cursor:grab}
+#canvas3d:active{cursor:grabbing}
+.sim3d-foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;border-top:1px solid rgba(0,180,216,.12)}
+.s3kpi{padding:20px 24px;border-right:1px solid rgba(0,180,216,.08)}
+.s3kpi .v{font-size:24px;font-weight:800;color:#fff}
+.s3kpi .v.g{color:var(--green)}.s3kpi .v.c{color:var(--cyan)}.s3kpi .v.a{color:var(--alert)}
+.s3kpi .l{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--w50);margin-top:3px}
+.legend3d{display:flex;gap:18px;padding:14px 30px;background:rgba(3,11,26,.5);flex-wrap:wrap}
+.legend3d span{font-size:11.5px;color:var(--w70);display:flex;align-items:center;gap:7px}
+.legend3d i{width:12px;height:12px;border-radius:3px}
+
+/* ---------- COMPLIANCE / VAAR ---------- */
+.law-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:30px}
+.flow-step{flex:1;min-width:200px;background:var(--w05);border:1px solid var(--w10);padding:24px;position:relative}
+.flow-step:first-child{border-radius:14px 0 0 14px}
+.flow-step:last-child{border-radius:0 14px 14px 0;background:rgba(0,229,160,.07);border-color:rgba(0,229,160,.25)}
+.flow-step .n{font-size:30px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.flow-step h4{color:#fff;font-size:14.5px;margin:6px 0 6px}
+.flow-step p{font-size:12.5px;color:var(--w50)}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid rgba(0,180,216,.12);padding:46px 32px;text-align:center;background:var(--navy-dark)}
+footer .logo{font-size:26px;font-weight:800;color:#fff}
+footer .logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+footer p{font-size:12px;color:var(--w50);margin-top:10px;max-width:720px;margin-left:auto;margin-right:auto}
+.disclaimer{font-size:11px;color:rgba(255,255,255,.3);margin-top:16px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">i<b>10</b> <span style="font-weight:300;color:var(--w50)">|</span> <span style="font-size:15px;font-weight:700;color:var(--w90)">Integral</span> <span class="tag">Business Plan 2026</span></div>
+  <div class="nav-links">
+    <a href="#plano">O Plano</a>
+    <a href="#simulador">Simulador FUNDEB</a>
+    <a href="#grade">Grade Semanal</a>
+    <a href="#custos">Composição & Custos</a>
+    <a href="#escolas3d">Escolas 3D</a>
+    <a href="#vaar">VAAR & Médio Prazo</a>
+    <a href="#compliance">Base Legal</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="section-label">Instituto i10 · Plataforma de Estruturação de Ensino Integral</div>
+    <h1>O caminho completo para o <span class="accent">Ensino Integral</span> no seu município</h1>
+    <p class="sub">Planeje em 2026, implante em 2027, capte a partir de 2028 — com fator 1,5x do FUNDEB, fomento federal da Lei 14.640 e conteúdo BNCC entregue por OSC, sem investimento em obra.</p>
+    <div class="hero-kpis">
+      <div class="hkpi"><div class="v">1,50x</div><div class="l">Fator FUNDEB integral</div></div>
+      <div class="hkpi"><div class="v">20.000</div><div class="l">Alunos · meta 2027</div></div>
+      <div class="hkpi"><div class="v">2h30</div><div class="l">Jornada estendida/dia</div></div>
+      <div class="hkpi"><div class="v">4%</div><div class="l">FUNDEB obrigatório p/ integral*</div></div>
+    </div>
+    <a class="hero-cta" href="#simulador">Simular meu município →</a>
+    <div class="disclaimer">*Resolução CIF nº 23/2026: mínimo de 4% de todos os recursos do FUNDEB aplicados na criação de matrículas em tempo integral.</div>
+  </div>
+</section>
+
+<!-- ================= O PLANO ================= -->
+<section id="plano"><div class="wrap">
+  <div class="section-label">A tese</div>
+  <h2 class="sec">Três anos, um movimento: do planejamento à captação recorrente</h2>
+  <div class="grad-div"></div>
+  <p class="sec-sub">O município contrata a OSC i10 via termo de colaboração (MROSC). A OSC entrega 2h30 diárias de jornada estendida — alimentação + conteúdo alinhado à BNCC — dentro das escolas municipais de Fundamental I e II, transformando matrículas parciais em matrículas de tempo integral reconhecidas pelo Censo Escolar.</p>
+
+  <div class="timeline">
+    <div class="tl-item done">
+      <div class="tl-year"><span>Fase 0 · S2</span>2026</div>
+      <p><b style="color:#fff">Desenho & pactuação.</b> Diagnóstico das escolas, chamamento público, adesão ao Programa Escola em Tempo Integral (SIMEC) e montagem da grade.</p>
+      <div class="money neu">Custo município: R$ 0</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year"><span>Fase 1 · Ano letivo</span>2027</div>
+      <p><b style="color:#fff">Implantação.</b> Alunos iniciam o integral. Matrículas declaradas no Censo 2027. Fomento federal (Lei 14.640) amortece o desencaixe.</p>
+      <div class="money neg">Desencaixe parcial — mitigado pelo fomento ETI</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year"><span>Fase 2 · Captação</span>2028</div>
+      <p><b style="color:#fff">Receita FUNDEB 1,5x.</b> O Censo 2027 entra no cálculo do FUNDEB 2028. O município recupera o investimento e passa a operar com margem.</p>
+      <div class="money pos">Receita recorrente &gt; custo OSC</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year"><span>Fase 3 · Expansão</span>2029+</div>
+      <p><b style="color:#fff">VAAR & escala.</b> Alunos preparados para o SAEB habilitam condicionalidades do VAAR — nova camada de receita — e o integral expande para toda a rede.</p>
+      <div class="money pos">Margem reinvestida em educação</div>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:46px">
+    <div class="card">
+      <span class="badge cyan">Motor financeiro</span>
+      <h3>Fator 1,50 confirmado para 2026</h3>
+      <p>A Resolução CIF nº 16/2025 mantém a ponderação <b>1,50</b> do Fundamental em Tempo Integral (vs 1,00 dos Anos Iniciais e 1,10 dos Anos Finais em turno parcial). Cada matrícula convertida vale <b>+50%</b> (F1) ou <b>+36%</b> (F2) no FUNDEB.</p>
+      <small class="src">Fonte: Resolução CIF 16/2025 · Tabela de fatores FNDE 2026</small>
+    </div>
+    <div class="card">
+      <span class="badge green">Ponte de caixa</span>
+      <h3>Fomento federal no ano 1 — Lei 14.640/2023</h3>
+      <p>O Programa Escola em Tempo Integral paga ao município, via FNDE e sem convênio, de <b>25% a 100% do VAAF-MIN integral (R$ 2,2 mil a R$ 8,9 mil)</b> por matrícula nova pactuada — exatamente para cobrir o intervalo até o FUNDEB chegar em 2028.</p>
+      <small class="src">Fonte: Lei 14.640/2023, arts. 4º, 7º e 8º · adesão via SIMEC</small>
+    </div>
+    <div class="card">
+      <span class="badge amber">Demanda obrigatória</span>
+      <h3>Todo município é obrigado a expandir o integral</h3>
+      <p>A Resolução CIF nº 23/2026 determina que <b>no mínimo 4% de todos os recursos do FUNDEB</b> sejam aplicados na criação de matrículas em tempo integral, com plano de expansão monitorado via Censo e SIOPE. A i10 entrega a solução pronta.</p>
+      <small class="src">Fonte: Resolução CIF 23/2026 · Guia MEC/FNDE</small>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= SIMULADOR ================= -->
+<section id="simulador" style="background:linear-gradient(180deg,transparent,rgba(10,36,99,.25),transparent)"><div class="wrap">
+  <div class="section-label">Simulador FUNDEB Integral</div>
+  <h2 class="sec">Quanto o seu município ganha com o 1,5x?</h2>
+  <div class="grad-div"></div>
+  <p class="sec-sub">Selecione o estado e o município. O simulador usa os valores oficiais do FUNDEB 2026 (Memória de Cálculo VAAT/FNDE) e calcula a receita marginal real por aluno — com <b style="color:var(--cyan)">preço da OSC dinâmico</b>, calibrado para o município sempre operar com margem positiva.</p>
+
+  <div class="sim-shell">
+    <div class="sim-top">
+      <div class="field"><label>Estado (UF)</label>
+        <select id="selUF"></select>
+      </div>
+      <div class="field"><label>VAAF do fundo estadual (R$/aluno fator 1,0)</label>
+        <input type="number" id="inpVAAF" step="50">
+      </div>
+      <div class="field"><label>Alunos no integral (meta)</label>
+        <input type="number" id="inpAlunos" step="100" min="100">
+      </div>
+    </div>
+    <div class="muni-chips" id="muniChips"></div>
+    <div class="muni-meta" id="muniMeta"></div>
+
+    <div class="sliders">
+      <div class="slider-box">
+        <div class="lab"><span>Preço OSC = % do ganho FUNDEB</span><b id="lblPct">65%</b></div>
+        <input type="range" id="rngPct" min="40" max="90" value="65">
+        <div style="font-size:11px;color:var(--w50);margin-top:8px">O restante fica como margem permanente do município.</div>
+      </div>
+      <div class="slider-box">
+        <div class="lab"><span>Mix de alunos · Fund. I (Anos Iniciais)</span><b id="lblMix">60%</b></div>
+        <input type="range" id="rngMix" min="0" max="100" value="60">
+        <div style="font-size:11px;color:var(--w50);margin-top:8px">F1 ganha +0,50 de fator · F2 ganha +0,40 (parcial já vale 1,10).</div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="v grad" id="kGanhoMes">—</div><div class="l">Ganho FUNDEB / aluno / mês</div><div class="note" id="kBase">—</div></div>
+      <div class="kpi"><div class="v" id="kPreco">—</div><div class="l">Preço OSC sugerido / aluno / mês</div><div class="note">dinâmico por município</div></div>
+      <div class="kpi"><div class="v" style="color:var(--green)" id="kMargem">—</div><div class="l">Margem município / aluno / mês</div><div class="note" id="kMargemPct">—</div></div>
+      <div class="kpi amberline"><div class="v" style="color:var(--amber)" id="kFomento">—</div><div class="l">Fomento Lei 14.640 / aluno (ano 1)</div><div class="note" id="kFomentoPct">—</div></div>
+      <div class="kpi"><div class="v" id="kPayback">—</div><div class="l">Payback do desencaixe 2027</div><div class="note">meses após o 1º repasse 2028</div></div>
+    </div>
+
+    <div class="kpi-row" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+      <div class="kpi"><div class="v" id="kReceitaAno">—</div><div class="l">Nova receita FUNDEB / ano (2028+)</div></div>
+      <div class="kpi"><div class="v" id="kCustoAno">—</div><div class="l">Contrato OSC / ano</div></div>
+      <div class="kpi"><div class="v grad" id="kSobraAno">—</div><div class="l">Sobra anual p/ reinvestir em educação</div></div>
+      <div class="kpi" id="kpiDesencaixe"><div class="v" id="kDesencaixe">—</div><div class="l">Desencaixe líquido 2027 (após fomento)</div></div>
+    </div>
+
+    <div class="charts2">
+      <div class="chart-box"><h4>Fluxo de caixa acumulado do município · 2026 → 2031</h4><canvas id="chartCash" height="240"></canvas></div>
+      <div class="chart-box"><h4>Receita vs custo por aluno/mês (2028+)</h4><canvas id="chartBar" height="240"></canvas></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= GRADE ================= -->
+<section id="grade"><div class="wrap">
+  <div class="section-label">Currículo da jornada estendida · BNCC</div>
+  <h2 class="sec">Grade semanal — 30min de alimentação + 2h de conteúdo por dia</h2>
+  <div class="grad-div"></div>
+  <p class="sec-sub">Um componente por dia, 2h semanais por componente, operação simples: um educador por componente por escola/dia. Jornada total ≥ 7h diárias / 35h semanais em dois turnos — requisito legal do tempo integral (Lei 14.640/2023, art. 3º).</p>
+
+  <div class="week">
+    <div class="day"><div class="day-h">Segunda</div>
+      <div class="slot meal"><span class="ic">🍎</span><div class="t">12:00 – 12:30</div><div class="n">Alimentação</div><div class="p">Acolhida e refeição</div></div>
+      <div class="slot"><span class="ic">🇺🇸</span><div class="t">12:30 – 14:30</div><div class="n">Inglês</div><div class="p">Alumni by Better · trilha bilíngue</div></div>
+    </div>
+    <div class="day"><div class="day-h">Terça</div>
+      <div class="slot meal"><span class="ic">🍎</span><div class="t">12:00 – 12:30</div><div class="n">Alimentação</div><div class="p">Acolhida e refeição</div></div>
+      <div class="slot"><span class="ic">💻</span><div class="t">12:30 – 14:30</div><div class="n">Programação & Robótica</div><div class="p">BetterEdtech · BNCC Computação</div></div>
+    </div>
+    <div class="day"><div class="day-h">Quarta</div>
+      <div class="slot meal"><span class="ic">🍎</span><div class="t">12:00 – 12:30</div><div class="n">Alimentação</div><div class="p">Acolhida e refeição</div></div>
+      <div class="slot"><span class="ic">📊</span><div class="t">12:30 – 14:30</div><div class="n">Preparação SAEB</div><div class="p">Estudo Play · Língua Portuguesa e Matemática</div></div>
+    </div>
+    <div class="day"><div class="day-h">Quinta</div>
+      <div class="slot meal"><span class="ic">🍎</span><div class="t">12:00 – 12:30</div><div class="n">Alimentação</div><div class="p">Acolhida e refeição</div></div>
+      <div class="slot"><span class="ic">⚽</span><div class="t">12:30 – 14:30</div><div class="n">Esporte</div><div class="p">Parceiros locais · cultura corporal BNCC</div></div>
+    </div>
+    <div class="day"><div class="day-h">Sexta</div>
+      <div class="slot meal"><span class="ic">🍎</span><div class="t">12:00 – 12:30</div><div class="n">Alimentação</div><div class="p">Acolhida e refeição</div></div>
+      <div class="slot"><span class="ic">🎭</span><div class="t">12:30 – 14:30</div><div class="n">Cultura & Artes</div><div class="p">Parceiros locais · linguagens artísticas BNCC</div></div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--w50);margin-top:18px">⚠️ Horários ilustrativos para rede com turno regular matutino (7h–12h ⇒ jornada de 7h30). Para turno vespertino, a jornada estendida ocorre no período da manhã. A grade é <b style="color:var(--cyan)">adaptativa</b>: o mix de produtos definido na seção seguinte regenera a grade automaticamente na versão sistema.</p>
+</div></section>
+
+<!-- ================= CUSTOS ================= -->
+<section id="custos" style="background:linear-gradient(180deg,transparent,rgba(10,36,99,.25),transparent)"><div class="wrap">
+  <div class="section-label">Visão interna i10/OSC</div>
+  <h2 class="sec">Composição de produtos & calculadora de custo</h2>
+  <div class="grad-div"></div>
+  <p class="sec-sub">Estruture o mix de produtos e valide se o preço cobrado do município sustenta a operação da OSC. Os componentes abaixo alimentam a grade semanal e o custo por aluno.</p>
+
+  <div class="cost-grid">
+    <div class="sim-shell" style="padding:28px">
+      <h3 style="color:#fff;font-size:15px;margin-bottom:18px">Parâmetros da operação</h3>
+      <div class="cost-inputs">
+        <div class="field"><label>Salário educador (R$/mês)</label><input type="number" id="cSal" value="3500" step="100"></div>
+        <div class="field"><label>Encargos (%)</label><input type="number" id="cEnc" value="80" step="5"></div>
+        <div class="field"><label>Alunos por educador (capac. semanal)</label><input type="number" id="cCap" value="600" step="50"></div>
+        <div class="field"><label>Licença Inglês — Alumni (R$/aluno/mês)</label><input type="number" id="cIng" value="22" step="1"></div>
+        <div class="field"><label>Licença Coding — BetterEdtech</label><input type="number" id="cCod" value="18" step="1"></div>
+        <div class="field"><label>Licença SAEB — Estudo Play</label><input type="number" id="cSaeb" value="12" step="1"></div>
+        <div class="field"><label>Material didático (R$/aluno/mês)</label><input type="number" id="cMat" value="8" step="1"></div>
+        <div class="field"><label>Formação docente (R$/aluno/mês)</label><input type="number" id="cTrein" value="5" step="1"></div>
+        <div class="field"><label>Gestão & coordenação (%)</label><input type="number" id="cOver" value="12" step="1"></div>
+        <div class="field"><label>Preço cobrado (R$/aluno/mês)</label><input type="number" id="cPreco" value="300" step="10"></div>
+      </div>
+    </div>
+    <div class="sim-shell" style="padding:28px">
+      <h3 style="color:#fff;font-size:15px;margin-bottom:6px">Resultado por aluno/mês</h3>
+      <div class="kpi-row" style="grid-template-columns:1fr 1fr 1fr;margin-top:14px">
+        <div class="kpi"><div class="v" id="cvCusto">—</div><div class="l">Custo total</div></div>
+        <div class="kpi"><div class="v" id="cvPreco">—</div><div class="l">Preço</div></div>
+        <div class="kpi"><div class="v grad" id="cvMargem">—</div><div class="l">Margem OSC</div></div>
+      </div>
+      <div class="cost-bar" id="costBar"></div>
+      <div class="legend" id="costLegend"></div>
+      <div style="margin-top:22px;padding:16px;border:1px solid rgba(0,229,160,.25);border-radius:10px;background:rgba(0,229,160,.05)">
+        <div style="font-size:12px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase">Escala i10 · meta 20.000 alunos em 2027</div>
+        <div style="font-size:13.5px;color:var(--w70);margin-top:6px" id="cvEscala">—</div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= 3D ================= -->
+<section id="escolas3d"><div class="wrap">
+  <div class="section-label">Capacidade física da rede</div>
+  <h2 class="sec">Simulador 3D de escolas — onde cabem os alunos do integral?</h2>
+  <div class="grad-div"></div>
+  <p class="sec-sub">Sem obra: o integral usa a ociosidade do contraturno das escolas existentes. Informe as salas e a ociosidade média da rede e veja, em 3D, a capacidade real para o tempo integral (máx. 30 alunos/sala). Os dados de escolas municipais vêm do Censo Escolar do município selecionado no simulador.</p>
+
+  <div class="sim3d-shell">
+    <div class="sim3d-controls">
+      <div class="field"><label>Escolas municipais (Fund. I e II)</label><input type="number" id="s3Escolas" value="20" min="1" max="200"></div>
+      <div class="field"><label>Salas de aula por escola (média)</label><input type="number" id="s3Salas" value="8" min="1" max="30"></div>
+      <div class="field"><label>Ociosidade manhã (%)</label><input type="number" id="s3OcioM" value="15" min="0" max="100"></div>
+      <div class="field"><label>Ociosidade tarde (%)</label><input type="number" id="s3OcioT" value="35" min="0" max="100"></div>
+      <div style="margin-left:auto;font-size:11px;color:var(--w50);max-width:240px">Arraste para orbitar · scroll para zoom.<br>Cada cubo = 1 sala de aula.</div>
+    </div>
+    <canvas id="canvas3d"></canvas>
+    <div class="legend3d">
+      <span><i style="background:#0A2463;border:1px solid #1a3a7a"></i> Ocupada nos 2 turnos</span>
+      <span><i style="background:#00B4D8"></i> Livre na manhã (recebe integral do turno tarde)</span>
+      <span><i style="background:#00E5A0"></i> Livre na tarde (recebe integral do turno manhã)</span>
+    </div>
+    <div class="sim3d-foot">
+      <div class="s3kpi"><div class="v" id="s3TotSalas">—</div><div class="l">Salas na rede</div></div>
+      <div class="s3kpi"><div class="v c" id="s3SalasLivres">—</div><div class="l">Salas livres no contraturno</div></div>
+      <div class="s3kpi"><div class="v g" id="s3Capacidade">—</div><div class="l">Capacidade p/ integral (30/sala)</div></div>
+      <div class="s3kpi"><div class="v" id="s3Meta">—</div><div class="l">Meta de alunos (simulador)</div></div>
+      <div class="s3kpi"><div class="v" id="s3Gap">—</div><div class="l" id="s3GapLbl">Cobertura da meta</div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= VAAR ================= -->
+<section id="vaar" style="background:linear-gradient(180deg,transparent,rgba(10,36,99,.25),transparent)"><div class="wrap">
+  <div class="section-label">Médio prazo · não simulado nesta fase</div>
+  <h2 class="sec">O integral destrava a próxima alavanca: o VAAR</h2>
+  <div class="grad-div"></div>
+  <p class="sec-sub">Além do 1,5x, o ensino integral prepara os alunos para o SAEB — e resultados de aprendizagem são o coração da complementação-VAAR (≈ R$ 7,5 bi/ano distribuídos só a redes que evoluem). O business plan registra essa tese; a simulação do VAAR entra na fase sistema.</p>
+  <div class="flow">
+    <div class="flow-step"><div class="n">1</div><h4>Integral implantado</h4><p>2h diárias com trilha estruturada de Língua Portuguesa e Matemática (Estudo Play) + engajamento por esporte e cultura.</p></div>
+    <div class="flow-step"><div class="n">2</div><h4>SAEB sobe</h4><p>≥80% de participação (condicionalidade II) e melhoria com redução de desigualdades (condicionalidade III).</p></div>
+    <div class="flow-step"><div class="n">3</div><h4>Rede habilitada</h4><p>Com gestores por mérito, ICMS educacional e currículo BNCC (condicionalidades I, IV e V — a i10 apoia a adequação).</p></div>
+    <div class="flow-step"><div class="n">4</div><h4>Nova receita VAAR</h4><p>Complementação adicional por evolução de resultados — receita que não existia, somada ao 1,5x do integral.</p></div>
+  </div>
+</div></section>
+
+<!-- ================= COMPLIANCE ================= -->
+<section id="compliance"><div class="wrap">
+  <div class="section-label">Base legal & desenho de conformidade</div>
+  <h2 class="sec">Por que este modelo é juridicamente sólido</h2>
+  <div class="grad-div"></div>
+  <div class="law-list">
+    <div class="card"><span class="badge cyan">Lei 14.113/2020 · art. 8º</span><h3>Censo X → FUNDEB X+1</h3><p>A distribuição usa as matrículas do censo mais atualizado. Integral implantado em 2027 (Censo 2027) gera receita a partir de <b>janeiro/2028</b>. O plano financeiro já nasce com essa defasagem mapeada.</p></div>
+    <div class="card"><span class="badge cyan">Lei 13.019/2014 · MROSC</span><h3>Contratação por termo de colaboração</h3><p>Chamamento público + plano de trabalho com metas. A despesa com a OSC é MDE e cabe na fatia de até <b>30%</b> do FUNDEB (a parcela de 70% é exclusiva da remuneração dos profissionais da rede).</p></div>
+    <div class="card"><span class="badge cyan">Lei 14.113/2020 · art. 7º</span><h3>Matrícula permanece na rede pública</h3><p>O aluno segue matriculado na escola municipal. A OSC entrega a jornada estendida como <b>atividade complementar declarada pela escola no Censo Escolar</b> — condição para o fator 1,5 ser reconhecido.</p></div>
+    <div class="card"><span class="badge green">Lei 14.640/2023</span><h3>Fomento federal cobre o gap de caixa</h3><p>Repasse FNDE em 2 parcelas por matrícula nova pactuada no SIMEC, entre 25% e 100% do VAAF-MIN integral. Prestação de contas simplificada: a comprovação é o próprio Censo.</p></div>
+    <div class="card"><span class="badge green">Resolução CIF 23/2026</span><h3>4% do FUNDEB para integral é obrigação</h3><p>Todo ente deve aplicar no mínimo 4% dos recursos do Fundo na criação de matrículas de tempo integral, com Plano de Expansão registrado. O projeto i10 é o instrumento de cumprimento.</p></div>
+    <div class="card"><span class="badge amber">Gestão de risco</span><h3>Premissas conservadoras</h3><p>Ponderações são revistas anualmente pela CIF (histórico recente: 1,30 → 1,40 → 1,50). O contrato OSC prevê <b>recalibragem anual do preço</b> atrelada à resolução vigente — por isso o preço é dinâmico, não fixo.</p></div>
+  </div>
+</div></section>
+
+<footer>
+  <div class="logo">i<b>10</b> Integral</div>
+  <p>Instituto i10 · Plataforma de Estruturação de Ensino Integral · Fundamental I e II · Conteúdo alinhado à BNCC entregue por OSC qualificada (MROSC).</p>
+  <p class="disclaimer">Mockup para aprovação interna. Valores VAAT/VAAF: Memória de Cálculo VAAT 2026 (FNDE) e Portaria Interministerial MEC/MF nº 6/2026 (VAAF-MIN R$ 5.954,14 · VAAT-MIN R$ 10.193,74). Matrículas: Censo Escolar / análise FUNDEB 2026. VAAF estadual de entes não complementados: estimativa editável. Simulação não constitui garantia de receita.</p>
+</footer>
+
+<script>
+/* ================= DADOS ================= */
+const VAAT_MIN = 10193.74, VAAF_MIN = 5954.14;
+const FATOR_INT = 1.5, FATOR_AI = 1.0, FATOR_AF = 1.1;
+
+const UFS = {
+  SP: { nome:'São Paulo', vaaf: 6150, complementadoVAAF:false },
+  PB: { nome:'Paraíba',   vaaf: VAAF_MIN, complementadoVAAF:true },
+  SC: { nome:'Santa Catarina', vaaf: 6500, complementadoVAAF:false }
+};
+
+/* Dados reais: Memória de Cálculo VAAT 2026 (FNDE) + Censo/análise FUNDEB.
+   fundAI/fundAF = matrículas da rede municipal (estimativa editável p/ PB e SC). */
+const MUNIS = [
+  {uf:'SP', nome:'Santana de Parnaíba', fundAI:9945,  fundAF:7924, escolas:72,  vaat:16232.91, recebeVAAT:false, recebeVAAR:true,  receita:532177528, pctInt:26.9},
+  {uf:'SP', nome:'Marília',             fundAI:4605,  fundAF:3767, escolas:62,  vaat:12942.55, recebeVAAT:false, recebeVAAR:false, receita:487103708, pctInt:42.7},
+  {uf:'SP', nome:'Garça',               fundAI:1011,  fundAF:867,  escolas:27,  vaat:11160.77, recebeVAAT:false, recebeVAAR:true,  receita:124674517, pctInt:57.6},
+  {uf:'PB', nome:'Campina Grande',      fundAI:12925, fundAF:8616, escolas:144, vaat:9027.35,  recebeVAAT:true,  recebeVAAR:false, receita:277505300, pctInt:null},
+  {uf:'PB', nome:'Patos',               fundAI:4386,  fundAF:2924, escolas:51,  vaat:7872.50,  recebeVAAT:true,  recebeVAAR:true,  receita:86873920,  pctInt:null},
+  {uf:'PB', nome:'Monteiro',            fundAI:1784,  fundAF:1190, escolas:21,  vaat:7811.60,  recebeVAAT:true,  recebeVAAR:true,  receita:37745652,  pctInt:null},
+  {uf:'PB', nome:'Esperança',           fundAI:2114,  fundAF:1410, escolas:29,  vaat:7890.73,  recebeVAAT:true,  recebeVAAR:false, receita:47899084,  pctInt:null},
+  {uf:'SC', nome:'São José',            fundAI:8227,  fundAF:5485, escolas:64,  vaat:13164.59, recebeVAAT:false, recebeVAAR:false, receita:221038850, pctInt:null}
+];
+
+let cur = MUNIS[0];
+const $ = id => document.getElementById(id);
+const fmtR = (v,dec=0) => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+const fmtN = v => v.toLocaleString('pt-BR');
+
+/* ================= SETUP UI ================= */
+const selUF = $('selUF');
+Object.keys(UFS).forEach(uf=>{ const o=document.createElement('option'); o.value=uf; o.textContent=uf+' — '+UFS[uf].nome; selUF.appendChild(o); });
+const oOut=document.createElement('option'); oOut.disabled=true; oOut.textContent='+ 24 UFs na versão sistema'; selUF.appendChild(oOut);
+
+function renderChips(){
+  const box=$('muniChips'); box.innerHTML='';
+  MUNIS.filter(m=>m.uf===selUF.value).forEach(m=>{
+    const c=document.createElement('div'); c.className='chip'+(m===cur?' active':'');
+    c.innerHTML=m.nome+'<span class="uf">'+m.uf+'</span>';
+    c.onclick=()=>{ selectMuni(m); };
+    box.appendChild(c);
+  });
+}
+function selectMuni(m){
+  cur=m;
+  $('inpVAAF').value = UFS[m.uf].vaaf;
+  const totalFund = m.fundAI+m.fundAF;
+  $('inpAlunos').value = Math.max(200, Math.round(totalFund*0.2/100)*100);
+  $('rngMix').value = Math.round(100*m.fundAI/totalFund);
+  renderChips(); recalc();
+}
+selUF.onchange=()=>{ const first=MUNIS.find(m=>m.uf===selUF.value); selectMuni(first); };
+
+/* ================= MOTOR FINANCEIRO ================= */
+let chartCash=null, chartBar=null;
+function fomentoPct(m){
+  if(m.recebeVAAT) return 100;
+  const hi=VAAT_MIN*1.5;
+  return Math.max(25, Math.min(100, 25 + 75*(hi-m.vaat)/(hi-VAAT_MIN)));
+}
+function recalc(){
+  const m=cur, vaafUF=parseFloat($('inpVAAF').value)||VAAF_MIN;
+  const alunos=parseInt($('inpAlunos').value)||1000;
+  const pct=parseInt($('rngPct').value), mixAI=parseInt($('rngMix').value)/100;
+  $('lblPct').textContent=pct+'%'; $('lblMix').textContent=Math.round(mixAI*100)+'%';
+
+  // base de valor marginal: VAAT-MIN se complementado (top-up garante o piso), senão VAAF do fundo estadual
+  const base = m.recebeVAAT ? VAAT_MIN : vaafUF;
+  const ganhoAIano=(FATOR_INT-FATOR_AI)*base, ganhoAFano=(FATOR_INT-FATOR_AF)*base;
+  const ganhoAno = mixAI*ganhoAIano + (1-mixAI)*ganhoAFano;
+  const ganhoMes = ganhoAno/12;
+
+  const preco = Math.max(5, Math.round((pct/100)*ganhoMes/5)*5);
+  const margem = ganhoMes-preco;
+  const fPct = fomentoPct(m);
+  const fomento = (fPct/100)*(VAAF_MIN*FATOR_INT);
+
+  const custoAno=preco*12*alunos, receitaAno=ganhoAno*alunos, sobraAno=receitaAno-custoAno;
+  const desencaixe2027 = custoAno - fomento*alunos;
+  const payback = (desencaixe2027>0 && margem>0) ? Math.ceil(desencaixe2027/(margem*alunos)) : 0;
+
+  // KPIs
+  $('kGanhoMes').textContent=fmtR(ganhoMes);
+  $('kBase').textContent = m.recebeVAAT ? 'base VAAT-MIN '+fmtR(VAAT_MIN)+' (município complementado)' : 'base VAAF '+selUF.value+' '+fmtR(base)+' (editável)';
+  $('kPreco').textContent=fmtR(preco);
+  $('kMargem').textContent=fmtR(margem);
+  $('kMargemPct').textContent=Math.round(100-pct)+'% do ganho, perpétuo';
+  $('kFomento').textContent=fmtR(fomento);
+  $('kFomentoPct').textContent='≈ '+Math.round(fPct)+'% do VAAF-MIN integral (estimativa)';
+  $('kPayback').textContent= payback>0 ? payback+' meses' : 'imediato';
+  $('kReceitaAno').textContent=fmtR(receitaAno/1e6,1)+' mi';
+  $('kCustoAno').textContent=fmtR(custoAno/1e6,1)+' mi';
+  $('kSobraAno').textContent=fmtR(sobraAno/1e6,1)+' mi';
+  $('kDesencaixe').textContent=fmtR(Math.max(0,desencaixe2027)/1e6,1)+' mi';
+  $('kpiDesencaixe').className='kpi'+(desencaixe2027>0?' alert':'');
+
+  // meta no 3D
+  $('s3Meta').textContent=fmtN(alunos);
+  $('s3Escolas').value=Math.min(200,m.escolas);
+  recalc3D(alunos);
+
+  // Fluxo de caixa acumulado mensal 2026-2031
+  const labels=[],data=[]; let acc=0;
+  for(let y=2026;y<=2031;y++) for(let mo=1;mo<=12;mo++){
+    if(y===2027){ acc-=preco*alunos; if(mo===3||mo===8) acc+=fomento*alunos/2; }
+    if(y>=2028){ acc+=margem*alunos; }
+    labels.push(mo===1?String(y):''); data.push(acc/1e6);
+  }
+  const ctx1=$('chartCash');
+  if(chartCash) chartCash.destroy();
+  chartCash=new Chart(ctx1,{type:'line',data:{labels,datasets:[{data,borderColor:'#00E5A0',borderWidth:2.5,pointRadius:0,fill:true,tension:.25,
+    backgroundColor:c=>{const g=c.chart.ctx.createLinearGradient(0,0,0,260);g.addColorStop(0,'rgba(0,229,160,.25)');g.addColorStop(1,'rgba(0,229,160,0)');return g;}}]},
+    options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtR(c.parsed.y,1)+' mi'}}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'rgba(255,255,255,.5)',autoSkip:false,maxRotation:0}},
+            y:{grid:{color:'rgba(255,255,255,.07)'},ticks:{color:'rgba(255,255,255,.5)',callback:v=>v+' mi'}}}}});
+
+  const ctx2=$('chartBar');
+  if(chartBar) chartBar.destroy();
+  chartBar=new Chart(ctx2,{type:'bar',data:{labels:['Ganho FUNDEB','Contrato OSC','Margem município'],
+    datasets:[{data:[ganhoMes,preco,margem],backgroundColor:['#00B4D8','#0A2463','#00E5A0'],borderColor:['#00B4D8','#1a3a7a','#00E5A0'],borderWidth:1,borderRadius:8}]},
+    options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtR(c.parsed.y)+' /aluno/mês'}}},
+    scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,.6)'}},
+            y:{grid:{color:'rgba(255,255,255,.07)'},ticks:{color:'rgba(255,255,255,.5)',callback:v=>'R$ '+v}}}}});
+
+  // meta pills
+  $('muniMeta').innerHTML =
+    '<div class="meta-pill">Matrículas Fund. rede municipal: <b>'+fmtN(m.fundAI+m.fundAF)+'</b> (F1 '+fmtN(m.fundAI)+' · F2 '+fmtN(m.fundAF)+')</div>'+
+    '<div class="meta-pill">Escolas municipais: <b>'+m.escolas+'</b></div>'+
+    '<div class="meta-pill">VAAT 2026: <b>'+fmtR(m.vaat)+'</b></div>'+
+    '<div class="meta-pill '+(m.recebeVAAT?'green':'')+'">Complementação VAAT: <b>'+(m.recebeVAAT?'SIM — conta fecha no piso nacional':'não')+'</b></div>'+
+    '<div class="meta-pill">FUNDEB total/ano: <b>'+fmtR(m.receita/1e6,0)+' mi</b></div>'+
+    (m.pctInt!=null?'<div class="meta-pill">Rede já em integral: <b>'+m.pctInt+'%</b></div>':'');
+}
+['inpVAAF','inpAlunos'].forEach(id=>$(id).oninput=recalc);
+['rngPct','rngMix'].forEach(id=>$(id).oninput=recalc);
+
+/* ================= CUSTO OSC ================= */
+function recalcCusto(){
+  const sal=+$('cSal').value, enc=+$('cEnc').value/100, cap=+$('cCap').value;
+  const lic=[['Inglês',+$('cIng').value,'#00B4D8'],['Coding',+$('cCod').value,'#48CAE4'],['SAEB',+$('cSaeb').value,'#00E5A0'],['Material',+$('cMat').value,'#CAF0F8'],['Formação',+$('cTrein').value,'#FFB347']];
+  const pessoal = sal*(1+enc)*5/cap;  // 5 componentes, cada educador atende `cap` alunos/semana no seu componente
+  const itens=[['Educadores',pessoal,'#0A66A8'],...lic];
+  let sub=itens.reduce((s,i)=>s+i[1],0);
+  const over=sub*(+$('cOver').value/100); itens.push(['Gestão',over,'#64748B']);
+  const custo=sub+over, preco=+$('cPreco').value, marg=preco-custo;
+  $('cvCusto').textContent=fmtR(custo); $('cvPreco').textContent=fmtR(preco);
+  $('cvMargem').textContent=fmtR(marg)+' ('+Math.round(100*marg/preco)+'%)';
+  const bar=$('costBar'); bar.innerHTML='';
+  itens.forEach(i=>{const d=document.createElement('div');d.style.width=(100*i[1]/preco)+'%';d.style.background=i[2];d.title=i[0]+' '+fmtR(i[1]);bar.appendChild(d);});
+  const dm=document.createElement('div');dm.style.flex='1';dm.style.background='rgba(0,229,160,.18)';dm.style.color='#00E5A0';dm.textContent='margem';bar.appendChild(dm);
+  $('costLegend').innerHTML=itens.map(i=>'<span><i style="background:'+i[2]+'"></i>'+i[0]+' '+fmtR(i[1])+'</span>').join('');
+  $('cvEscala').innerHTML='Receita OSC: <b style="color:#fff">'+fmtR(preco*20000/1e6,1)+' mi/mês</b> · '+fmtR(preco*20000*12/1e6,0)+' mi/ano · resultado '+fmtR(marg*20000*12/1e6,1)+' mi/ano para reinvestir na missão.';
+}
+['cSal','cEnc','cCap','cIng','cCod','cSaeb','cMat','cTrein','cOver','cPreco'].forEach(id=>$(id).oninput=recalcCusto);
+
+/* ================= 3D (Three.js) ================= */
+var THREE3={ready:false};
+function recalc3D(metaAlunos){
+  const esc=+$('s3Escolas').value||1, salas=+$('s3Salas').value||1;
+  const om=+$('s3OcioM').value/100, ot=+$('s3OcioT').value/100;
+  const tot=esc*salas;
+  const livres=Math.round(tot*om)+Math.round(tot*ot);
+  const capac=livres*30;
+  const meta=metaAlunos!=null?metaAlunos:(parseInt($('inpAlunos').value)||0);
+  $('s3TotSalas').textContent=fmtN(tot);
+  $('s3SalasLivres').textContent=fmtN(livres);
+  $('s3Capacidade').textContent=fmtN(capac);
+  $('s3Meta').textContent=fmtN(meta);
+  const cob=meta>0?Math.round(100*capac/meta):0;
+  const gapEl=$('s3Gap');
+  if(capac>=meta){ gapEl.textContent=cob+'% ✓'; gapEl.className='v g'; $('s3GapLbl').textContent='Cobertura da meta — sem obra'; }
+  else { const faltam=Math.ceil((meta-capac)/30); gapEl.textContent=cob+'%'; gapEl.className='v a'; $('s3GapLbl').textContent='Faltam '+faltam+' salas (ou reduzir meta)'; }
+  if(THREE3.ready) build3D(esc,salas,om,ot);
+}
+['s3Escolas','s3Salas','s3OcioM','s3OcioT'].forEach(id=>$(id).oninput=()=>recalc3D());
+
+function build3D(nEsc,nSalas,om,ot){
+  const {scene,schoolGroup,T}=THREE3;
+  scene.remove(schoolGroup); const g=new T.Group(); THREE3.schoolGroup=g;
+  const matOcc=new T.MeshLambertMaterial({color:0x0A2463});
+  const matM=new T.MeshLambertMaterial({color:0x00B4D8});
+  const matT=new T.MeshLambertMaterial({color:0x00E5A0});
+  const matBase=new T.MeshLambertMaterial({color:0x123a8f});
+  const matRoof=new T.MeshLambertMaterial({color:0x061740});
+  const box=new T.BoxGeometry(0.9,0.9,0.9);
+  const shown=Math.min(nEsc,80);
+  const cols=Math.ceil(Math.sqrt(shown*1.6));
+  const perFloor=Math.min(nSalas,6), floors=Math.ceil(nSalas/perFloor);
+  const W=perFloor*1.05+0.6, D=2.4, gapX=W+2.2, gapZ=floors*1.05+5.5;
+  const nT=Math.round(nSalas*ot), nM=Math.round(nSalas*om);
+  for(let i=0;i<shown;i++){
+    const sx=(i%cols)*gapX-(cols-1)*gapX/2, sz=Math.floor(i/cols)*gapZ;
+    const sg=new T.Group();
+    const base=new T.Mesh(new T.BoxGeometry(W,0.25,D+0.6),matBase); base.position.y=0.125; sg.add(base);
+    let placed=0;
+    for(let f=0;f<floors;f++)for(let s=0;s<perFloor&&placed<nSalas;s++,placed++){
+      let mat=matOcc;
+      if(placed<nT) mat=matT; else if(placed<nT+nM) mat=matM;
+      const c=new T.Mesh(box,mat);
+      c.position.set(s*1.05-(perFloor-1)*1.05/2, 0.25+0.45+f*1.0, 0);
+      sg.add(c);
+      const e=new T.LineSegments(new T.EdgesGeometry(box),new T.LineBasicMaterial({color:0x48CAE4,transparent:true,opacity:0.18}));
+      e.position.copy(c.position); sg.add(e);
+    }
+    const roof=new T.Mesh(new T.BoxGeometry(W,0.18,D+0.2),matRoof);
+    roof.position.y=0.25+floors*1.0+0.1; sg.add(roof);
+    sg.position.set(sx,0,sz);
+    g.add(sg);
+  }
+  const rows=Math.ceil(shown/cols);
+  g.position.z=-(rows-1)*gapZ/2;
+  scene.add(g);
+  THREE3.spanX=cols*gapX; THREE3.spanZ=rows*gapZ;
+  if(nEsc>80){/* render capped at 80 buildings for performance; counts use full network */}
+}
+</script>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as T from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+const canvas=document.getElementById('canvas3d');
+const renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:true});
+const scene=new T.Scene();
+scene.fog=new T.Fog(0x030B1A,60,180);
+const cam=new T.PerspectiveCamera(50,2,0.1,500);
+cam.position.set(26,20,34);
+const controls=new OrbitControls(cam,canvas);
+controls.enableDamping=true; controls.autoRotate=true; controls.autoRotateSpeed=0.5;
+controls.maxPolarAngle=Math.PI/2.1; controls.target.set(0,2,0);
+scene.add(new T.AmbientLight(0xffffff,0.75));
+const dir=new T.DirectionalLight(0x48CAE4,1.1); dir.position.set(20,40,20); scene.add(dir);
+const dir2=new T.DirectionalLight(0x00E5A0,0.35); dir2.position.set(-30,20,-10); scene.add(dir2);
+const ground=new T.Mesh(new T.CircleGeometry(120,64),new T.MeshLambertMaterial({color:0x061740,transparent:true,opacity:0.85}));
+ground.rotation.x=-Math.PI/2; scene.add(ground);
+const grid=new T.GridHelper(240,80,0x0A2463,0x0A2463);
+grid.material.transparent=true; grid.material.opacity=0.35; grid.position.y=0.01; scene.add(grid);
+window.THREE3={ready:true,scene,schoolGroup:new T.Group(),T};
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==w||canvas.height!==h){renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();}}
+(function loop(){requestAnimationFrame(loop);resize();controls.update();renderer.render(scene,cam);})();
+// initial draw + wire globals defined in the first script
+window.dispatchEvent(new Event('three-ready'));
+</script>
+<script>
+window.addEventListener('three-ready',()=>{ selectMuni(MUNIS[0]); recalcCusto(); });
+// fallback caso o módulo 3D não carregue (sem internet/WebGL): ainda inicializa o resto
+setTimeout(()=>{ if(!window.THREE3 || !window.THREE3.ready){ selectMuni(MUNIS[0]); recalcCusto(); } },2500);
+</script>
+</body>
+</html>

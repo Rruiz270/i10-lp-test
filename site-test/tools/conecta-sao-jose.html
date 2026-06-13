@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Municipal 360 · Município 100% Conectado</title>
+<style>
+:root{
+  --bg0:#05080f; --bg1:#0a0f1d; --bg2:#0e1628; --card:rgba(255,255,255,.045);
+  --card2:rgba(255,255,255,.07); --linha:rgba(255,255,255,.09); --linha2:rgba(255,255,255,.16);
+  --txt:#e8eefc; --txt2:#9aa8c7; --txt3:#5d6b8c;
+  --cyan:#22d3ee; --azul:#3b82f6; --verde:#34d399; --ambar:#fbbf24; --verm:#f87171;
+  --roxo:#a78bfa; --rosa:#f472b6; --ouro:#fcd34d;
+  --glow-c:rgba(34,211,238,.35); --glow-v:rgba(52,211,153,.3); --glow-a:rgba(251,191,36,.3);
+  --grad-pilar1:linear-gradient(135deg,#3b82f6,#22d3ee);
+  --grad-pilar2:linear-gradient(135deg,#34d399,#22d3ee);
+  --grad-pilar3:linear-gradient(135deg,#fbbf24,#f472b6);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg0);color:var(--txt);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:rgba(34,211,238,.3)}
+canvas#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.aurora .orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.16;animation:drift 24s ease-in-out infinite alternate}
+.aurora .o1{width:560px;height:560px;background:#1456c4;top:-180px;left:-120px}
+.aurora .o2{width:480px;height:480px;background:#0e8f8a;bottom:-160px;right:-100px;animation-delay:-8s}
+.aurora .o3{width:380px;height:380px;background:#7c3aed;top:30%;left:55%;animation-delay:-16s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,40px) scale(1.15)}}
+
+/* ===== LAYOUT ===== */
+.app{display:flex;min-height:100vh;position:relative;z-index:1}
+.side{width:264px;background:rgba(8,12,24,.82);backdrop-filter:blur(18px);border-right:1px solid var(--linha);
+  position:fixed;top:0;bottom:0;left:0;overflow-y:auto;padding:20px 0 30px;z-index:50}
+.side::-webkit-scrollbar{width:0}
+.brand{padding:0 20px 16px;border-bottom:1px solid var(--linha);margin-bottom:12px}
+.brand .logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:17px;letter-spacing:.2px}
+.brand .mark{width:38px;height:38px;border-radius:11px;flex:none;position:relative;
+  background:conic-gradient(from 180deg,#22d3ee,#3b82f6,#a78bfa,#34d399,#22d3ee);
+  display:grid;place-items:center;animation:spinhue 9s linear infinite}
+@keyframes spinhue{to{filter:hue-rotate(360deg)}}
+.brand .mark::before{content:"";position:absolute;inset:2px;border-radius:9px;background:#0a0f1d}
+.brand .mark span{position:relative;font-size:15px;font-weight:900;background:linear-gradient(135deg,#22d3ee,#34d399);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .nm em{font-style:normal;background:linear-gradient(90deg,#22d3ee,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .sub{font-size:10.5px;color:var(--txt3);margin-top:7px;letter-spacing:.6px;text-transform:uppercase;font-weight:600}
+.ngroup{padding:12px 0 2px}
+.ngroup .gt{font-size:10px;text-transform:uppercase;letter-spacing:1.4px;color:var(--txt3);padding:6px 20px 5px;font-weight:700;display:flex;align-items:center;gap:7px}
+.gt .bar{height:3px;flex:none;width:18px;border-radius:2px}
+.nitem{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;font-size:13px;color:var(--txt2);
+  border-left:3px solid transparent;transition:all .18s}
+.nitem:hover{background:rgba(255,255,255,.05);color:var(--txt)}
+.nitem.active{background:linear-gradient(90deg,rgba(34,211,238,.14),transparent);border-left-color:var(--cyan);color:#fff;font-weight:600}
+.nitem .ico{width:17px;text-align:center;font-style:normal;opacity:.9}
+.nitem .live{margin-left:auto;width:7px;height:7px;border-radius:50%;background:var(--verde);box-shadow:0 0 8px var(--verde);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+.side .foot{margin-top:22px;padding:14px 20px;font-size:10.5px;color:var(--txt3);border-top:1px solid var(--linha)}
+.side .foot b{color:var(--txt2)}
+
+.main{margin-left:264px;flex:1;min-width:0}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(8,12,24,.75);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--linha);padding:12px 32px;display:flex;align-items:center;gap:18px}
+.crumbs{font-size:12.5px;color:var(--txt3)}
+.crumbs b{color:var(--txt)}
+.livechip{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--verde);
+  border:1px solid rgba(52,211,153,.35);background:rgba(52,211,153,.08);padding:5px 12px;border-radius:999px}
+.livechip .d{width:8px;height:8px;border-radius:50%;background:var(--verde);box-shadow:0 0 10px var(--verde);animation:pulse 1.4s infinite}
+.clock{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--txt2);margin-left:auto}
+.roles{display:flex;gap:6px}
+.role{font-size:11.5px;font-weight:600;padding:5px 13px;border-radius:999px;border:1px solid var(--linha2);
+  background:transparent;color:var(--txt2);cursor:pointer;transition:all .18s}
+.role:hover{border-color:var(--cyan);color:var(--txt)}
+.role.on{background:linear-gradient(135deg,rgba(34,211,238,.25),rgba(59,130,246,.25));border-color:var(--cyan);color:#fff}
+
+.wrap{padding:30px 32px 80px;max-width:1280px;position:relative}
+.sec{display:none}
+.sec.show{display:block;animation:rise .45s cubic-bezier(.2,.8,.25,1)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+h1.page{font-size:27px;font-weight:800;letter-spacing:-.4px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+h1.page .grad{background:linear-gradient(90deg,#fff,#9bd8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{font-size:10.5px;font-weight:800;padding:4px 11px;border-radius:999px;text-transform:uppercase;letter-spacing:.8px}
+.pl-1{background:rgba(59,130,246,.18);color:#7eb3ff;border:1px solid rgba(59,130,246,.4)}
+.pl-2{background:rgba(52,211,153,.15);color:#5fe6b6;border:1px solid rgba(52,211,153,.4)}
+.pl-3{background:rgba(251,191,36,.14);color:#fcd34d;border:1px solid rgba(251,191,36,.4)}
+.pl-ia{background:rgba(167,139,250,.16);color:#c4b0ff;border:1px solid rgba(167,139,250,.4)}
+p.intro{color:var(--txt2);max-width:860px;margin:10px 0 24px;font-size:14.5px}
+h2.sub{font-size:11.5px;text-transform:uppercase;letter-spacing:1.6px;font-weight:800;margin:30px 0 14px;
+  display:flex;align-items:center;gap:9px;color:var(--cyan)}
+h2.sub::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--linha2),transparent)}
+h2.sub .nt{font-size:10px;color:var(--txt3);font-weight:600;text-transform:none;letter-spacing:.2px}
+
+/* ===== CARDS ===== */
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:18px;position:relative;
+  backdrop-filter:blur(10px);transition:transform .25s,border-color .25s,box-shadow .25s;transform-style:preserve-3d}
+.card:hover{border-color:var(--linha2)}
+.tilt:hover{box-shadow:0 18px 50px -18px rgba(34,211,238,.25)}
+.kpi .v{font-size:27px;font-weight:800;line-height:1.1;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:12px;color:var(--txt2);margin-top:6px}
+.kpi .src{font-size:10px;color:var(--txt3);margin-top:8px;letter-spacing:.3px}
+.kpi .badge{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:6px;float:right;letter-spacing:.5px}
+.b-g{background:rgba(52,211,153,.15);color:#5fe6b6} .b-a{background:rgba(251,191,36,.15);color:#fcd34d}
+.b-r{background:rgba(248,113,113,.15);color:#fda4a4} .b-c{background:rgba(34,211,238,.14);color:#67e8f9}
+.b-roxo{background:rgba(167,139,250,.15);color:#c4b0ff}
+.spark{margin-top:10px;height:34px;width:100%}
+.delta{font-size:11px;font-weight:700;margin-left:8px}
+.up{color:var(--verde)} .dn{color:var(--verm)}
+
+/* hero pilares */
+.pilares{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:6px}
+.pilar{border-radius:20px;padding:24px 22px;cursor:pointer;position:relative;overflow:hidden;
+  background:var(--card);border:1px solid var(--linha);transition:transform .3s cubic-bezier(.2,.8,.25,1),box-shadow .3s,border-color .3s}
+.pilar:hover{transform:translateY(-7px)}
+.pilar .glowline{position:absolute;top:0;left:0;right:0;height:3px}
+.pilar.p1 .glowline{background:var(--grad-pilar1)} .pilar.p2 .glowline{background:var(--grad-pilar2)} .pilar.p3 .glowline{background:var(--grad-pilar3)}
+.pilar.p1:hover{box-shadow:0 24px 60px -20px rgba(59,130,246,.45);border-color:rgba(59,130,246,.5)}
+.pilar.p2:hover{box-shadow:0 24px 60px -20px rgba(52,211,153,.45);border-color:rgba(52,211,153,.5)}
+.pilar.p3:hover{box-shadow:0 24px 60px -20px rgba(251,191,36,.4);border-color:rgba(251,191,36,.5)}
+.pilar .num{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--txt3);text-transform:uppercase}
+.pilar h3{font-size:19px;font-weight:800;margin:7px 0 8px;letter-spacing:-.3px}
+.pilar p{font-size:12.5px;color:var(--txt2)}
+.pilar .big{font-size:30px;font-weight:800;margin-top:14px;letter-spacing:-.5px}
+.pilar.p1 .big{background:var(--grad-pilar1);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pilar.p2 .big{background:var(--grad-pilar2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pilar.p3 .big{background:var(--grad-pilar3);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pilar .bl{font-size:11px;color:var(--txt3);margin-top:2px}
+.pilar .go{position:absolute;right:18px;bottom:16px;font-size:12px;font-weight:700;color:var(--txt3);transition:all .25s}
+.pilar:hover .go{color:#fff;transform:translateX(4px)}
+
+/* score donut */
+.score{display:flex;align-items:center;gap:22px}
+.donut{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;flex:none;position:relative}
+.donut::before{content:"";position:absolute;inset:11px;border-radius:50%;background:var(--bg1)}
+.donut .n{position:relative;font-size:28px;font-weight:800;text-align:center}
+.donut .n small{display:block;font-size:8.5px;color:var(--txt2);font-weight:700;letter-spacing:1px;margin-top:2px}
+
+/* ticker */
+.ticker{display:flex;gap:0;overflow:hidden;border:1px solid var(--linha);border-radius:14px;
+  background:rgba(8,12,24,.6);margin:18px 0 4px;position:relative}
+.ticker::before{content:"AO VIVO";position:absolute;left:0;top:0;bottom:0;display:grid;place-items:center;
+  padding:0 14px;font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--verde);
+  background:rgba(8,16,24,.95);z-index:2;border-right:1px solid var(--linha)}
+.tk-track{display:flex;gap:42px;padding:11px 0 11px 100px;white-space:nowrap;animation:tk 40s linear infinite}
+.ticker:hover .tk-track{animation-play-state:paused}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk-item{font-size:12.5px;color:var(--txt2)}
+.tk-item b{color:var(--txt)} .tk-item .pos{color:var(--verde)} .tk-item .neg{color:var(--verm)} .tk-item .att{color:var(--ambar)}
+
+/* mapa cidade */
+.citywrap{position:relative;border:1px solid var(--linha);border-radius:18px;overflow:hidden;
+  background:radial-gradient(ellipse at 60% 40%,rgba(20,86,196,.12),transparent 65%),rgba(8,12,24,.55)}
+.citywrap svg{display:block;width:100%;height:auto}
+.hotspot{cursor:pointer}
+.hotspot circle.core{transition:r .2s}
+.hotspot:hover circle.core{r:7}
+.hs-ring{animation:ring 2.4s ease-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes ring{0%{opacity:.8;transform:scale(.4)}100%{opacity:0;transform:scale(2.6)}}
+.maptip{position:absolute;min-width:215px;background:rgba(10,16,30,.96);border:1px solid var(--linha2);
+  border-radius:13px;padding:13px 15px;font-size:12px;pointer-events:none;opacity:0;transform:translateY(8px) scale(.97);
+  transition:opacity .2s,transform .2s;z-index:10;backdrop-filter:blur(12px);box-shadow:0 18px 40px -12px rgba(0,0,0,.7)}
+.maptip.on{opacity:1;transform:none}
+.maptip .t{font-weight:800;font-size:13px;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.maptip .row{display:flex;justify-content:space-between;color:var(--txt2);padding:2px 0}
+.maptip .row b{color:var(--txt);font-variant-numeric:tabular-nums}
+.maplegend{position:absolute;left:14px;bottom:12px;display:flex;gap:14px;font-size:10.5px;color:var(--txt2);
+  background:rgba(8,12,24,.8);border:1px solid var(--linha);padding:7px 13px;border-radius:999px;backdrop-filter:blur(8px)}
+.maplegend span{display:flex;align-items:center;gap:5px}
+.ld{width:8px;height:8px;border-radius:50%}
+
+/* barras LRF */
+.lrf .row{padding:12px 0;border-bottom:1px solid var(--linha)}
+.lrf .row:last-child{border:none}
+.lrf .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:7px;align-items:center}
+.lrf .nm{font-weight:600} .lrf .vl{font-weight:800;font-variant-numeric:tabular-nums}
+.track{height:9px;background:rgba(255,255,255,.07);border-radius:6px;position:relative;overflow:visible}
+.fill{height:100%;border-radius:6px;width:0;transition:width 1.2s cubic-bezier(.2,.8,.25,1);position:relative}
+.fill.glow-v{background:linear-gradient(90deg,#0d9466,#34d399);box-shadow:0 0 14px var(--glow-v)}
+.fill.glow-a{background:linear-gradient(90deg,#b97f0a,#fbbf24);box-shadow:0 0 14px var(--glow-a)}
+.fill.glow-r{background:linear-gradient(90deg,#c23434,#f87171);box-shadow:0 0 14px rgba(248,113,113,.35)}
+.fill.glow-c{background:linear-gradient(90deg,#0e7490,#22d3ee);box-shadow:0 0 14px var(--glow-c)}
+.mark{position:absolute;top:-4px;width:2px;height:17px;background:#8da2c9;opacity:.6;border-radius:2px}
+.mark .mlbl{position:absolute;top:-15px;left:-14px;font-size:8.5px;color:var(--txt3);white-space:nowrap}
+.tag{font-size:9.5px;font-weight:800;padding:2.5px 8px;border-radius:6px;margin-left:7px;letter-spacing:.4px;text-transform:uppercase}
+.t-ok{background:rgba(52,211,153,.15);color:#5fe6b6} .t-at{background:rgba(251,191,36,.15);color:#fcd34d}
+.t-cr{background:rgba(248,113,113,.16);color:#fda4a4} .t-info{background:rgba(34,211,238,.13);color:#67e8f9}
+.sublbl{font-size:10px;color:var(--txt3);margin-top:5px}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border:1px solid var(--linha);
+  border-radius:14px;overflow:hidden}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--linha)}
+thead th{background:rgba(255,255,255,.04);font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--txt3);font-weight:700}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(34,211,238,.05)}
+tbody tr:last-child td{border:none}
+td.c,th.c{text-align:center}
+td b{font-variant-numeric:tabular-nums}
+
+/* tempo real */
+.areatabs{display:flex;gap:8px;margin:4px 0 20px;flex-wrap:wrap}
+.atab{display:flex;align-items:center;gap:9px;padding:10px 18px;border-radius:13px;cursor:pointer;
+  border:1px solid var(--linha);background:var(--card);font-size:13px;font-weight:700;color:var(--txt2);transition:all .2s}
+.atab:hover{border-color:var(--linha2);color:var(--txt);transform:translateY(-2px)}
+.atab.on{color:#fff;border-color:transparent}
+.atab.on.a-saude{background:linear-gradient(135deg,rgba(248,113,113,.3),rgba(244,114,182,.25));box-shadow:0 8px 24px -8px rgba(248,113,113,.5)}
+.atab.on.a-edu{background:linear-gradient(135deg,rgba(59,130,246,.32),rgba(34,211,238,.25));box-shadow:0 8px 24px -8px rgba(59,130,246,.5)}
+.atab.on.a-social{background:linear-gradient(135deg,rgba(167,139,250,.32),rgba(244,114,182,.22));box-shadow:0 8px 24px -8px rgba(167,139,250,.5)}
+.atab.on.a-urbano{background:linear-gradient(135deg,rgba(251,191,36,.3),rgba(52,211,153,.22));box-shadow:0 8px 24px -8px rgba(251,191,36,.45)}
+.areapane{display:none}
+.areapane.show{display:block;animation:rise .35s cubic-bezier(.2,.8,.25,1)}
+.lkpi{position:relative;overflow:hidden}
+.lkpi .lv{font-size:30px;font-weight:800;letter-spacing:-.8px;font-variant-numeric:tabular-nums;transition:color .3s}
+.lkpi .ll{font-size:12px;color:var(--txt2);margin-top:5px}
+.lkpi .lu{font-size:10px;color:var(--txt3);margin-top:7px;display:flex;align-items:center;gap:6px}
+.lkpi .lu .d{width:6px;height:6px;border-radius:50%;background:var(--verde);animation:pulse 1.6s infinite}
+.lkpi .flash{animation:flash .6s}
+@keyframes flash{0%{color:var(--cyan)}100%{}}
+.gauge{display:flex;align-items:center;gap:16px}
+.gauge .g{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;position:relative;flex:none}
+.gauge .g::before{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--bg1)}
+.gauge .g b{position:relative;font-size:19px}
+.gauge .g small{position:relative;display:block}
+.feed{max-height:330px;overflow-y:auto;display:flex;flex-direction:column;gap:9px;padding-right:4px}
+.feed::-webkit-scrollbar{width:4px}
+.feed::-webkit-scrollbar-thumb{background:var(--linha2);border-radius:4px}
+.fitem{display:flex;gap:11px;padding:10px 13px;border:1px solid var(--linha);border-radius:11px;
+  background:rgba(255,255,255,.03);font-size:12.5px;animation:fin .45s cubic-bezier(.2,.8,.25,1)}
+@keyframes fin{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.fitem .fi{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;font-size:14px}
+.fi-s{background:rgba(248,113,113,.15)} .fi-e{background:rgba(59,130,246,.16)}
+.fi-a{background:rgba(167,139,250,.16)} .fi-u{background:rgba(251,191,36,.14)}
+.fitem .ft{color:var(--txt2)} .fitem .ft b{color:var(--txt)}
+.fitem .fh{margin-left:auto;font-size:10px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.filas .frow{display:grid;grid-template-columns:1fr 84px 110px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--linha);font-size:12.5px}
+.filas .frow:last-child{border:none}
+.filas .fq{font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
+.filas .minitrack{height:6px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden}
+.filas .minifill{height:100%;border-radius:4px;transition:width .8s}
+
+/* captação */
+.bigstat{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.bigstat .bv{font-size:46px;font-weight:800;letter-spacing:-1.5px;background:var(--grad-pilar3);
+  -webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.bigstat .bl{font-size:13px;color:var(--txt2);max-width:340px}
+.fonte{border-left:3px solid transparent}
+.fonte.f-edu{border-left-color:var(--azul)} .fonte.f-sau{border-left-color:var(--verm)}
+.fonte.f-soc{border-left-color:var(--roxo)} .fonte.f-ger{border-left-color:var(--ambar)}
+.fonte h4{font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.fonte .fv{font-size:22px;font-weight:800;margin:8px 0 2px;font-variant-numeric:tabular-nums}
+.fonte p{font-size:12px;color:var(--txt2)}
+.check{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--linha);border-radius:11px;
+  background:rgba(255,255,255,.03);font-size:12.5px;margin-bottom:8px;transition:border-color .2s}
+.check:hover{border-color:var(--linha2)}
+.check .ck{width:21px;height:21px;border-radius:7px;display:grid;place-items:center;font-size:11px;font-weight:900;flex:none;margin-top:1px}
+.ck-ok{background:rgba(52,211,153,.2);color:var(--verde)} .ck-no{background:rgba(248,113,113,.18);color:var(--verm)}
+.ck-at{background:rgba(251,191,36,.18);color:var(--ambar)}
+.check .ct b{display:block;margin-bottom:1px}
+.check .ct span{color:var(--txt2);font-size:11.5px}
+.check .cv{margin-left:auto;font-weight:800;white-space:nowrap;font-size:12px;font-variant-numeric:tabular-nums}
+.cross{border:1px solid rgba(251,191,36,.3);background:linear-gradient(135deg,rgba(251,191,36,.07),rgba(244,114,182,.05));border-radius:16px;padding:18px}
+.cross .ch{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;margin-bottom:10px}
+.cross .arrowflow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:12px;margin:10px 0}
+.cross .st{background:rgba(8,12,24,.65);border:1px solid var(--linha2);border-radius:9px;padding:7px 12px;font-weight:600}
+.cross .ar{color:var(--ambar);font-weight:800}
+.cross .res{font-size:13px;margin-top:8px;color:var(--txt2)}
+.cross .res b{color:var(--ouro)}
+
+/* captação por área */
+.rowlink{cursor:pointer;border-radius:10px;margin:0 -10px;padding-left:10px !important;padding-right:10px !important;transition:background .18s}
+.rowlink:hover{background:rgba(251,191,36,.07)}
+.rowlink .verlk{font-size:10.5px;color:var(--txt3);font-weight:700;margin-left:9px;opacity:0;transition:opacity .18s}
+.rowlink:hover .verlk{opacity:1;color:var(--ouro)}
+.capttabs{display:flex;gap:8px;margin:4px 0 18px;flex-wrap:wrap}
+.ctab{display:flex;align-items:center;gap:8px;padding:9px 17px;border-radius:12px;cursor:pointer;
+  border:1px solid var(--linha);background:var(--card);font-size:12.5px;font-weight:700;color:var(--txt2);transition:all .2s}
+.ctab:hover{border-color:var(--linha2);color:var(--txt);transform:translateY(-2px)}
+.ctab .cv2{font-size:10.5px;font-weight:800;color:var(--ouro);font-variant-numeric:tabular-nums}
+.ctab.on{color:#fff;border-color:rgba(251,191,36,.55);background:linear-gradient(135deg,rgba(251,191,36,.18),rgba(244,114,182,.12));box-shadow:0 8px 24px -8px rgba(251,191,36,.4)}
+.captpane{display:none}
+.captpane.show{display:block;animation:rise .35s cubic-bezier(.2,.8,.25,1)}
+
+/* simulador */
+.simbox{border:1px solid rgba(34,211,238,.3);border-radius:16px;padding:20px;background:linear-gradient(135deg,rgba(34,211,238,.06),rgba(59,130,246,.05))}
+.simbox h4{font-size:15px;font-weight:800;margin-bottom:4px}
+.simbox .hint{font-size:12px;color:var(--txt2);margin-bottom:16px}
+input[type=range]{-webkit-appearance:none;width:100%;height:8px;border-radius:6px;outline:none;
+  background:linear-gradient(90deg,#22d3ee var(--p,30%),rgba(255,255,255,.1) var(--p,30%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+  background:#fff;border:4px solid var(--cyan);box-shadow:0 0 16px var(--glow-c);cursor:grab}
+.simout{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.simout .so{background:rgba(8,12,24,.55);border:1px solid var(--linha);border-radius:13px;padding:13px;text-align:center}
+.simout .so .sv{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums}
+.simout .so .sl{font-size:10.5px;color:var(--txt3);margin-top:3px}
+
+/* IA chat */
+.chat{border:1px solid var(--linha2);border-radius:18px;background:rgba(8,12,24,.6);overflow:hidden}
+.chat .chead{padding:13px 18px;border-bottom:1px solid var(--linha);display:flex;align-items:center;gap:10px;font-weight:700;font-size:13px}
+.chat .cbody{padding:18px;min-height:260px;display:flex;flex-direction:column;gap:13px}
+.msg{max-width:78%;padding:11px 15px;border-radius:15px;font-size:13px;animation:fin .4s}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,rgba(59,130,246,.35),rgba(34,211,238,.3));border:1px solid rgba(59,130,246,.4)}
+.msg.bot{align-self:flex-start;background:rgba(255,255,255,.05);border:1px solid var(--linha)}
+.msg.bot b{color:var(--cyan)}
+.msg .mtag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.6px;color:var(--roxo);margin-bottom:5px;text-transform:uppercase}
+.cinput{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--linha)}
+.cinput .fake{flex:1;border:1px solid var(--linha2);border-radius:11px;padding:10px 15px;font-size:13px;color:var(--txt3);cursor:pointer;transition:border-color .2s}
+.cinput .fake:hover{border-color:var(--cyan);color:var(--txt2)}
+.cinput .send{width:40px;height:40px;border-radius:11px;border:none;background:var(--grad-pilar1);color:#fff;font-size:16px;cursor:pointer}
+.sugg{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sugg button{font-size:11.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--linha2);background:transparent;color:var(--txt2);cursor:pointer;transition:all .2s}
+.sugg button:hover{border-color:var(--roxo);color:#fff;background:rgba(167,139,250,.12)}
+.typing{display:flex;gap:4px;padding:4px 2px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--txt2);animation:tp 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tp{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+
+/* arquitetura */
+.archflow{display:flex;align-items:stretch;gap:0;margin:8px 0 22px;flex-wrap:wrap}
+.acol{flex:1;min-width:200px;border:1px solid var(--linha);border-radius:15px;background:var(--card);padding:16px;position:relative;margin-right:34px}
+.acol:last-child{margin-right:0}
+.acol::after{content:"⟶";position:absolute;right:-29px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:18px;animation:pulse 2s infinite}
+.acol:last-child::after{display:none}
+.acol .at{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.acol .ai{font-size:12px;color:var(--txt2);padding:6px 9px;border:1px solid var(--linha);border-radius:8px;margin-bottom:6px;background:rgba(255,255,255,.02)}
+.acol .ai b{color:var(--txt)}
+.note{background:rgba(34,211,238,.06);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:14px 17px;font-size:13px;color:var(--txt2);margin:16px 0}
+.note b{color:var(--txt)}
+.note.gold{border-left-color:var(--ouro);background:rgba(251,191,36,.06)}
+.note.green{border-left-color:var(--verde);background:rgba(52,211,153,.06)}
+.note.roxo{border-left-color:var(--roxo);background:rgba(167,139,250,.07)}
+.disc{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.25);color:#e0c36a;font-size:12px;padding:11px 16px;border-radius:11px;margin-top:24px}
+
+/* contador animation handled in JS */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.25,1)}
+.reveal.vis{opacity:1;transform:none}
+
+@media(max-width:1080px){.g4{grid-template-columns:repeat(2,1fr)}.pilares{grid-template-columns:1fr}.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:860px){.side{display:none}.main{margin-left:0}.g4,.g3,.g2{grid-template-columns:1fr}.roles{display:none}.simout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="aurora"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+
+<div class="app">
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="side">
+  <div class="brand">
+    <div class="logo"><span class="mark"><span>SJ</span></span><span class="nm">Conecta <em>São José</em></span></div>
+    <div class="sub">Município 100% Conectado · SC</div>
+  </div>
+  <div class="ngroup"><div class="gt"><span class="bar" style="background:var(--grad-pilar2)"></span>Centro de Comando</div>
+    <div class="nitem active" data-s="overview"><i class="ico">⬡</i><span>Visão Geral</span><span class="live"></span></div>
+  </div>
+  <div class="ngroup"><div class="gt"><span class="bar" style="background:var(--grad-pilar1)"></span>Pilar 1 · Inteligência</div>
+    <div class="nitem" data-s="radar"><i class="ico">◎</i><span>Radar de Gestão</span></div>
+  </div>
+  <div class="ngroup"><div class="gt"><span class="bar" style="background:var(--grad-pilar2)"></span>Pilar 2 · Tempo Real</div>
+    <div class="nitem" data-s="vivo"><i class="ico">⚡</i><span>Cidade ao Vivo</span><span class="live"></span></div>
+  </div>
+  <div class="ngroup"><div class="gt"><span class="bar" style="background:var(--grad-pilar3)"></span>Pilar 3 · Recursos</div>
+    <div class="nitem" data-s="captacao"><i class="ico">◈</i><span>Captação Inteligente</span></div>
+  </div>
+  <div class="ngroup"><div class="gt"><span class="bar" style="background:linear-gradient(135deg,#a78bfa,#f472b6)"></span>Inteligência Artificial</div>
+    <div class="nitem" data-s="ia"><i class="ico">✦</i><span>Pergunte à Cidade</span></div>
+  </div>
+  <div class="ngroup"><div class="gt"><span class="bar" style="background:#64748b"></span>Plataforma</div>
+    <div class="nitem" data-s="arq"><i class="ico">⛁</i><span>Arquitetura & Fontes</span></div>
+  </div>
+  <div class="foot">
+    <b>Instituto i10</b> · Prefeitura de São José/SC<br>
+    Mockup conceitual · dados ilustrativos<br>v0.1 · jun/2026
+  </div>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main class="main">
+  <div class="topbar">
+    <div class="crumbs">Painel Municipal 360 · <b id="crumb">Visão Geral</b></div>
+    <div class="livechip"><span class="d"></span>AO VIVO</div>
+    <div class="clock" id="clock">—</div>
+    <div class="roles">
+      <button class="role on">👔 Prefeito</button>
+      <button class="role">📋 Secretários</button>
+      <button class="role">⚖️ Controladoria</button>
+      <button class="role">👥 Cidadão</button>
+    </div>
+  </div>
+  <div class="wrap">
+
+  <!-- ================= VISÃO GERAL ================= -->
+  <section class="sec show" id="overview">
+    <h1 class="page"><span class="grad">São José, ao vivo.</span> <span class="pill pl-2">Centro de Comando</span></h1>
+    <p class="intro">O primeiro município brasileiro <b style="color:#fff">100% conectado</b>: passado, presente e futuro da gestão pública em uma única plataforma. <b style="color:#fff">3 pilares</b> — inteligência sobre os dados oficiais, a cidade em tempo real e o motor de captação de recursos.</p>
+
+    <div class="ticker"><div class="tk-track" id="tkTrack"></div></div>
+
+    <h2 class="sub">Os três pilares</h2>
+    <div class="pilares">
+      <div class="pilar p1 tilt" onclick="nav('radar')">
+        <div class="glowline"></div>
+        <div class="num">Pilar 01 · O que aconteceu</div>
+        <h3>Radar de Gestão</h3>
+        <p>Inteligência sobre todos os dados oficiais do município: fiscal, LRF, educação, saúde, execução orçamentária — com alertas e base legal.</p>
+        <div class="big" data-count="98.2" data-suffix="%">0%</div>
+        <div class="bl">conformidade legal monitorada · 6 fontes oficiais</div>
+        <div class="go">explorar →</div>
+      </div>
+      <div class="pilar p2 tilt" onclick="nav('vivo')">
+        <div class="glowline"></div>
+        <div class="num">Pilar 02 · O que está acontecendo</div>
+        <h3>Cidade ao Vivo</h3>
+        <p>APIs plugadas nos sistemas das secretarias: filas da saúde, frequência escolar, CRAS, zeladoria — o pulso da cidade agora.</p>
+        <div class="big" data-count="14" data-suffix=" sistemas">0</div>
+        <div class="bl">integrados em tempo real · atualização contínua</div>
+        <div class="go">explorar →</div>
+      </div>
+      <div class="pilar p3 tilt" onclick="nav('captacao')">
+        <div class="glowline"></div>
+        <div class="num">Pilar 03 · O que pode acontecer</div>
+        <h3>Captação Inteligente</h3>
+        <p>Cruzamos eficiência operacional com recursos federais e estaduais disponíveis — e mostramos exatamente o que fazer para captar.</p>
+        <div class="big" data-count="92.7" data-prefix="R$ " data-suffix=" mi">R$ 0</div>
+        <div class="bl">identificados em potencial de captação / ano</div>
+        <div class="go">explorar →</div>
+      </div>
+    </div>
+
+    <h2 class="sub">Índice Conecta · saúde geral da gestão <span class="nt">síntese dos 3 pilares (metodologia i10)</span></h2>
+    <div class="grid g3">
+      <div class="card score tilt">
+        <div class="donut" id="donutMain" style="background:conic-gradient(var(--cyan) 0 0%, rgba(255,255,255,.08) 0)">
+          <span class="n" data-donut="78">0<small>ÍNDICE<br>CONECTA</small></span>
+        </div>
+        <div>
+          <h4 style="font-size:15px;margin-bottom:4px">Gestão de ponta</h4>
+          <p style="font-size:12px;color:var(--txt2)">São José está no <b style="color:var(--cyan)">top 4%</b> de SC em maturidade de gestão por evidências. Próximo salto: captação FUNDEB-VAAR.</p>
+        </div>
+      </div>
+      <div class="card score tilt">
+        <div class="donut" id="donutFiscal" style="background:conic-gradient(var(--verde) 0 0%, rgba(255,255,255,.08) 0)">
+          <span class="n" data-donut="86">0<small>SAÚDE<br>FISCAL</small></span>
+        </div>
+        <div>
+          <h4 style="font-size:15px;margin-bottom:4px">Fiscal sólido</h4>
+          <p style="font-size:12px;color:var(--txt2)">Todos os limites LRF conformes. Ponto de atenção: despesa de pessoal em trajetória de alta (51,8%).</p>
+        </div>
+      </div>
+      <div class="card score tilt">
+        <div class="donut" id="donutCapt" style="background:conic-gradient(var(--ambar) 0 0%, rgba(255,255,255,.08) 0)">
+          <span class="n" data-donut="61">0<small>CAPTAÇÃO<br>ATIVADA</small></span>
+        </div>
+        <div>
+          <h4 style="font-size:15px;margin-bottom:4px">Dinheiro na mesa</h4>
+          <p style="font-size:12px;color:var(--txt2)">39% do potencial de recursos federais ainda não acessado — <b style="color:var(--ouro)">R$ 92,7 mi/ano</b> mapeados no Pilar 3.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="sub">Mapa vivo da cidade <span class="nt">passe o mouse nos pontos · dados ilustrativos</span></h2>
+    <div class="citywrap" id="citywrap">
+      <svg viewBox="0 0 1000 430" id="citysvg">
+        <defs>
+          <linearGradient id="water" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#0a2540" stop-opacity=".9"/><stop offset="1" stop-color="#0e3a5c" stop-opacity=".7"/>
+          </linearGradient>
+          <radialGradient id="cityglow" cx=".5" cy=".5" r=".6">
+            <stop offset="0" stop-color="#1456c4" stop-opacity=".25"/><stop offset="1" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <!-- baía (leste) -->
+        <path d="M780,0 C740,90 760,170 810,250 C850,320 840,390 860,430 L1000,430 L1000,0 Z" fill="url(#water)"/>
+        <path d="M780,0 C740,90 760,170 810,250 C850,320 840,390 860,430" fill="none" stroke="#1d4e7a" stroke-width="2" opacity=".6"/>
+        <text x="880" y="80" fill="#3a6a96" font-size="12" font-style="italic" opacity=".8">Baía Sul</text>
+        <!-- malha urbana -->
+        <ellipse cx="480" cy="220" rx="430" ry="200" fill="url(#cityglow)"/>
+        <g stroke="#23365c" stroke-width="1.2" opacity=".55" fill="none">
+          <path d="M60,300 C220,250 420,260 620,200 C700,175 760,140 800,90"/>
+          <path d="M40,180 C200,200 380,150 560,160 C660,165 740,150 790,120"/>
+          <path d="M150,400 C260,330 300,260 340,150 M300,420 C380,340 430,260 460,170"/>
+          <path d="M480,420 C520,330 560,260 600,200 M120,100 C220,140 300,200 380,290"/>
+          <path d="M620,400 C660,320 700,270 770,230"/>
+        </g>
+        <g stroke="#2c4470" stroke-width="2.6" opacity=".75" fill="none">
+          <path d="M30,260 C230,225 470,215 680,150 C730,133 770,110 805,75"/>
+          <text x="55" y="248" fill="#46639c" font-size="10">BR-101</text>
+        </g>
+        <!-- bairros -->
+        <g fill="#42598a" font-size="10.5" opacity=".9">
+          <text x="395" y="135">Kobrasol</text><text x="488" y="205">Campinas</text>
+          <text x="270" y="240">Barreiros</text><text x="585" y="125">Ponta de Baixo</text>
+          <text x="170" y="330">Forquilhinha</text><text x="430" y="330">Fazenda Sta. Mônica</text>
+          <text x="640" y="260">Centro Histórico</text><text x="250" y="120">Serraria</text>
+        </g>
+        <!-- hotspots: data-tip define o popup -->
+        <g id="hotspots">
+          <g class="hotspot" data-tip='{"t":"🏥 UPA Sul — Forquilhinhas","rows":[["Fila agora","23 pacientes"],["Espera média","41 min"],["Classif. vermelha","2"],["Médicos em turno","6"]],"st":"att"}' transform="translate(215,355)">
+            <circle class="hs-ring" r="8" fill="none" stroke="#f87171" stroke-width="2"/><circle class="core" r="5.5" fill="#f87171"/>
+          </g>
+          <g class="hotspot" data-tip='{"t":"🏥 UPA Norte — Kobrasol","rows":[["Fila agora","11 pacientes"],["Espera média","18 min"],["Classif. vermelha","0"],["Médicos em turno","5"]],"st":"ok"}' transform="translate(415,115)">
+            <circle class="hs-ring" r="8" fill="none" stroke="#34d399" stroke-width="2"/><circle class="core" r="5.5" fill="#34d399"/>
+          </g>
+          <g class="hotspot" data-tip='{"t":"🩺 UBS Campinas","rows":[["Atendimentos hoje","148"],["Agenda ocupada","92%"],["Vacinas aplicadas","63"]],"st":"ok"}' transform="translate(510,185)">
+            <circle class="hs-ring" r="7" fill="none" stroke="#34d399" stroke-width="2"/><circle class="core" r="5" fill="#34d399"/>
+          </g>
+          <g class="hotspot" data-tip='{"t":"🏫 CEM Renascer — Serraria","rows":[["Presença hoje","94,2%"],["Professores ausentes","1 de 42"],["Merenda servida","712 refeições"]],"st":"ok"}' transform="translate(280,150)">
+            <circle class="hs-ring" r="7" fill="none" stroke="#3b82f6" stroke-width="2"/><circle class="core" r="5" fill="#3b82f6"/>
+          </g>
+          <g class="hotspot" data-tip='{"t":"🏫 CEI Barreiros","rows":[["Presença hoje","88,7%"],["Fila de creche (bairro)","134 crianças"],["Capacidade ociosa","0 vagas"]],"st":"att"}' transform="translate(310,255)">
+            <circle class="hs-ring" r="7" fill="none" stroke="#fbbf24" stroke-width="2"/><circle class="core" r="5" fill="#fbbf24"/>
+          </g>
+          <g class="hotspot" data-tip='{"t":"🤝 CRAS Forquilhinha","rows":[["Atendimentos hoje","37"],["CadÚnico atualizados","19"],["Visitas domiciliares","6"]],"st":"ok"}' transform="translate(165,300)">
+            <circle class="hs-ring" r="7" fill="none" stroke="#a78bfa" stroke-width="2"/><circle class="core" r="5" fill="#a78bfa"/>
+          </g>
+          <g class="hotspot" data-tip='{"t":"💡 Zeladoria — Campinas","rows":[["Chamados 156 abertos","48"],["Iluminação pendente","12 pontos"],["SLA médio","2,1 dias"]],"st":"att"}' transform="translate(545,230)">
+            <circle class="hs-ring" r="7" fill="none" stroke="#fbbf24" stroke-width="2"/><circle class="core" r="5" fill="#fbbf24"/>
+          </g>
+          <g class="hotspot" data-tip='{"t":"🏛️ Centro Histórico","rows":[["Ocorrências 24h","3"],["Câmeras ativas","41 de 42"],["Eventos hoje","Feira do Livro"]],"st":"ok"}' transform="translate(665,245)">
+            <circle class="hs-ring" r="7" fill="none" stroke="#22d3ee" stroke-width="2"/><circle class="core" r="5" fill="#22d3ee"/>
+          </g>
+          <g class="hotspot" data-tip='{"t":"🚌 Terminal Barreiros (mobilidade)","rows":[["Ônibus em operação","87 de 92"],["Atraso médio","4 min"],["Passageiros hoje","31.408"]],"st":"ok"}' transform="translate(355,215)">
+            <circle class="hs-ring" r="7" fill="none" stroke="#34d399" stroke-width="2"/><circle class="core" r="5" fill="#34d399"/>
+          </g>
+        </g>
+      </svg>
+      <div class="maptip" id="maptip"></div>
+      <div class="maplegend">
+        <span><span class="ld" style="background:#f87171"></span>Saúde crítico</span>
+        <span><span class="ld" style="background:#fbbf24"></span>Atenção</span>
+        <span><span class="ld" style="background:#34d399"></span>Normal</span>
+        <span><span class="ld" style="background:#3b82f6"></span>Educação</span>
+        <span><span class="ld" style="background:#a78bfa"></span>Social</span>
+      </div>
+    </div>
+
+    <h2 class="sub">Resumo executivo do dia <span class="nt" id="hoje"></span></h2>
+    <div class="grid g4">
+      <div class="card kpi tilt"><span class="badge b-g">tempo real</span><div class="v" data-count="2847">0</div><div class="l">Atendimentos públicos hoje</div><div class="src">saúde + educação + social + 156</div></div>
+      <div class="card kpi tilt"><span class="badge b-a">tempo real</span><div class="v" style="color:var(--ambar)" data-count="3">0</div><div class="l">Pontos de atenção ativos</div><div class="src">fila UPA Sul · creche Barreiros · 156</div></div>
+      <div class="card kpi tilt"><span class="badge b-c">radar</span><div class="v" style="color:var(--verde)">100%</div><div class="l">Obrigações legais em dia</div><div class="src">RREO, RGF, SIOPE, SIOPS publicados</div></div>
+      <div class="card kpi tilt"><span class="badge b-r">captação</span><div class="v" style="color:var(--ouro)">R$ 92,7 mi</div><div class="l">Potencial de captação mapeado</div><div class="src">5 fontes federais · ver Pilar 3</div></div>
+    </div>
+
+    <div class="note green" style="margin-top:26px"><b>Por que "100% conectado"?</b> Porque os três tempos da gestão conversam: o <b>Radar</b> mostra o que os dados oficiais provam, a <b>Cidade ao Vivo</b> mostra o que está acontecendo agora nos sistemas das secretarias, e a <b>Captação Inteligente</b> cruza os dois para transformar eficiência em recurso novo. Nenhum município do Brasil opera assim hoje.</div>
+  </section>
+
+  <!-- ================= PILAR 1 · RADAR ================= -->
+  <section class="sec" id="radar">
+    <h1 class="page"><span class="grad">Radar de Gestão</span> <span class="pill pl-1">Pilar 1 · Dados consolidados</span></h1>
+    <p class="intro">Tudo o que o município já fez, provado por dados oficiais: SICONFI, TCE-SC (e-Sfinge), SIOPE, SIOPS, INEP e IBGE. Evolução direta do <b style="color:#fff">Radar Fiscal 360</b> (i10), hoje no ar com 645 municípios. <i>Dados ilustrativos para São José/SC.</i></p>
+
+    <div class="grid g4">
+      <div class="card kpi tilt"><span class="badge b-c">SICONFI</span><div class="v">R$ 1,84 bi</div><div class="l">Receita Corrente Líquida</div><svg class="spark" data-spark="62,64,61,68,72,70,76,80,84,88" data-cor="#22d3ee"></svg><div class="src">RGF · 1º quadrimestre 2026</div></div>
+      <div class="card kpi tilt"><span class="badge b-c">SICONFI</span><div class="v" style="color:var(--verde)">+R$ 38,4 mi</div><div class="l">Resultado Primário <span class="delta up">▲ vs meta LDO</span></div><svg class="spark" data-spark="20,28,12,35,30,42,38,45,40,48" data-cor="#34d399"></svg><div class="src">RREO Anexo 06</div></div>
+      <div class="card kpi tilt"><span class="badge b-a">INEP</span><div class="v">6,3</div><div class="l">IDEB anos iniciais <span class="delta up">▲ +0,2</span></div><svg class="spark" data-spark="52,55,58,57,60,63,65,66,69,72" data-cor="#3b82f6"></svg><div class="src">meta 6,1 · superada</div></div>
+      <div class="card kpi tilt"><span class="badge b-g">SIOPS</span><div class="v">19,4%</div><div class="l">Aplicação em Saúde (ASPS)</div><svg class="spark" data-spark="60,62,58,64,66,63,68,70,69,72" data-cor="#f472b6"></svg><div class="src">piso 15% · conforme</div></div>
+    </div>
+
+    <h2 class="sub">Limites legais — tetos LRF × pisos constitucionais <span class="nt">semáforo automático com base legal</span></h2>
+    <div class="grid g2">
+      <div class="card tilt">
+        <div style="font-weight:800;margin-bottom:6px">Tetos fiscais <span style="font-size:11px;color:var(--txt3);font-weight:600">(LRF · % da RCL)</span></div>
+        <div class="lrf">
+          <div class="row"><div class="top"><span class="nm">Despesa de Pessoal <span class="tag t-at">Atenção</span></span><span class="vl">51,8%</span></div>
+            <div class="track"><div class="fill glow-a" data-w="86.3"></div><div class="mark" style="left:90%"><span class="mlbl">prud. 57%</span></div><div class="mark" style="left:100%"><span class="mlbl">60%</span></div></div>
+            <div class="sublbl">limite 60% · prudencial 57% · alerta 54% — trajetória de alta há 3 quadrimestres</div></div>
+          <div class="row"><div class="top"><span class="nm">Dívida Consolidada <span class="tag t-ok">Conforme</span></span><span class="vl">11,2%</span></div>
+            <div class="track"><div class="fill glow-v" data-w="9.3"></div></div>
+            <div class="sublbl">limite 120% da RCL</div></div>
+          <div class="row"><div class="top"><span class="nm">Operações de Crédito <span class="tag t-ok">Conforme</span></span><span class="vl">2,4%</span></div>
+            <div class="track"><div class="fill glow-v" data-w="15"></div></div>
+            <div class="sublbl">limite 16%</div></div>
+          <div class="row"><div class="top"><span class="nm">Garantias Concedidas <span class="tag t-ok">Conforme</span></span><span class="vl">0,0%</span></div>
+            <div class="track"><div class="fill glow-v" data-w="0"></div></div>
+            <div class="sublbl">limite 22%</div></div>
+        </div>
+      </div>
+      <div class="card tilt">
+        <div style="font-weight:800;margin-bottom:6px">Pisos constitucionais <span style="font-size:11px;color:var(--txt3);font-weight:600">(mínimos obrigatórios)</span></div>
+        <div class="lrf">
+          <div class="row"><div class="top"><span class="nm">Educação (MDE) <span class="tag t-ok">Acima do piso</span></span><span class="vl">26,8%</span></div>
+            <div class="track"><div class="fill glow-c" data-w="100"></div><div class="mark" style="left:93%"><span class="mlbl">mín. 25%</span></div></div>
+            <div class="sublbl">CF art. 212 · mínimo 25% da receita de impostos</div></div>
+          <div class="row"><div class="top"><span class="nm">Saúde (ASPS) <span class="tag t-ok">Acima do piso</span></span><span class="vl">19,4%</span></div>
+            <div class="track"><div class="fill glow-v" data-w="100"></div><div class="mark" style="left:77%"><span class="mlbl">mín. 15%</span></div></div>
+            <div class="sublbl">LC 141/2012 · mínimo 15%</div></div>
+          <div class="row"><div class="top"><span class="nm">FUNDEB — profissionais <span class="tag t-at">Atenção</span></span><span class="vl">71,2%</span></div>
+            <div class="track"><div class="fill glow-a" data-w="100"></div><div class="mark" style="left:98%"><span class="mlbl">mín. 70%</span></div></div>
+            <div class="sublbl">EC 108/2020 · mínimo 70% em remuneração — margem de só 1,2 p.p.</div></div>
+          <div class="row"><div class="top"><span class="nm">FUNDEB — aplicação total <span class="tag t-ok">Integral</span></span><span class="vl">100%</span></div>
+            <div class="track"><div class="fill glow-v" data-w="100"></div></div>
+            <div class="sublbl">aplicação integral no exercício + até 10% no 1º quadrimestre seguinte</div></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="sub">Execução orçamentária por função <span class="nt">dotação × liquidado · 2026</span></h2>
+    <div class="card tilt">
+      <div class="lrf">
+        <div class="row"><div class="top"><span class="nm">🎓 Educação</span><span class="vl">R$ 486 mi <span style="color:var(--txt3);font-weight:600">/ 612 mi</span></span></div>
+          <div class="track"><div class="fill glow-c" data-w="79.4"></div></div><div class="sublbl">79,4% liquidado · 31,2% do orçamento total</div></div>
+        <div class="row"><div class="top"><span class="nm">🏥 Saúde</span><span class="vl">R$ 402 mi <span style="color:var(--txt3);font-weight:600">/ 538 mi</span></span></div>
+          <div class="track"><div class="fill glow-v" data-w="74.7"></div></div><div class="sublbl">74,7% liquidado · 27,4% do total</div></div>
+        <div class="row"><div class="top"><span class="nm">🚧 Urbanismo & Infraestrutura</span><span class="vl">R$ 148 mi <span style="color:var(--txt3);font-weight:600">/ 246 mi</span></span></div>
+          <div class="track"><div class="fill glow-a" data-w="60.2"></div></div><div class="sublbl">60,2% liquidado · ritmo abaixo do esperado para o período</div></div>
+        <div class="row"><div class="top"><span class="nm">🤝 Assistência Social</span><span class="vl">R$ 64 mi <span style="color:var(--txt3);font-weight:600">/ 87 mi</span></span></div>
+          <div class="track"><div class="fill glow-v" data-w="73.6"></div></div><div class="sublbl">73,6% liquidado · 4,4% do total</div></div>
+        <div class="row"><div class="top"><span class="nm">🏛️ Administração</span><span class="vl">R$ 173 mi <span style="color:var(--txt3);font-weight:600">/ 221 mi</span></span></div>
+          <div class="track"><div class="fill glow-c" data-w="78.3"></div></div><div class="sublbl">78,3% liquidado · 11,3% do total</div></div>
+      </div>
+    </div>
+
+    <h2 class="sub">Motor de alertas — risco → solução → base legal <span class="nt">o diferencial do Radar 360</span></h2>
+    <table>
+      <thead><tr><th>Alerta detectado</th><th>Risco</th><th>Solução sugerida</th><th>Base legal</th></tr></thead>
+      <tbody>
+        <tr><td>Pessoal em 51,8% e subindo há 3 quadrimestres</td><td><span class="tag t-at">Atenção</span></td><td>Projetar impacto de reajustes antes do limite de alerta (54%)</td><td>LC 101/2000, art. 22</td></tr>
+        <tr><td>FUNDEB profissionais a 1,2 p.p. do piso</td><td><span class="tag t-at">Atenção</span></td><td>Reclassificar despesas elegíveis como remuneração docente</td><td>EC 108/2020 · Lei 14.113/20, art. 26</td></tr>
+        <tr><td>Urbanismo com execução 60,2% (ritmo baixo)</td><td><span class="tag t-info">Gestão</span></td><td>Destravar medições de contratos em andamento; risco de devolução de convênio</td><td>LDO 2026, art. 31</td></tr>
+        <tr><td>Creche: fila de 134 no Barreiros com meta PME vencida</td><td><span class="tag t-cr">Crítico</span></td><td>Expandir vagas conveniadas (ponderador FUNDEB 0,80x) ou novo CEI — ver Pilar 3</td><td>PNE Meta 1 · Lei 14.113/20</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note"><b>Origem comprovada:</b> este pilar reusa o motor do Radar Fiscal 360 do Instituto i10 — já no ar com 645 municípios de SP, 6 fontes integradas, 1.789 alertas e 40 soluções catalogadas com base legal. Para São José, basta apontar o pipeline para SC (SICONFI/SIOPE/SIOPS/INEP são nacionais; TCE-SC e-Sfinge entra como fonte estadual).</div>
+  </section>
+
+  <!-- ================= PILAR 2 · TEMPO REAL ================= -->
+  <section class="sec" id="vivo">
+    <h1 class="page"><span class="grad">Cidade ao Vivo</span> <span class="pill pl-2">Pilar 2 · Tempo real</span></h1>
+    <p class="intro">APIs conectadas aos sistemas que as secretarias já usam — o servidor abastece o sistema de sempre, e o dado aparece aqui no mesmo instante. <b style="color:#fff">Sem retrabalho, sem planilha, sem esperar o fim do mês.</b> <i>Simulação com dados ilustrativos; os números se movem como na operação real.</i></p>
+
+    <div class="areatabs">
+      <div class="atab a-saude on" data-a="saude">🏥 Saúde</div>
+      <div class="atab a-edu" data-a="edu">🎓 Educação</div>
+      <div class="atab a-social" data-a="social">🤝 Assistência Social</div>
+      <div class="atab a-urbano" data-a="urbano">🚦 Segurança & Cidade</div>
+    </div>
+
+    <!-- SAÚDE -->
+    <div class="areapane show" id="pane-saude">
+      <div class="grid g4">
+        <div class="card lkpi tilt"><div class="lv" id="rt-fila">34</div><div class="ll">Pacientes em fila agora <span style="color:var(--txt3)">(2 UPAs)</span></div><div class="lu"><span class="d"></span><span id="rt-fila-u">atualizado agora</span></div></div>
+        <div class="card lkpi tilt"><div class="lv" id="rt-atend">1.284</div><div class="ll">Atendimentos hoje na rede</div><div class="lu"><span class="d"></span>UPAs + 21 UBS · Celk/e-SUS</div></div>
+        <div class="card lkpi tilt"><div class="lv" style="color:var(--ambar)" id="rt-espera">38<span style="font-size:16px"> min</span></div><div class="ll">Espera média classificação verde</div><div class="lu"><span class="d"></span>meta municipal: 45 min</div></div>
+        <div class="card lkpi tilt"><div class="lv" id="rt-exames">412</div><div class="ll">Exames na fila de regulação</div><div class="lu"><span class="d"></span>tempo médio: 12 dias</div></div>
+      </div>
+      <div class="grid g2" style="margin-top:16px">
+        <div class="card tilt">
+          <div style="font-weight:800;margin-bottom:10px">Filas por unidade <span style="font-size:10.5px;color:var(--txt3);font-weight:600">· agora</span></div>
+          <div class="filas" id="filas-saude">
+            <div class="frow"><span>UPA Sul — Forquilhinhas</span><span class="fq" style="color:var(--verm)">23</span><div class="minitrack"><div class="minifill" style="width:77%;background:var(--verm)"></div></div></div>
+            <div class="frow"><span>UPA Norte — Kobrasol</span><span class="fq" style="color:var(--verde)">11</span><div class="minitrack"><div class="minifill" style="width:37%;background:var(--verde)"></div></div></div>
+            <div class="frow"><span>UBS Campinas (agenda do dia)</span><span class="fq" style="color:var(--ambar)">92%</span><div class="minitrack"><div class="minifill" style="width:92%;background:var(--ambar)"></div></div></div>
+            <div class="frow"><span>UBS Barreiros (agenda do dia)</span><span class="fq" style="color:var(--verde)">71%</span><div class="minitrack"><div class="minifill" style="width:71%;background:var(--verde)"></div></div></div>
+            <div class="frow"><span>Regulação — consultas especializadas</span><span class="fq" style="color:var(--ambar)">1.872</span><div class="minitrack"><div class="minifill" style="width:64%;background:var(--ambar)"></div></div></div>
+          </div>
+          <div class="gauge" style="margin-top:16px">
+            <div class="g" id="gaugeLeitos" style="background:conic-gradient(var(--ambar) 0 0%,rgba(255,255,255,.08) 0)"><b data-donut="81">0%</b></div>
+            <div><b style="font-size:13.5px">Ocupação de leitos de observação</b><p style="font-size:12px;color:var(--txt2)">29 de 36 leitos ocupados nas UPAs. Acima de 90%, o protocolo de contingência é acionado automaticamente.</p></div>
+          </div>
+        </div>
+        <div class="card tilt">
+          <div style="font-weight:800;margin-bottom:10px">Eventos da rede <span style="font-size:10.5px;color:var(--txt3);font-weight:600">· feed em tempo real</span></div>
+          <div class="feed" id="feed-saude"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDUCAÇÃO -->
+    <div class="areapane" id="pane-edu">
+      <div class="grid g4">
+        <div class="card lkpi tilt"><div class="lv" id="rt-matric">27.842</div><div class="ll">Matrículas ativas na rede</div><div class="lu"><span class="d"></span>74 escolas e CEIs · sist. Betha Educação</div></div>
+        <div class="card lkpi tilt"><div class="lv" style="color:var(--verde)" id="rt-freq">93,1%</div><div class="ll">Presença de alunos hoje</div><div class="lu"><span class="d"></span>chamada digital · até a 3ª aula</div></div>
+        <div class="card lkpi tilt"><div class="lv" style="color:var(--ambar)" id="rt-prof">9</div><div class="ll">Professores ausentes hoje</div><div class="lu"><span class="d"></span>7 já cobertos por substituto</div></div>
+        <div class="card lkpi tilt"><div class="lv" id="rt-merenda">19.640</div><div class="ll">Refeições servidas hoje</div><div class="lu"><span class="d"></span>merenda · custo médio R$ 4,87</div></div>
+      </div>
+      <div class="grid g2" style="margin-top:16px">
+        <div class="card tilt">
+          <div style="font-weight:800;margin-bottom:10px">Sinais que viram ação <span style="font-size:10.5px;color:var(--txt3);font-weight:600">· cruzamentos automáticos</span></div>
+          <div class="check"><div class="ck ck-no">!</div><div class="ct"><b>23 alunos com 3+ faltas seguidas esta semana</b><span>Busca ativa disparada para o CRAS do bairro (integração Pilar 2 ↔ Social) — evasão é condicionalidade VAAR</span></div></div>
+          <div class="check"><div class="ck ck-at">!</div><div class="ct"><b>Fila de creche: 134 crianças no Barreiros</b><span>Cruzado com Pilar 3: cada vaga conveniada nova traz ponderador FUNDEB 0,80x — déficit vira plano de captação</span></div></div>
+          <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>Transporte escolar: 38 rotas, 0 atrasos</b><span>GPS da frota integrado — 2.140 alunos transportados hoje</span></div></div>
+          <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>100% das turmas com chamada digital até 9h</b><span>Frequência em tempo real é o que habilita o município no critério de permanência do VAAR</span></div></div>
+        </div>
+        <div class="card tilt">
+          <div style="font-weight:800;margin-bottom:10px">Eventos da rede <span style="font-size:10.5px;color:var(--txt3);font-weight:600">· feed em tempo real</span></div>
+          <div class="feed" id="feed-edu"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL -->
+    <div class="areapane" id="pane-social">
+      <div class="grid g4">
+        <div class="card lkpi tilt"><div class="lv" id="rt-cras">186</div><div class="ll">Atendimentos hoje (5 CRAS + CREAS)</div><div class="lu"><span class="d"></span>prontuário SUAS integrado</div></div>
+        <div class="card lkpi tilt"><div class="lv" id="rt-cad">31.240</div><div class="ll">Famílias no CadÚnico</div><div class="lu"><span class="d"></span>84% com cadastro atualizado</div></div>
+        <div class="card lkpi tilt"><div class="lv" style="color:var(--ambar)" id="rt-acolh">47</div><div class="ll">Pessoas em acolhimento</div><div class="lu"><span class="d"></span>capacidade: 58 vagas</div></div>
+        <div class="card lkpi tilt"><div class="lv" id="rt-visitas">28</div><div class="ll">Visitas domiciliares hoje</div><div class="lu"><span class="d"></span>12 da busca ativa escolar</div></div>
+      </div>
+      <div class="grid g2" style="margin-top:16px">
+        <div class="card tilt">
+          <div style="font-weight:800;margin-bottom:10px">Proteção social ativa <span style="font-size:10.5px;color:var(--txt3);font-weight:600">· cruzamentos</span></div>
+          <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>16% do CadÚnico desatualizado → mutirão agendado</b><span>Cadastro atualizado = mais repasse federal (IGD-M) — impacto estimado no Pilar 3</span></div></div>
+          <div class="check"><div class="ck ck-at">!</div><div class="ct"><b>Acolhimento a 81% da capacidade</b><span>Tendência de inverno: plano de contingência sugerido com 15 dias de antecedência</span></div></div>
+          <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>23 alertas de evasão escolar recebidos da Educação</b><span>12 famílias já visitadas — o dado circula entre secretarias sem ofício, sem papel</span></div></div>
+        </div>
+        <div class="card tilt">
+          <div style="font-weight:800;margin-bottom:10px">Eventos da rede <span style="font-size:10.5px;color:var(--txt3);font-weight:600">· feed em tempo real</span></div>
+          <div class="feed" id="feed-social"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- URBANO -->
+    <div class="areapane" id="pane-urbano">
+      <div class="grid g4">
+        <div class="card lkpi tilt"><div class="lv" id="rt-156">214</div><div class="ll">Chamados 156 abertos</div><div class="lu"><span class="d"></span>SLA médio: 2,1 dias</div></div>
+        <div class="card lkpi tilt"><div class="lv" style="color:var(--verde)" id="rt-onibus">87<span style="font-size:16px">/92</span></div><div class="ll">Ônibus em operação agora</div><div class="lu"><span class="d"></span>atraso médio 4 min · GPS frota</div></div>
+        <div class="card lkpi tilt"><div class="lv" id="rt-cam">241</div><div class="ll">Câmeras ativas (muralha digital)</div><div class="lu"><span class="d"></span>3 em manutenção</div></div>
+        <div class="card lkpi tilt"><div class="lv" style="color:var(--ambar)" id="rt-ilum">38</div><div class="ll">Pontos de iluminação pendentes</div><div class="lu"><span class="d"></span>12 no bairro Campinas</div></div>
+      </div>
+      <div class="grid g2" style="margin-top:16px">
+        <div class="card tilt">
+          <div style="font-weight:800;margin-bottom:10px">Zeladoria por tipo <span style="font-size:10.5px;color:var(--txt3);font-weight:600">· backlog atual</span></div>
+          <div class="filas">
+            <div class="frow"><span>💡 Iluminação pública</span><span class="fq" style="color:var(--ambar)">38</span><div class="minitrack"><div class="minifill" style="width:54%;background:var(--ambar)"></div></div></div>
+            <div class="frow"><span>🕳️ Tapa-buraco / pavimento</span><span class="fq" style="color:var(--verm)">61</span><div class="minitrack"><div class="minifill" style="width:78%;background:var(--verm)"></div></div></div>
+            <div class="frow"><span>🌳 Poda e áreas verdes</span><span class="fq" style="color:var(--verde)">44</span><div class="minitrack"><div class="minifill" style="width:40%;background:var(--verde)"></div></div></div>
+            <div class="frow"><span>🗑️ Limpeza e entulho</span><span class="fq" style="color:var(--verde)">29</span><div class="minitrack"><div class="minifill" style="width:31%;background:var(--verde)"></div></div></div>
+            <div class="frow"><span>🚧 Sinalização viária</span><span class="fq" style="color:var(--ambar)">42</span><div class="minitrack"><div class="minifill" style="width:50%;background:var(--ambar)"></div></div></div>
+          </div>
+        </div>
+        <div class="card tilt">
+          <div style="font-weight:800;margin-bottom:10px">Eventos da cidade <span style="font-size:10.5px;color:var(--txt3);font-weight:600">· feed em tempo real</span></div>
+          <div class="feed" id="feed-urbano"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note green" style="margin-top:24px"><b>Como o dado chega aqui:</b> conectores de API nos sistemas que o município já usa — Betha (gestão/educação), Celk e e-SUS APS (saúde), prontuário SUAS, GPS da frota, central 156. O servidor público não muda sua rotina: ele abastece o sistema de sempre, e o Conecta lê via API. Onde não houver API, entra conector de banco ou RPA como ponte temporária.</div>
+  </section>
+
+  <!-- ================= PILAR 3 · CAPTAÇÃO ================= -->
+  <section class="sec" id="captacao">
+    <h1 class="page"><span class="grad">Captação Inteligente</span> <span class="pill pl-3">Pilar 3 · Recursos a acessar</span></h1>
+    <p class="intro">Quanto dinheiro federal e estadual São José pode acessar — e <b style="color:#fff">exatamente o que fazer para captar</b>. O motor cruza os recursos disponíveis com os dados reais dos Pilares 1 e 2: eficiência comprovada vira recurso novo.</p>
+
+    <div class="card tilt" style="padding:26px">
+      <div class="bigstat">
+        <div class="bv" data-count="92.7" data-prefix="R$ " data-suffix=" mi">R$ 0</div>
+        <div class="bl"><b style="color:#fff">potencial de captação anual mapeado</b> em 5 fontes — equivalente a 5,0% da RCL ou a <b style="color:var(--ouro)">3 novos CEIs + 1 UPA por ano</b>, sem aumentar um centavo de imposto.</div>
+      </div>
+      <div class="lrf" style="margin-top:18px">
+        <div class="row rowlink" onclick="captNav('edu')"><div class="top"><span class="nm">🎓 FUNDEB — VAAT tempo integral<span class="verlk">ver detalhe →</span></span><span class="vl">R$ 31,2 mi</span></div>
+          <div class="track"><div class="fill glow-a" data-w="34"></div></div></div>
+        <div class="row rowlink" onclick="captNav('edu')"><div class="top"><span class="nm">🎓 FUNDEB — VAAR (condicionalidades)<span class="verlk">ver detalhe →</span></span><span class="vl">R$ 18,6 mi</span></div>
+          <div class="track"><div class="fill glow-a" data-w="20"></div></div></div>
+        <div class="row rowlink" onclick="captNav('saude')"><div class="top"><span class="nm">🏥 Saúde — fundo a fundo (Previne/eMulti/CEO)<span class="verlk">ver detalhe →</span></span><span class="vl">R$ 22,4 mi</span></div>
+          <div class="track"><div class="fill glow-a" data-w="24"></div></div></div>
+        <div class="row rowlink" onclick="captNav('social')"><div class="top"><span class="nm">🤝 SUAS — IGD-M, blocos e cofinanciamento<span class="verlk">ver detalhe →</span></span><span class="vl">R$ 6,1 mi</span></div>
+          <div class="track"><div class="fill glow-a" data-w="7"></div></div></div>
+        <div class="row rowlink" onclick="captNav('transf')"><div class="top"><span class="nm">🏗️ Transferegov — emendas e convênios<span class="verlk">ver detalhe →</span></span><span class="vl">R$ 14,4 mi</span></div>
+          <div class="track"><div class="fill glow-a" data-w="15"></div></div></div>
+      </div>
+    </div>
+
+    <h2 class="sub">Detalhe por área <span class="nt">clique numa fonte acima ou navegue pelas abas</span></h2>
+    <div class="capttabs">
+      <div class="ctab on" data-c="edu" onclick="captNav('edu')">🎓 Educação · FUNDEB <span class="cv2">R$ 49,8 mi</span></div>
+      <div class="ctab" data-c="saude" onclick="captNav('saude')">🏥 Saúde · APS <span class="cv2">R$ 22,4 mi</span></div>
+      <div class="ctab" data-c="social" onclick="captNav('social')">🤝 Social · SUAS <span class="cv2">R$ 6,1 mi</span></div>
+      <div class="ctab" data-c="transf" onclick="captNav('transf')">🏗️ Transferegov <span class="cv2">R$ 14,4 mi</span></div>
+    </div>
+
+    <!-- ===== ABA EDUCAÇÃO ===== -->
+    <div class="captpane show" id="capt-edu">
+    <div class="grid g2">
+      <div class="card fonte f-edu tilt">
+        <h4>VAAR — 5 condicionalidades do MEC <span class="tag t-at">3 de 5</span></h4>
+        <p style="margin-bottom:12px">A complementação VAAR distribui R$ 7,5 bi/ano só para municípios que cumprem as condicionalidades. São José cumpre 3 — <b style="color:#fff">as 2 que faltam são monitoradas ao vivo pelo Pilar 2</b>.</p>
+        <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>Currículo alinhado à BNCC</b><span>homologado pelo CME em 2025</span></div></div>
+        <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>Gestão escolar por critérios técnicos</b><span>lei municipal de seleção de diretores vigente</span></div></div>
+        <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>Regime de colaboração com o estado</b><span>adesão ao programa estadual de alfabetização</span></div></div>
+        <div class="check"><div class="ck ck-no">✗</div><div class="ct"><b>Redução de evasão / abandono</b><span>Pilar 2 monitora faltas em tempo real → busca ativa automática</span></div><div class="cv" style="color:var(--ouro)">+R$ 9,8 mi</div></div>
+        <div class="check"><div class="ck ck-no">✗</div><div class="ct"><b>Indicador de aprendizagem com equidade</b><span>plano de recomposição com tutoria — trilha sugerida pela plataforma</span></div><div class="cv" style="color:var(--ouro)">+R$ 8,8 mi</div></div>
+      </div>
+      <div class="card fonte f-edu tilt">
+        <h4>VAAT — tempo integral & ponderadores</h4>
+        <div class="fv" style="color:var(--ouro)">R$ 31,2 mi<span style="font-size:12px;color:var(--txt2);font-weight:600"> /ano em potencial</span></div>
+        <p>Hoje só <b style="color:#fff">8%</b> da rede está em tempo integral (ponderador 1,25x–1,50x). Cada matrícula convertida vale mais no fundo — e o Censo Escolar é auditado contra a frequência real do Pilar 2 (zero risco de glosa).</p>
+        <div class="simbox" style="margin-top:14px">
+          <h4>Simulador · expansão do tempo integral</h4>
+          <div class="hint">Arraste: quantos alunos a mais em jornada integral até 2027?</div>
+          <input type="range" id="simRange" min="0" max="8000" step="250" value="2500">
+          <div class="simout">
+            <div class="so"><div class="sv" style="color:var(--cyan)" id="simAlunos">2.500</div><div class="sl">alunos em tempo integral</div></div>
+            <div class="so"><div class="sv" style="color:var(--ouro)" id="simReceita">+R$ 9,8 mi</div><div class="sl">receita FUNDEB adicional/ano</div></div>
+            <div class="so"><div class="sv" style="color:var(--verde)" id="simRank">top 12</div><div class="sl">posição em SC em cobertura integral</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note gold" style="margin-top:16px"><b>Metodologia comprovada:</b> o motor FUNDEB do Instituto i10 já mapeou potencial em 645 municípios de SP e na Paraíba (de R$ 1,2 mi a R$ 237 mi por município). São José é o primeiro a conectar esse mapa ao dado operacional em tempo real.</div>
+    </div>
+
+    <!-- ===== ABA SAÚDE ===== -->
+    <div class="captpane" id="capt-saude">
+    <div class="grid g2">
+      <div class="card fonte f-sau tilt">
+        <h4>Cofinanciamento APS — indicadores que pagam <span class="tag t-at">2 de 4 blocos otimizados</span></h4>
+        <p style="margin-bottom:12px">O repasse federal da Atenção Primária é <b style="color:#fff">por desempenho</b>: capitação + indicadores. O e-SUS já alimenta o Pilar 2 — os mesmos números que pagam o repasse são vistos <b style="color:#fff">antes do quadrimestre fechar</b>, quando ainda dá tempo de agir.</p>
+        <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>Vacinação em dia</b><span>cobertura 96% — acima da meta ministerial</span></div></div>
+        <div class="check"><div class="ck ck-ok">✓</div><div class="ct"><b>Hipertensos e diabéticos acompanhados</b><span>consulta + aferição semestral em 81% da linha de cuidado</span></div></div>
+        <div class="check"><div class="ck ck-no">✗</div><div class="ct"><b>Capitação: 38 mil munícipes sem vínculo a equipe</b><span>Pilar 2 mostra os bairros descobertos → mutirão de cadastro em 4 UBS</span></div><div class="cv" style="color:var(--ouro)">+R$ 9,2 mi</div></div>
+        <div class="check"><div class="ck ck-no">✗</div><div class="ct"><b>Pré-natal: 6 consultas + odonto abaixo da meta</b><span>gestantes identificadas nominalmente no e-SUS → busca ativa</span></div><div class="cv" style="color:var(--ouro)">+R$ 8,2 mi</div></div>
+        <div class="check"><div class="ck ck-at">!</div><div class="ct"><b>Habilitações não solicitadas: eMulti + CEO</b><span>município tem porte e demanda — falta só o pleito ao FNS</span></div><div class="cv" style="color:var(--ouro)">+R$ 5,0 mi</div></div>
+      </div>
+      <div class="card fonte f-sau tilt">
+        <h4>Capitação ponderada — quem não está cadastrado, não conta</h4>
+        <div class="fv" style="color:var(--ouro)">R$ 22,4 mi<span style="font-size:12px;color:var(--txt2);font-weight:600"> /ano em potencial</span></div>
+        <p>São José tem ~290 mil habitantes, mas só <b style="color:#fff">252 mil</b> vinculados a equipes de saúde da família. Cada munícipe cadastrado e vinculado vale repasse federal recorrente — e idoso, gestante e território vulnerável valem mais (ponderação).</p>
+        <div class="simbox" style="margin-top:14px;border-color:rgba(248,113,113,.35);background:linear-gradient(135deg,rgba(248,113,113,.07),rgba(244,114,182,.05))">
+          <h4>Simulador · mutirão de vinculação</h4>
+          <div class="hint">Arraste: quantos munícipes a mais vinculados a equipes APS?</div>
+          <input type="range" id="simSaude" min="0" max="38000" step="1000" value="15000">
+          <div class="simout">
+            <div class="so"><div class="sv" style="color:var(--rosa)" id="simSauPop">15.000</div><div class="sl">novos vínculos APS</div></div>
+            <div class="so"><div class="sv" style="color:var(--ouro)" id="simSauReceita">+R$ 3,6 mi</div><div class="sl">capitação adicional/ano</div></div>
+            <div class="so"><div class="sv" style="color:var(--verde)" id="simSauCob">92%</div><div class="sl">cobertura APS resultante</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:16px;border-left-color:var(--verm);background:rgba(248,113,113,.05)"><b>O cruzamento Pilar 2 → Pilar 3:</b> a fila da UPA Sul que o painel ao vivo mostra é, em parte, gente sem vínculo com UBS. Resolver o cadastro reduz a fila <b>e</b> aumenta o repasse — o mesmo dado prova as duas coisas.</div>
+    </div>
+
+    <!-- ===== ABA SOCIAL ===== -->
+    <div class="captpane" id="capt-social">
+    <div class="grid g2">
+      <div class="card fonte f-soc tilt">
+        <h4>SUAS — o repasse segue a qualidade do cadastro <span class="tag t-at">IGD-M 0,74</span></h4>
+        <p style="margin-bottom:12px">O IGD-M (índice de gestão descentralizada) multiplica o repasse federal do Bolsa Família/CadÚnico. São José está em <b style="color:#fff">0,74</b> — cada centésimo a mais é dinheiro recorrente.</p>
+        <div class="check"><div class="ck ck-no">✗</div><div class="ct"><b>16% do CadÚnico desatualizado (4.998 famílias)</b><span>Pilar 2 lista as famílias por bairro → mutirão com meta semanal</span></div><div class="cv" style="color:var(--ouro)">+R$ 1,9 mi</div></div>
+        <div class="check"><div class="ck ck-no">✗</div><div class="ct"><b>Aceite de expansão CREAS + Centro Pop pendente</b><span>cofinanciamento federal ofertado e não aceito no último ciclo</span></div><div class="cv" style="color:var(--ouro)">+R$ 1,4 mi</div></div>
+        <div class="check"><div class="ck ck-at">!</div><div class="ct"><b>Cofinanciamento estadual subutilizado</b><span>piso catarinense de proteção básica — pleito anual não renovado</span></div><div class="cv" style="color:var(--ouro)">+R$ 0,9 mi</div></div>
+        <div class="check"><div class="ck ck-at">!</div><div class="ct"><b>Programas de adesão: Acessuas + Primeira Infância</b><span>requisitos já cumpridos pela rede — falta formalizar adesão</span></div><div class="cv" style="color:var(--ouro)">+R$ 1,9 mi</div></div>
+      </div>
+      <div class="card fonte f-soc tilt">
+        <h4>Trajetória do IGD-M com o mutirão</h4>
+        <div class="fv" style="color:var(--ouro)">R$ 6,1 mi<span style="font-size:12px;color:var(--txt2);font-weight:600"> /ano em potencial</span></div>
+        <p style="margin-bottom:14px">A atualização cadastral que o Pilar 2 monitora ao vivo (19 cadastros/dia no mutirão atual) muda o índice no ciclo seguinte:</p>
+        <div class="lrf">
+          <div class="row"><div class="top"><span class="nm">Hoje · IGD-M 0,74</span><span class="vl">84% atualizado</span></div>
+            <div class="track"><div class="fill glow-a" data-w="84"></div><div class="mark" style="left:90%"><span class="mlbl">meta 90%</span></div></div></div>
+          <div class="row"><div class="top"><span class="nm">+90 dias · IGD-M 0,82 <span class="tag t-info">projeção</span></span><span class="vl">91% atualizado</span></div>
+            <div class="track"><div class="fill glow-c" data-w="91"></div></div></div>
+          <div class="row"><div class="top"><span class="nm">+180 dias · IGD-M 0,88 <span class="tag t-ok">repasse máximo</span></span><span class="vl">96% atualizado</span></div>
+            <div class="track"><div class="fill glow-v" data-w="96"></div></div></div>
+        </div>
+        <p style="font-size:12px;color:var(--txt2);margin-top:12px">Bônus invisível: cadastro atualizado também <b style="color:#fff">corrige a capitação da Saúde</b> e melhora a focalização da busca ativa escolar — um mutirão, três pilares.</p>
+      </div>
+    </div>
+    <div class="note roxo" style="margin-top:16px"><b>O cruzamento Pilar 2 → Pilar 3:</b> os 23 alertas de evasão escolar que a Educação manda ao CRAS geram visitas — e cada visita é uma oportunidade de atualizar o CadÚnico da família. A operação social já paga o próprio reforço.</div>
+    </div>
+
+    <!-- ===== ABA TRANSFEREGOV ===== -->
+    <div class="captpane" id="capt-transf">
+    <div class="card fonte f-ger tilt" style="margin-bottom:16px">
+      <h4>Radar de editais e emendas — proposta nasce com diagnóstico anexado</h4>
+      <div class="fv" style="color:var(--ouro)">R$ 14,4 mi<span style="font-size:12px;color:var(--txt2);font-weight:600"> em janelas abertas agora</span></div>
+      <p>O motor varre Transferegov, FNDE, FNS e FNAS e cruza cada edital com os déficits que a própria plataforma detecta. Em vez de "caçar recurso", o município recebe o match pronto: <b style="color:#fff">déficit comprovado + edital compatível + minuta de proposta</b>.</p>
+    </div>
+    <table>
+      <thead><tr><th>Janela aberta</th><th>Órgão</th><th>Match automático (evidência do Conecta)</th><th class="c">Valor</th><th class="c">Prazo</th><th class="c">Status</th></tr></thead>
+      <tbody>
+        <tr><td><b>Pavimentação e drenagem urbana</b></td><td>Min. Cidades</td><td>backlog 156: 61 chamados de pavimento georreferenciados</td><td class="c"><b style="color:var(--ouro)">R$ 6,5 mi</b></td><td class="c">28 dias</td><td class="c"><span class="tag t-ok">minuta pronta</span></td></tr>
+        <tr><td><b>Construção/ampliação de creches</b></td><td>FNDE</td><td>fila de 134 crianças no Barreiros + meta PME vencida</td><td class="c"><b style="color:var(--ouro)">R$ 4,2 mi</b></td><td class="c">45 dias</td><td class="c"><span class="tag t-ok">minuta pronta</span></td></tr>
+        <tr><td><b>Reforma e ampliação de UBS</b></td><td>FNS</td><td>UBS Campinas com agenda a 92% há 3 semanas</td><td class="c"><b style="color:var(--ouro)">R$ 2,1 mi</b></td><td class="c">60 dias</td><td class="c"><span class="tag t-at">em elaboração</span></td></tr>
+        <tr><td><b>Emenda de bancada SC · mobilidade</b></td><td>Bancada federal</td><td>GPS da frota: 2 corredores com atraso recorrente</td><td class="c"><b style="color:var(--ouro)">R$ 1,6 mi</b></td><td class="c">indicação ago</td><td class="c"><span class="tag t-info">articulação</span></td></tr>
+      </tbody>
+    </table>
+    <div class="grid g3" style="margin-top:16px">
+      <div class="card tilt"><div style="font-size:20px">🎯</div><h4 style="font-size:13.5px;margin:7px 0 3px">Taxa de êxito maior</h4><p style="font-size:12px;color:var(--txt2)">Proposta com diagnóstico georreferenciado e série histórica anexa pontua mais na análise técnica dos ministérios.</p></div>
+      <div class="card tilt"><div style="font-size:20px">⏱️</div><h4 style="font-size:13.5px;margin:7px 0 3px">Zero prazo perdido</h4><p style="font-size:12px;color:var(--txt2)">Alerta de janela aberta chega ao secretário com a contagem regressiva — hoje 70% dos editais passam despercebidos.</p></div>
+      <div class="card tilt"><div style="font-size:20px">🛡️</div><h4 style="font-size:13.5px;margin:7px 0 3px">Prestação de contas blindada</h4><p style="font-size:12px;color:var(--txt2)">O mesmo dado que justificou o pedido comprova a execução — convênio fecha sem pendência no Transferegov.</p></div>
+    </div>
+    </div>
+
+    <h2 class="sub">O cruzamento que ninguém faz <span class="nt">eficiência (Pilares 1+2) × recurso disponível (Pilar 3)</span></h2>
+    <div class="cross">
+      <div class="ch">⚡ Exemplo real do motor — fila de creche no Barreiros</div>
+      <div class="arrowflow">
+        <span class="st">📍 Pilar 2 detecta: 134 crianças na fila</span><span class="ar">→</span>
+        <span class="st">📊 Pilar 1 confirma: meta PME vencida + MDE com folga de 1,8%</span><span class="ar">→</span>
+        <span class="st">◈ Pilar 3 aponta: vaga conveniada = ponderador 0,80x + edital FNDE aberto</span><span class="ar">→</span>
+        <span class="st" style="border-color:var(--ouro);color:var(--ouro)">✓ Plano: 160 vagas · +R$ 2,3 mi/ano FUNDEB</span>
+      </div>
+      <div class="res">O mesmo motor roda para <b>evasão escolar → VAAR</b>, <b>cadastro APS → Previne</b>, <b>CadÚnico → IGD-M</b> e <b>backlog urbano → emendas</b>. O município deixa de "procurar recurso" — o recurso é apontado pelo próprio dado da operação.</div>
+    </div>
+
+    <table style="margin-top:22px">
+      <thead><tr><th>Oportunidade</th><th>Evidência (de onde vem o dado)</th><th class="c">Valor/ano</th><th class="c">Prazo</th><th>Próximo passo</th></tr></thead>
+      <tbody>
+        <tr><td><b>VAAR — evasão</b></td><td>frequência ao vivo (Pilar 2 · Educação)</td><td class="c"><b style="color:var(--ouro)">R$ 9,8 mi</b></td><td class="c">hab. 2027</td><td>busca ativa contínua + pacto de permanência</td></tr>
+        <tr><td><b>VAAT — tempo integral</b></td><td>matrículas + censo auditado (Pilares 1+2)</td><td class="c"><b style="color:var(--ouro)">R$ 31,2 mi</b></td><td class="c">2026–28</td><td>converter 2.500 matrículas (parceria OSC)</td></tr>
+        <tr><td><b>Previne — cadastro</b></td><td>e-SUS ao vivo (Pilar 2 · Saúde)</td><td class="c"><b style="color:var(--ouro)">R$ 8,2 mi</b></td><td class="c">próx. quad.</td><td>mutirão de vinculação em 4 UBS</td></tr>
+        <tr><td><b>IGD-M — CadÚnico</b></td><td>prontuário SUAS (Pilar 2 · Social)</td><td class="c"><b style="color:var(--ouro)">R$ 1,9 mi</b></td><td class="c">90 dias</td><td>mutirão de atualização (16% pendente)</td></tr>
+        <tr><td><b>Emenda — pavimentação</b></td><td>backlog 156 georreferenciado (Pilar 2 · Urbano)</td><td class="c"><b style="color:var(--ouro)">R$ 6,5 mi</b></td><td class="c">edital aberto</td><td>proposta Transferegov com diagnóstico anexo</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note gold"><b>O ciclo completo:</b> diagnóstico (Pilar 1) → ação monitorada ao vivo (Pilar 2) → captação (Pilar 3) → comprovação com o mesmo dado. Nenhuma das quatro áreas acima exige sistema novo na ponta — só conectar o que já existe.</div>
+  </section>
+
+  <!-- ================= IA ================= -->
+  <section class="sec" id="ia">
+    <h1 class="page"><span class="grad">Pergunte à Cidade</span> <span class="pill pl-ia">Inteligência Artificial</span></h1>
+    <p class="intro">Uma camada de IA sobre os três pilares: o prefeito e os secretários perguntam em português e a plataforma responde com o dado, a fonte e a recomendação. <i>Demonstração com respostas simuladas.</i></p>
+
+    <div class="chat">
+      <div class="chead"><span style="width:10px;height:10px;border-radius:50%;background:var(--roxo);box-shadow:0 0 10px var(--roxo)"></span>Conecta IA · conectada aos 3 pilares</div>
+      <div class="cbody" id="chatBody">
+        <div class="msg user">Como está a saúde agora e o que mais preocupa hoje?</div>
+        <div class="msg bot"><span class="mtag">Pilar 2 · tempo real</span><br><b>UPA Sul com fila acima do padrão</b> (23 pacientes, espera 41 min) — as outras unidades operam normais. A causa provável é a ausência de 1 médico no turno; o protocolo sugere remanejar 1 profissional da UPA Norte (fila baixa, 5 médicos ativos). Fora isso, ocupação de leitos em 81% e vacinação 4% acima da média semanal.</div>
+      </div>
+      <div class="cinput">
+        <div class="fake" onclick="askIA(0)">Pergunte qualquer coisa sobre a cidade…</div>
+        <button class="send">↑</button>
+      </div>
+    </div>
+    <div class="sugg">
+      <button onclick="askIA(0)">Se eu converter 4.000 alunos para tempo integral, qual o impacto no FUNDEB?</button>
+      <button onclick="askIA(1)">Qual secretaria está executando menos o orçamento?</button>
+      <button onclick="askIA(2)">O que falta para captar o VAAR em 2027?</button>
+      <button onclick="askIA(3)">Resumo do dia para a coletiva de imprensa</button>
+    </div>
+
+    <div class="grid g3" style="margin-top:26px">
+      <div class="card tilt"><div style="font-size:22px">🔮</div><h4 style="font-size:14px;margin:8px 0 4px">Preditivo</h4><p style="font-size:12px;color:var(--txt2)">Antecipa estouro de limites LRF, picos de demanda na saúde e risco de evasão — semanas antes.</p></div>
+      <div class="card tilt"><div style="font-size:22px">🩺</div><h4 style="font-size:14px;margin:8px 0 4px">Diagnóstico automático</h4><p style="font-size:12px;color:var(--txt2)">Leitura mensal do município inteiro com recomendações priorizadas por impacto e prazo.</p></div>
+      <div class="card tilt"><div style="font-size:22px">📡</div><h4 style="font-size:14px;margin:8px 0 4px">Alertas proativos</h4><p style="font-size:12px;color:var(--txt2)">O gestor não procura o problema: o problema chega com solução e base legal, no WhatsApp.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= ARQUITETURA ================= -->
+  <section class="sec" id="arq">
+    <h1 class="page"><span class="grad">Arquitetura & Fontes</span> <span class="pill pl-1">Como funciona</span></h1>
+    <p class="intro">O Conecta não substitui nenhum sistema da prefeitura — ele <b style="color:#fff">conecta os que já existem</b>. Camada de integração por APIs, lago de dados único e painéis por papel (prefeito, secretário, controladoria, cidadão).</p>
+
+    <div class="archflow">
+      <div class="acol">
+        <div class="at">1 · Sistemas de origem</div>
+        <div class="ai"><b>Betha</b> · gestão, contábil, educação</div>
+        <div class="ai"><b>Celk / e-SUS APS</b> · saúde</div>
+        <div class="ai"><b>Prontuário SUAS</b> · assistência</div>
+        <div class="ai"><b>156 / GPS frota / câmeras</b> · cidade</div>
+        <div class="ai"><b>SICONFI · TCE-SC · INEP · SIOPS</b> · oficiais</div>
+      </div>
+      <div class="acol">
+        <div class="at">2 · Camada de integração</div>
+        <div class="ai"><b>APIs</b> nos sistemas que já as têm</div>
+        <div class="ai"><b>Conectores de banco</b> nos legados</div>
+        <div class="ai"><b>RPA</b> como ponte temporária</div>
+        <div class="ai"><b>Pipeline diário</b> das fontes oficiais</div>
+      </div>
+      <div class="acol">
+        <div class="at">3 · Lago de dados + motor</div>
+        <div class="ai"><b>Dado histórico</b> (Pilar 1)</div>
+        <div class="ai"><b>Dado quente</b> em tempo real (Pilar 2)</div>
+        <div class="ai"><b>Motor de cruzamento</b> e captação (Pilar 3)</div>
+        <div class="ai"><b>IA</b> · linguagem natural + preditivo</div>
+      </div>
+      <div class="acol">
+        <div class="at">4 · Painéis por papel</div>
+        <div class="ai">👔 <b>Prefeito</b> · visão de comando</div>
+        <div class="ai">📋 <b>Secretários</b> · operação da pasta</div>
+        <div class="ai">⚖️ <b>Controladoria</b> · conformidade</div>
+        <div class="ai">👥 <b>Cidadão</b> · transparência viva</div>
+      </div>
+    </div>
+
+    <h2 class="sub">Fontes e integrações previstas</h2>
+    <table>
+      <thead><tr><th>Área</th><th>Sistema / fonte</th><th class="c">Tipo</th><th class="c">Fase</th><th>O que entrega</th></tr></thead>
+      <tbody>
+        <tr><td>Fiscal</td><td>SICONFI · RREO/RGF/DCA</td><td class="c">pipeline oficial</td><td class="c"><span class="tag t-ok">Mês 1</span></td><td>LRF, execução, limites — já operacional no Radar 360</td></tr>
+        <tr><td>Fiscal (SC)</td><td>TCE-SC · e-Sfinge</td><td class="c">pipeline oficial</td><td class="c"><span class="tag t-ok">Mês 1</span></td><td>programas, ações e metas físicas do PPA</td></tr>
+        <tr><td>Educação</td><td>Betha Educação + INEP/SIOPE</td><td class="c">API + oficial</td><td class="c"><span class="tag t-ok">Mês 2</span></td><td>matrícula, frequência ao vivo, IDEB, financiamento</td></tr>
+        <tr><td>Saúde</td><td>Celk · e-SUS APS · SIOPS · CNES</td><td class="c">API + oficial</td><td class="c"><span class="tag t-at">Mês 2</span></td><td>filas, produção, regulação, indicadores Previne</td></tr>
+        <tr><td>Social</td><td>Prontuário SUAS · CadÚnico/CECAD</td><td class="c">API + oficial</td><td class="c"><span class="tag t-at">Mês 3</span></td><td>atendimentos, cadastro, IGD-M</td></tr>
+        <tr><td>Cidade</td><td>Central 156 · GPS frota · iluminação</td><td class="c">API</td><td class="c"><span class="tag t-at">Mês 3</span></td><td>zeladoria, mobilidade, segurança</td></tr>
+        <tr><td>Captação</td><td>Transferegov · FNDE · FNS · FNAS</td><td class="c">radar de editais</td><td class="c"><span class="tag t-info">Mês 3</span></td><td>emendas, convênios e fundo a fundo</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="sub">Implantação completa em 4 meses <span class="nt">sprint único · entrega de valor todo mês</span></h2>
+    <div class="grid g4">
+      <div class="card tilt" style="border-top:3px solid var(--azul)"><b>Mês 1 · Fundação</b><p style="font-size:12.5px;color:var(--txt2);margin-top:6px">Pilar 1 <b style="color:#fff">no ar na semana 2</b> (reuso do Radar 360 apontado para SC) + mapa de captação v1 + acesso de prefeito e secretários.</p></div>
+      <div class="card tilt" style="border-top:3px solid var(--verde)"><b>Mês 2 · Tempo real</b><p style="font-size:12.5px;color:var(--txt2);margin-top:6px">APIs de Educação (Betha) e Saúde (Celk/e-SUS) ao vivo — as duas maiores redes — + mapa vivo e feeds no painel do prefeito.</p></div>
+      <div class="card tilt" style="border-top:3px solid var(--roxo)"><b>Mês 3 · Cobertura total</b><p style="font-size:12.5px;color:var(--txt2);margin-top:6px">Social (SUAS/CadÚnico) + Cidade (156, frota, iluminação) + IA de consulta + motor de captação pleno nas 4 áreas.</p></div>
+      <div class="card tilt" style="border-top:3px solid var(--ouro)"><b>Mês 4 · Go-live</b><p style="font-size:12.5px;color:var(--txt2);margin-top:6px">Painel do cidadão, treinamento das secretarias, lançamento público e primeiras propostas protocoladas no Transferegov. <b style="color:#fff">São José vira o caso nacional.</b></p></div>
+    </div>
+    <div class="note green"><b>Por que 4 meses é viável:</b> o Pilar 1 não é construído — é <b>reusado</b> (Radar 360 já roda com 645 municípios e fontes nacionais); os Pilares 2 e 3 entram em trilhas paralelas com squads por área, e cada secretaria sobe assim que sua API conecta — sem esperar a próxima.</div>
+
+    <div class="note roxo"><b>O projeto nacional:</b> a arquitetura nasce multi-município. Provada em São José, a mesma plataforma replica para os 295 municípios de SC e em seguida para o Brasil — o Radar 360 já cobre as fontes oficiais de todos os 5.570; falta só plugar o tempo real, cidade por cidade.</div>
+    <div class="disc">⚠️ Mockup conceitual com dados ilustrativos (junho/2026). Os valores fiscais, filas e potenciais de captação são exemplos verossímeis para apresentação — a versão piloto usa os dados reais de São José/SC.</div>
+  </section>
+
+  </div>
+</main>
+</div>
+
+<script>
+/* ========== estrelas de fundo ========== */
+const cv=document.getElementById('stars'),cx=cv.getContext('2d');let stars=[];
+function szc(){cv.width=innerWidth;cv.height=innerHeight;stars=Array.from({length:90},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.3+.2,a:Math.random(),v:Math.random()*.012+.004}))}
+szc();addEventListener('resize',szc);
+(function loop(){cx.clearRect(0,0,cv.width,cv.height);for(const s of stars){s.a+=s.v;const o=(Math.sin(s.a*6)+1)/2*.6+.1;cx.beginPath();cx.arc(s.x,s.y,s.r,0,7);cx.fillStyle=`rgba(160,200,255,${o})`;cx.fill()}requestAnimationFrame(loop)})();
+
+/* ========== relógio ========== */
+const fmt=n=>String(n).padStart(2,'0');
+function tick(){const d=new Date();document.getElementById('clock').textContent=`São José/SC · ${fmt(d.getDate())}/${fmt(d.getMonth()+1)}/${d.getFullYear()} · ${fmt(d.getHours())}:${fmt(d.getMinutes())}:${fmt(d.getSeconds())}`;}
+tick();setInterval(tick,1000);
+const dd=new Date();document.getElementById('hoje').textContent=dd.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+
+/* ========== navegação ========== */
+const items=document.querySelectorAll('.nitem'),secs=document.querySelectorAll('.sec'),crumb=document.getElementById('crumb');
+function nav(id){items.forEach(i=>i.classList.toggle('active',i.dataset.s===id));
+  secs.forEach(s=>s.classList.toggle('show',s.id===id));
+  const it=document.querySelector(`.nitem[data-s="${id}"]`);crumb.textContent=it.querySelector('span').textContent;
+  scrollTo({top:0,behavior:'smooth'});animateSection(document.getElementById(id))}
+items.forEach(it=>it.addEventListener('click',()=>nav(it.dataset.s)));
+
+/* ========== contadores / donuts / barras / sparklines ========== */
+function countUp(el){const t=parseFloat(el.dataset.count),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
+  const dec=String(el.dataset.count).includes('.')?1:0;const t0=performance.now(),dur=1400;
+  function st(n){const p=Math.min((n-t0)/dur,1),e=1-Math.pow(1-p,3);
+    let v=(t*e).toFixed(dec).replace('.',',');if(!dec&&t>999)v=Math.round(t*e).toLocaleString('pt-BR');
+    el.textContent=pre+v+suf;if(p<1)requestAnimationFrame(st)}requestAnimationFrame(st)}
+function donut(el){const n=el.querySelector('[data-donut]'),t=parseInt(n.dataset.donut);
+  const cor=t>=75?'var(--verde)':t>=55?'var(--ambar)':'var(--verm)';const t0=performance.now();
+  function st(now){const p=Math.min((now-t0)/1400,1),e=1-Math.pow(1-p,3),v=Math.round(t*e);
+    el.style.background=`conic-gradient(${el.id==='donutMain'?'var(--cyan)':cor} 0 ${v}%, rgba(255,255,255,.08) 0)`;
+    n.childNodes[0].textContent=v+(n.closest('.gauge')?'%':'');if(p<1)requestAnimationFrame(st)}requestAnimationFrame(st)}
+function sparkline(svg){const pts=svg.dataset.spark.split(',').map(Number),cor=svg.dataset.cor;
+  const w=180,h=34;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.setAttribute('preserveAspectRatio','none');
+  const mx=Math.max(...pts),mn=Math.min(...pts);
+  const xy=pts.map((p,i)=>[i/(pts.length-1)*w,h-4-((p-mn)/(mx-mn))*(h-10)]);
+  const d='M'+xy.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' L');
+  svg.innerHTML=`<path d="${d} L${w},${h} L0,${h} Z" fill="${cor}" opacity=".12"/><path d="${d}" fill="none" stroke="${cor}" stroke-width="2" stroke-linecap="round"/><circle cx="${xy[xy.length-1][0]}" cy="${xy[xy.length-1][1]}" r="3" fill="${cor}"/>`;}
+document.querySelectorAll('.spark').forEach(sparkline);
+function animateSection(sec){sec.querySelectorAll('[data-count]').forEach(countUp);
+  sec.querySelectorAll('.donut,.gauge .g').forEach(donut);
+  sec.querySelectorAll('.fill[data-w]').forEach(f=>{f.style.width='0';requestAnimationFrame(()=>setTimeout(()=>f.style.width=f.dataset.w+'%',60))})}
+animateSection(document.getElementById('overview'));
+
+/* ========== tilt 3D ========== */
+document.querySelectorAll('.tilt,.pilar').forEach(c=>{
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    c.style.transform=`perspective(900px) rotateY(${x*5}deg) rotateX(${-y*5}deg) translateY(-3px)`});
+  c.addEventListener('mouseleave',()=>c.style.transform='')});
+
+/* ========== ticker ========== */
+const tkData=[
+  '🏥 UPA Sul: fila <b class="att">23 pacientes</b> · espera 41 min',
+  '🎓 Presença escolar agora: <b class="pos">93,1%</b> na rede',
+  '◈ FUNDEB-VAAR: <b class="att">2 condicionalidades</b> pendentes = <b>R$ 18,6 mi/ano</b>',
+  '🚌 Frota: <b class="pos">87/92 ônibus</b> em operação · atraso médio 4 min',
+  '🤝 CadÚnico: mutirão de atualização <b class="pos">agendado</b> (impacto IGD-M)',
+  '💰 Resultado primário: <b class="pos">+R$ 38,4 mi</b> vs meta LDO',
+  '🛠️ 156: <b>214 chamados</b> abertos · SLA 2,1 dias',
+  '⚠️ Pessoal LRF: <b class="att">51,8%</b> — faixa de atenção',
+  '🩺 Vacinação hoje: <b class="pos">1.121 doses</b> (+4% vs média)',
+  '🏗️ Edital FNDE aberto: <b class="pos">creches conveniadas</b> — match com fila do Barreiros'
+];
+document.getElementById('tkTrack').innerHTML=[...tkData,...tkData].map(t=>`<span class="tk-item">${t}</span>`).join('');
+
+/* ========== mapa tooltip ========== */
+const tip=document.getElementById('maptip'),wrapEl=document.getElementById('citywrap');
+document.querySelectorAll('.hotspot').forEach(h=>{
+  h.addEventListener('mousemove',e=>{const d=JSON.parse(h.dataset.tip);
+    tip.innerHTML=`<div class="t">${d.t} <span class="tag t-${d.st==='ok'?'ok':d.st==='att'?'at':'cr'}">${d.st==='ok'?'normal':'atenção'}</span></div>`+
+      d.rows.map(r=>`<div class="row"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('');
+    const r=wrapEl.getBoundingClientRect();let x=e.clientX-r.left+18,y=e.clientY-r.top-10;
+    if(x+230>r.width)x-=260;if(y+150>r.height)y-=120;
+    tip.style.left=x+'px';tip.style.top=y+'px';tip.classList.add('on')});
+  h.addEventListener('mouseleave',()=>tip.classList.remove('on'))});
+
+/* ========== abas tempo real ========== */
+document.querySelectorAll('.atab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.atab').forEach(x=>x.classList.toggle('on',x===t));
+  document.querySelectorAll('.areapane').forEach(p=>p.classList.toggle('show',p.id==='pane-'+t.dataset.a));
+  animateSection(document.getElementById('pane-'+t.dataset.a))}));
+
+/* ========== simulação "ao vivo" ========== */
+const live={fila:34,atend:1284,exames:412,matric:27842,merenda:19640,cras:186,visitas:28,c156:214};
+function drift(id,key,min,max,fmtFn){const el=document.getElementById(id);if(!el)return;
+  live[key]=Math.max(min,Math.min(max,live[key]+(Math.random()<.5?-1:1)*Math.ceil(Math.random()*4)));
+  el.textContent=(fmtFn||(v=>v.toLocaleString('pt-BR')))(live[key]);
+  el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}
+setInterval(()=>{drift('rt-fila','fila',8,55);drift('rt-atend','atend',1284,2600);
+  drift('rt-exames','exames',380,460);drift('rt-merenda','merenda',19640,26400);
+  drift('rt-cras','cras',186,320);drift('rt-156','c156',180,260);
+  const u=document.getElementById('rt-fila-u');if(u){u.textContent='atualizado agora'}},3500);
+let ago=0;setInterval(()=>{const u=document.getElementById('rt-fila-u');ago=(ago+1)%4;if(u&&ago)u.textContent=`há ${ago*3+Math.floor(Math.random()*2)}s`},3000);
+
+/* ========== feeds ========== */
+const feeds={
+  saude:[['fi-s','🚑','<b>Ambulância 04</b> despachada — Forquilhinhas, código amarelo'],['fi-s','💉','UBS Campinas: <b>meta diária de vacinação</b> atingida (63 doses)'],['fi-s','🩺','Regulação: <b>14 consultas de cardiologia</b> agendadas via fila única'],['fi-s','⚠️','UPA Sul: espera verde passou de <b>40 min</b> — protocolo sugerido'],['fi-s','✅','Telemedicina: <b>22 teleconsultas</b> concluídas na última hora'],['fi-s','📦','Farmácia básica: estoque de insulina <b>reabastecido</b> em 21/21 UBS']],
+  edu:[['fi-e','🏫','CEM Renascer: <b>chamada da 3ª aula</b> registrada — presença 94,2%'],['fi-e','🚌','Rota 17 (Forquilhinha): <b>concluída sem atrasos</b> — 64 alunos'],['fi-e','⚠️','<b>Aluno com 4ª falta seguida</b> — alerta enviado à busca ativa (CRAS)'],['fi-e','🍎','Merenda: <b>19,6 mil refeições</b> servidas até agora'],['fi-e','👩‍🏫','Substituto alocado no <b>CEI Bela Vista</b> em 22 min'],['fi-e','📚','Plataforma de tutoria: <b>312 alunos ativos</b> em recomposição']],
+  social:[['fi-a','🤝','CRAS Forquilhinha: <b>família em vulnerabilidade</b> incluída no PAIF'],['fi-a','📋','<b>19 cadastros CadÚnico</b> atualizados hoje no mutirão'],['fi-a','🏠','Visita domiciliar concluída — <b>caso da busca ativa escolar</b>'],['fi-a','⚠️','Acolhimento institucional a <b>81% da capacidade</b>'],['fi-a','🍲','Restaurante popular: <b>437 refeições</b> servidas no almoço']],
+  urbano:[['fi-u','💡','<b>8 pontos de iluminação</b> reparados — bairro Campinas'],['fi-u','🚌','Linha 330: <b>desvio ativo</b> por obra na Av. das Torres'],['fi-u','📷','Muralha digital: <b>veículo com alerta</b> identificado na BR-101'],['fi-u','🕳️','Equipe 3 concluiu <b>tapa-buraco</b> na R. Koesa — chamado #4812'],['fi-u','🌳','Poda preventiva iniciada — <b>12 árvores</b> na Beira-mar de SJ']]
+};
+function pushFeed(area){const f=document.getElementById('feed-'+area);if(!f)return;
+  const it=feeds[area][Math.floor(Math.random()*feeds[area].length)];
+  const d=new Date();const el=document.createElement('div');el.className='fitem';
+  el.innerHTML=`<div class="fi ${it[0]}">${it[1]}</div><div class="ft">${it[2]}</div><div class="fh">${fmt(d.getHours())}:${fmt(d.getMinutes())}:${fmt(d.getSeconds())}</div>`;
+  f.prepend(el);while(f.children.length>7)f.lastChild.remove()}
+['saude','edu','social','urbano'].forEach(a=>{for(let i=0;i<4;i++)pushFeed(a)});
+setInterval(()=>{const a=['saude','edu','social','urbano'][Math.floor(Math.random()*4)];pushFeed(a)},4200);
+
+/* ========== abas captação ========== */
+function captNav(area){
+  document.querySelectorAll('.ctab').forEach(t=>t.classList.toggle('on',t.dataset.c===area));
+  document.querySelectorAll('.captpane').forEach(p=>p.classList.toggle('show',p.id==='capt-'+area));
+  const pane=document.getElementById('capt-'+area);animateSection(pane);
+  const tabs=document.querySelector('.capttabs');
+  if(tabs){const r=tabs.getBoundingClientRect();if(r.top<0||r.top>innerHeight*.55)tabs.scrollIntoView({behavior:'smooth',block:'start'})}}
+
+/* ========== simulador saúde (capitação APS) ========== */
+const rngS=document.getElementById('simSaude');
+function simS(){const v=+rngS.value;rngS.style.setProperty('--p',(v/38000*100)+'%');
+  document.getElementById('simSauPop').textContent=v.toLocaleString('pt-BR');
+  const rec=v*242;document.getElementById('simSauReceita').textContent='+R$ '+(rec/1e6).toFixed(1).replace('.',',')+' mi';
+  const cob=Math.round((252000+v)/290000*100);document.getElementById('simSauCob').textContent=cob+'%'}
+rngS.addEventListener('input',simS);simS();
+
+/* ========== simulador FUNDEB ========== */
+const rng=document.getElementById('simRange');
+function sim(){const v=+rng.value;rng.style.setProperty('--p',(v/8000*100)+'%');
+  document.getElementById('simAlunos').textContent=v.toLocaleString('pt-BR');
+  const rec=v*3920;document.getElementById('simReceita').textContent='+R$ '+(rec/1e6).toFixed(1).replace('.',',')+' mi';
+  const rank=v>=6000?'top 3':v>=4000?'top 5':v>=2000?'top 12':'top 30';
+  document.getElementById('simRank').textContent=rank}
+rng.addEventListener('input',sim);sim();
+
+/* ========== chat IA ========== */
+const iaQA=[
+  ['Se eu converter 4.000 alunos para tempo integral, qual o impacto no FUNDEB?','<span class="mtag">Pilar 3 · simulação</span><br><b>+R$ 15,7 mi/ano</b> de receita FUNDEB (ponderador 1,25x sobre o VAAT). Custo estimado de operação: R$ 9,2 mi/ano via parceria com OSC qualificada — <b>saldo líquido positivo de R$ 6,5 mi</b>, além do ganho de aprendizagem que pesa na condicionalidade VAAR de 2027. Posso gerar o plano de expansão por escola.'],
+  ['Qual secretaria está executando menos o orçamento?','<span class="mtag">Pilar 1 · execução 2026</span><br><b>Urbanismo & Infraestrutura: 60,2% liquidado</b> — 14 p.p. abaixo do ritmo esperado. O gargalo são 3 contratos com medições paradas há 40+ dias. Risco: devolução de R$ 4,1 mi de convênio estadual se não empenhar até set/2026. Recomendo reunião de destrave com a fiscalização.'],
+  ['O que falta para captar o VAAR em 2027?','<span class="mtag">Pilares 1+2+3 · cruzamento</span><br>Faltam <b>2 das 5 condicionalidades</b>: (1) <b>redução de evasão</b> — a busca ativa em tempo real já derrubou as faltas críticas 18% no trimestre, no ritmo certo; (2) <b>aprendizagem com equidade</b> — precisa do plano de recomposição com tutoria nas 12 escolas de menor proficiência. Valor em jogo: <b>R$ 18,6 mi/ano</b>. A janela de habilitação fecha em dezembro.'],
+  ['Resumo do dia para a coletiva de imprensa','<span class="mtag">Síntese executiva</span><br>📌 <b>2.847 atendimentos públicos</b> até agora · saúde com espera média <b>7 min abaixo da meta</b> (exceto UPA Sul, normalizando) · presença escolar <b>93,1%</b> · 8 pontos de iluminação reparados · resultado fiscal <b>R$ 38,4 mi acima da meta</b> · e R$ 92,7 mi/ano mapeados em captação federal. Texto da coletiva pronto para revisão.']
+];
+let iaIdx=0;
+function askIA(i){const body=document.getElementById('chatBody');const qa=iaQA[i!==undefined?i:(iaIdx++%iaQA.length)];
+  const u=document.createElement('div');u.className='msg user';u.textContent=qa[0];body.appendChild(u);
+  const t=document.createElement('div');t.className='msg bot';t.innerHTML='<div class="typing"><i></i><i></i><i></i></div>';body.appendChild(t);
+  body.scrollTop=body.scrollHeight;
+  setTimeout(()=>{t.innerHTML=qa[1];body.scrollTop=body.scrollHeight},1100)}
+</script>
+</body>
+</html>
