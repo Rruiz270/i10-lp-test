@@ -1,7 +1,10 @@
-// Instituto i10 — hero 3D: logo/prisma metálico em Three.js (paleta navy).
-// Fallback: se WebGL/Three falhar, o prisma SVG com glow permanece.
+// Instituto i10 — hero 3D: COMPOSIÇÃO do logo (3 nós + 3 vigas) que se monta
+// numa animação de entrada e depois flutua. Three.js. Fallback: prisma SVG.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const clamp01 = t => Math.max(0, Math.min(1, t));
 
 const mount = document.getElementById('hero3d');
 if (mount) {
@@ -14,8 +17,7 @@ function init() {
              document.createElement('canvas').getContext('webgl');
   if (!gl) throw new Error('sem WebGL');
 
-  let w = mount.clientWidth || 700;
-  let h = mount.clientHeight || 560;
+  let w = mount.clientWidth || 700, h = mount.clientHeight || 560;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -26,58 +28,71 @@ function init() {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, w / h, 0.1, 100);
-  camera.position.set(0, 0, 6.4);
+  camera.position.set(0, 0, 6.6);
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
-  // ----- Logo i10: triângulo (3 nós) como anel metálico extrudado -----
-  // Contorno externo + furo interno = "outline" do logo, em metal.
-  const outer = triShape(1.32, 0.82, -1.42);
-  const inner = triShape(0.74, 0.46, -0.80);
-  outer.holes.push(inner);
-  const geo = new THREE.ExtrudeGeometry(outer, {
-    depth: 0.5, bevelEnabled: true, bevelThickness: 0.1,
-    bevelSize: 0.08, bevelSegments: 4, curveSegments: 4
-  });
-  const metal = new THREE.MeshStandardMaterial({ color: 0xdfe8f2, metalness: 1.0, roughness: 0.17 });
-  const ring = new THREE.Mesh(geo, metal);
-
   const group = new THREE.Group();
-  group.add(ring);
-
-  // ----- Nós emissivos nos vértices (cyan / green / white) -----
-  const nodes = [
-    { x: -1.32, y: 0.82, c: 0x00B4D8 },
-    { x: 1.32, y: 0.82, c: 0x00E5A0 },
-    { x: 0, y: -1.42, c: 0xffffff }
-  ];
-  nodes.forEach(n => {
-    const sph = new THREE.Mesh(
-      new THREE.SphereGeometry(0.2, 32, 32),
-      new THREE.MeshStandardMaterial({ color: n.c, emissive: n.c, emissiveIntensity: 1.6, metalness: 0.2, roughness: 0.25 })
-    );
-    sph.position.set(n.x, n.y, 0.28);
-    group.add(sph);
-    const pl = new THREE.PointLight(n.c, 8, 8, 2);
-    pl.position.set(n.x, n.y, 1.3);
-    group.add(pl);
-  });
-
-  group.position.set(0, -0.07, 0);
   scene.add(group);
 
-  // ----- Luzes de estúdio -----
+  // ---- Posições finais dos nós (triângulo, ápice embaixo) = logo i10 ----
+  const P = {
+    A: new THREE.Vector3(-1.35, 0.82, 0),  // cyan
+    B: new THREE.Vector3(1.35, 0.82, 0),   // green
+    C: new THREE.Vector3(0, -1.42, 0)      // white
+  };
+  const NODES = [
+    { key: 'A', pos: P.A, color: 0x00B4D8 },
+    { key: 'B', pos: P.B, color: 0x00E5A0 },
+    { key: 'C', pos: P.C, color: 0xffffff }
+  ];
+  const EDGES = [[P.A, P.B], [P.A, P.C], [P.B, P.C]];
+
+  const beamMat = new THREE.MeshStandardMaterial({ color: 0xe7eef6, metalness: 1.0, roughness: 0.2 });
+
+  // ---- Vigas metálicas (crescem do meio na entrada) ----
+  const beams = EDGES.map(([p1, p2]) => {
+    const dir = new THREE.Vector3().subVectors(p2, p1);
+    const len = dir.length();
+    const mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 1, 28), beamMat);
+    mesh.position.copy(p1).add(p2).multiplyScalar(0.5);
+    mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+    mesh.userData.len = len;
+    mesh.scale.set(1, 0.0001, 1);
+    group.add(mesh);
+    return mesh;
+  });
+
+  // ---- Nós emissivos (entram de fora pra dentro) ----
+  const nodes = NODES.map((n, i) => {
+    const mesh = new THREE.Mesh(
+      new THREE.SphereGeometry(0.22, 36, 36),
+      new THREE.MeshStandardMaterial({ color: n.color, emissive: n.color, emissiveIntensity: 1.7, metalness: 0.25, roughness: 0.22 })
+    );
+    mesh.userData.final = n.pos.clone();
+    mesh.userData.start = n.pos.clone().multiplyScalar(2.7); // começa "explodido" pra fora
+    mesh.userData.delay = i * 0.12;
+    mesh.position.copy(mesh.userData.start);
+    mesh.scale.setScalar(0.0001);
+    group.add(mesh);
+    const pl = new THREE.PointLight(n.color, 7, 7, 2);
+    pl.position.copy(n.pos);
+    group.add(pl);
+    return mesh;
+  });
+
+  // ---- Luzes de estúdio ----
   scene.add(new THREE.AmbientLight(0xffffff, 0.4));
   const key = new THREE.DirectionalLight(0xffffff, 2.6); key.position.set(3, 4, 5); scene.add(key);
   const rim = new THREE.DirectionalLight(0x66d0ff, 1.6); rim.position.set(-4, -1, -3); scene.add(rim);
 
-  // ----- Interação -----
+  // ---- Interação / parallax ----
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let targetY = 0, targetX = 0, baseY = 0;
+  let tX = 0, tY = 0;
   window.addEventListener('pointermove', (e) => {
-    targetY = (e.clientX / window.innerWidth - 0.5) * 0.7;
-    targetX = (e.clientY / window.innerHeight - 0.5) * 0.45;
+    tY = (e.clientX / window.innerWidth - 0.5) * 0.6;
+    tX = (e.clientY / window.innerHeight - 0.5) * 0.4;
   }, { passive: true });
 
   function resize() {
@@ -86,24 +101,42 @@ function init() {
   }
   window.addEventListener('resize', resize);
 
-  function loop() {
-    requestAnimationFrame(loop);
-    if (!reduce) baseY += 0.004;
-    group.rotation.y += ((baseY + targetY) - group.rotation.y) * 0.06;
-    group.rotation.x += (targetX - group.rotation.x) * 0.06;
+  // ---- Timeline: monta o logo, depois flutua ----
+  const NODE_DUR = 0.9, BEAM_START = 0.85, BEAM_DUR = 0.75;
+  const ASSEMBLE_END = 1.95;
+  const clock = new THREE.Clock();
+  let floatRot = 0;
+
+  function frame() {
+    requestAnimationFrame(frame);
+    const t = reduce ? ASSEMBLE_END + 1 : clock.getElapsedTime();
+
+    // nós voam pra dentro + escalam
+    nodes.forEach(m => {
+      const p = clamp01((t - m.userData.delay) / NODE_DUR);
+      const e = easeOut(p);
+      m.position.lerpVectors(m.userData.start, m.userData.final, e);
+      m.scale.setScalar(0.0001 + e);
+    });
+    // vigas crescem do meio
+    beams.forEach((b, i) => {
+      const p = clamp01((t - BEAM_START - i * 0.08) / BEAM_DUR);
+      b.scale.y = b.userData.len * easeOut(p);
+    });
+
+    // depois de montar: flutua (bob + rotação leve + parallax)
+    const after = clamp01((t - ASSEMBLE_END) / 1.2);
+    if (!reduce) {
+      group.position.y = Math.sin(t * 0.9) * 0.1 * after;
+      floatRot += 0.0035 * after;
+    }
+    const baseRotY = (1 - after) * -0.5; // termina a montagem levemente virado e endireita
+    group.rotation.y += ((baseRotY + floatRot + tY) - group.rotation.y) * 0.06;
+    group.rotation.x += ((tX) - group.rotation.x) * 0.06;
+
     renderer.render(scene, camera);
   }
-  loop();
+  frame();
 
   document.documentElement.classList.add('hero-3d-on');
-}
-
-// Triângulo (ápice embaixo) como Shape — vértices = nós do logo i10.
-function triShape(topX, topY, botY) {
-  const s = new THREE.Shape();
-  s.moveTo(-topX, topY);
-  s.lineTo(topX, topY);
-  s.lineTo(0, botY);
-  s.closePath();
-  return s;
 }
