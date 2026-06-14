@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato — Instituto i10</title>
+  <meta name="description" content="Fale com o Instituto i10. Contato geral, imprensa e parcerias com secretarias de educação. Sapiens Park, Florianópolis · SC.">
+  <meta name="theme-color" content="#061840">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <style>
+    .field { display:flex; flex-direction:column; gap:8px; }
+    .field label { font-size:var(--t-caption); color:var(--ink-60); font-family:var(--mono); letter-spacing:.04em; }
+    .field input, .field textarea, .field select {
+      background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:10px;
+      padding:14px 16px; color:var(--ink); font:inherit; font-size:var(--t-body); transition:border-color .25s var(--ease);
+    }
+    .field input:focus, .field textarea:focus, .field select:focus { outline:none; border-color:var(--cyan); }
+    .field textarea { resize:vertical; min-height:120px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    @media (max-width:640px){ .form-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav" aria-label="Principal">
+    <a class="brand" href="index.html" aria-label="Instituto i10 — início">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="lg-nav" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00B4D8"/><stop offset="100%" stop-color="#00E5A0"/></linearGradient></defs><line x1="10" y1="10" x2="30" y2="10" stroke="url(#lg-nav)" stroke-width="2"/><line x1="10" y1="10" x2="20" y2="28" stroke="url(#lg-nav)" stroke-width="2"/><line x1="30" y1="10" x2="20" y2="28" stroke="url(#lg-nav)" stroke-width="2"/><circle cx="10" cy="10" r="4" fill="#00B4D8"/><circle cx="30" cy="10" r="4" fill="#00E5A0"/><circle cx="20" cy="28" r="4" fill="#ffffff"/></svg>
+      <span class="brand-word">instituto <b>i10</b></span>
+    </a>
+    <div class="nav-links">
+      <a href="sobre.html">Sobre</a><a href="programas.html">Programas</a><a href="pesquisa.html">Pesquisa</a><a href="projetos.html">Projetos</a><a href="impacto.html">Impacto</a><a class="ghost-btn" href="contato.html" aria-current="page">Contato</a>
+    </div>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+
+  <header class="hero case-hero" style="min-height:auto;">
+    <div class="wrap hero-inner">
+      <p class="eyebrow" data-reveal>Contato</p>
+      <h1 class="display" data-reveal data-delay="1" style="margin-top:20px; max-width:15ch;">Vamos <em class="hl">conversar</em>.</h1>
+      <p class="lede" data-reveal data-delay="2" style="margin-top:28px;">
+        Secretaria de educação, pesquisador, imprensa ou parceiro — escolha o canal e
+        nos escreva. Respondemos em 2–3 dias úteis.
+      </p>
+    </div>
+  </header>
+
+  <!-- CANAIS + FORM -->
+  <section class="section" style="padding-top:0;" aria-label="Canais e formulário">
+    <div class="wrap cols">
+      <!-- canais -->
+      <div class="stack" data-reveal>
+        <div class="stack stack-sm">
+          <p class="eyebrow">Geral</p>
+          <a class="subhead" href="mailto:contato@institutoi10.com.br" style="color:var(--cyan-light);">contato@institutoi10.com.br</a>
+        </div>
+        <div class="stack stack-sm">
+          <p class="eyebrow">Imprensa &amp; marca</p>
+          <a class="subhead" href="mailto:brand@institutoi10.com.br" style="color:var(--cyan-light);">brand@institutoi10.com.br</a>
+        </div>
+        <div class="stack stack-sm">
+          <p class="eyebrow">Endereço</p>
+          <p class="subhead">Sapiens Park · Florianópolis · SC · Brasil</p>
+        </div>
+        <div class="stack stack-sm">
+          <p class="eyebrow">Atendimento</p>
+          <p class="body">Segunda a sexta, 9h–18h (horário de Brasília). Resposta em 2–3 dias úteis.</p>
+        </div>
+      </div>
+
+      <!-- formulário (abre o e-mail do usuário) -->
+      <form class="stack" data-reveal data-delay="1" onsubmit="return i10Send(this);" aria-label="Formulário de contato">
+        <div class="form-grid">
+          <div class="field"><label for="nome">Nome</label><input id="nome" name="nome" required></div>
+          <div class="field"><label for="org">Organização</label><input id="org" name="org" placeholder="Secretaria, escola, empresa…"></div>
+        </div>
+        <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" required></div>
+        <div class="field"><label for="assunto">Assunto</label>
+          <select id="assunto" name="assunto">
+            <option>Parceria com secretaria</option>
+            <option>Diagnóstico FUNDEB</option>
+            <option>Ensino integral / bilíngue</option>
+            <option>BNCC Computação</option>
+            <option>Pesquisa / dados</option>
+            <option>Imprensa</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="field"><label for="msg">Mensagem</label><textarea id="msg" name="msg" required></textarea></div>
+        <div class="row" style="justify-content:space-between;">
+          <button type="submit" class="ghost-btn ghost-btn--accent">Enviar mensagem <span class="arr">→</span></button>
+          <span class="caption">Abre seu app de e-mail com tudo preenchido.</span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section--recess" aria-label="Perguntas frequentes">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Perguntas frequentes</p>
+      <h2 class="heading" data-reveal data-delay="1" style="margin:18px 0 24px; max-width:14ch;">Antes de escrever.</h2>
+      <div class="steps" data-reveal>
+        <div class="step"><div><h3>Atendem qualquer município?</h3><p class="body">Sim. As ferramentas (Diagnóstico FUNDEB, Painel Municipal 360, Simulador de Ensino Integral) são replicáveis para qualquer rede do país.</p></div></div>
+        <div class="step"><div><h3>Os dados e métodos são abertos?</h3><p class="body">Sim. 100% das publicações saem em acesso aberto, com dados e código — qualquer um pode auditar e replicar.</p></div></div>
+        <div class="step"><div><h3>Como começa uma parceria?</h3><p class="body">Em geral por um diagnóstico (FUNDEB ou BNCC) que mostra, com números, onde estão as oportunidades. A partir daí, co-desenhamos o piloto.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a class="brand" href="index.html" style="margin-bottom:20px;" aria-label="Instituto i10"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:34px;height:34px;"><defs><linearGradient id="lg-foot" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00B4D8"/><stop offset="100%" stop-color="#00E5A0"/></linearGradient></defs><line x1="10" y1="10" x2="30" y2="10" stroke="url(#lg-foot)" stroke-width="2"/><line x1="10" y1="10" x2="20" y2="28" stroke="url(#lg-foot)" stroke-width="2"/><line x1="30" y1="10" x2="20" y2="28" stroke="url(#lg-foot)" stroke-width="2"/><circle cx="10" cy="10" r="4" fill="#00B4D8"/><circle cx="30" cy="10" r="4" fill="#00E5A0"/><circle cx="20" cy="28" r="4" fill="#ffffff"/></svg><span class="brand-word">instituto <b>i10</b></span></a>
+          <p class="body" style="max-width:34ch;">IA a serviço da educação pública brasileira. Pesquisa, impacto mensurável e metodologias abertas.</p>
+        </div>
+        <div class="footer-col"><h4>Navegar</h4><a href="sobre.html">Sobre</a><a href="programas.html">Programas</a><a href="pesquisa.html">Pesquisa</a><a href="projetos.html">Projetos</a><a href="impacto.html">Impacto</a></div>
+        <div class="footer-col"><h4>Contato</h4><a href="mailto:contato@institutoi10.com.br">contato@institutoi10.com.br</a><a href="mailto:brand@institutoi10.com.br">brand@institutoi10.com.br</a><a href="contato.html">Sapiens Park · Florianópolis · SC</a></div>
+      </div>
+      <div class="footer-bottom"><p>© 2026 Instituto i10 · Educação · Tecnologia · Inovação</p><p>Florianópolis · Brasil</p></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script>
+    function i10Send(form){
+      var nome=encodeURIComponent(form.nome.value), org=encodeURIComponent(form.org.value||'—'),
+          email=encodeURIComponent(form.email.value), assunto=encodeURIComponent(form.assunto.value),
+          msg=encodeURIComponent(form.msg.value);
+      var corpo='Nome: '+decodeURIComponent(nome)+'%0D%0AOrganização: '+decodeURIComponent(org)+
+                '%0D%0AE-mail: '+decodeURIComponent(email)+'%0D%0A%0D%0A'+decodeURIComponent(msg);
+      window.location.href='mailto:contato@institutoi10.com.br?subject='+assunto+' — '+nome+'&body='+corpo;
+      return false;
+    }
+  </script>
+</body>
+</html>
